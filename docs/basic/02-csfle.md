@@ -56,7 +56,7 @@ curl \
     -d @csfle.json
 ```
 
-In the UI (accessible at https://confluent.127-0-0-1.nip.io/), navigate to the `csfle` topic ((Direct Link)[https://confluent.127-0-0-1.nip.io/clusters/confluentplatform-demo/management/topics/csfle/message-viewer])
+In the UI (accessible at https://confluent.127-0-0-1.nip.io/), navigate to the `csfle` topic ([Direct Link](https://confluent.127-0-0-1.nip.io/clusters/confluentplatform-demo/management/topics/csfle/message-viewer))
 
 Open two terminals, and exec into the utility pod in both:
 

@@ -58,7 +58,7 @@ wait_for_c3 () {
         echo "Filtered pods:"
         kubectl -n ${NAMESPACE} get pods -l app=controlcenter
         echo ""
-        echo "All pods":
+        echo "All pods:"
         kubectl -n ${NAMESPACE} get pods
         echo ""
         echo "Logs:"
