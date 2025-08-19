@@ -1,6 +1,6 @@
 # confluent-demo
 
-Migrated from [justinrlee/confluent-demo](github.com/justinrlee/confluent-demo)
+Migrated from [justinrlee/confluent-demo](https://github.com/justinrlee/confluent-demo)
 
 ## Architecture
 

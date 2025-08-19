@@ -16,7 +16,13 @@ spec:
         confluentHub:
           - name: kafka-connect-datagen
             owner: confluentinc
-            version: 0.6.6
+            version: "0.6.6"
+          - name: kafka-connect-elasticsearch
+            owner: confluentinc
+            version: "15.0.1"
+          - name: kafka-connect-sse
+            owner: cjmatta
+            version: "1.0"
   tls:
     secretRef: tls-connect
   keyConverterType: io.confluent.connect.avro.AvroConverter

@@ -20,9 +20,9 @@ Monitor pods as they come up (need Control Center to have 3/3 running containers
 kubectl -n confluent-demo get pods -w
 ```
 
-(You can also monitor C3 logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
+(You can also monitor Control Center logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
 
-Open up the control center UI: https://confluent.127-0-0-1.nip.io/
+Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/
 
 Log in with `admin`/`admin`
 
@@ -45,5 +45,5 @@ confluent login --url https://kafka:8090 --certificate-authority-path certs/ca.c
 ### Cleanup
 
 ```bash
-./uninstall_oidc.sh
+./uninstall.sh
 ```

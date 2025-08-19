@@ -32,7 +32,6 @@
 * ~~support orbstack~~
 * ~~verify we remove cfk helm chart~~
 
-
 ## TODO Basic
 
 * Add real Flink job
@@ -40,7 +39,7 @@
 * ... other demo things?
 * ~~support remote installation~~
 
-TODO (OIDC Infra)
+## TODO (OIDC Infra)
 
 * Support custom base domain
 * Fix OIDC for KafkaRestClass for KafkaTopics

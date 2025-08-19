@@ -91,7 +91,7 @@ check_for_readiness () {
     restart_if_not_ready controlcenter-0
     wait_for_pod app=schemaregistry
     # wait_for schemaregistry 1
-    # Connect takes forever to start, and is not actually necessary for the C3 UI to come up
+    # Connect takes forever to start, and is not actually necessary for the Control Center UI to come up
     # wait_for connect 1
     wait_for_c3
     clear
