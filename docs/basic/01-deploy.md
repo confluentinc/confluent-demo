@@ -9,12 +9,25 @@ Provision a local Kubernetes cluster. Some options for this include:
 
 ## Install prereqs
 
+You need the following tools installed ([brew](https://brew.sh/) is a common way to install these on macOS):
+
+* kubectl (configured with a Kubernetes context to access a Kubernetes cluster)
+* keytool (comes with most Java runtimes)
+* helm
+* openssl
+* cfssl
+* jq
+
+Additionally, you need access to github.com (i.e. github.com must not be blocked)
+
 ## Check Prerequisites
 
 This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Ingress NGINX controller.
 
+(If you're installing to a local Kubernetes cluster, e.g. Docker Desktop or OrbStack, you can use the default `127.0.0.1`)
+
 ```bash
-./check_prereqs.sh
+./precheck.sh
 ```
 
 ## Installation
