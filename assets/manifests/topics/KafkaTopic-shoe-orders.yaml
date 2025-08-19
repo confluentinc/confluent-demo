@@ -1,0 +1,12 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: shoe-orders
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 3
+  partitionCount: 3
+  kafkaRestClassRef:
+    name: default
+    namespace: ${NAMESPACE}

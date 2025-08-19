@@ -1,0 +1,58 @@
+{
+  "fields": [
+    {
+      "name": "order_id",
+      "type": "string"
+    },
+    {
+      "name": "recipe_id",
+      "type": "string"
+    },
+    {
+      "name": "customer_name",
+      "type": "string"
+    },
+    {
+      "name": "customer_address",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+        "name": "ingredients",
+        "type": {
+            "type": "array",
+            "items": {
+                "name": "Ingredient",
+                "type": "record",
+                "fields": [
+                    {
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "quantity",
+                        "type": "int"
+                    },
+                    {
+                        "name": "unit",
+                        "type": "string"
+                    }
+                ]
+            }
+        }
+    },
+    {
+      "name": "steps",
+      "type": {
+        "items": "string",
+        "type": "array"
+      }
+    }
+  ],
+  "name": "EnrichedOrders",
+  "namespace": "io.confluent.wvella.demo.datacontractsv1",
+  "type": "record"
+}

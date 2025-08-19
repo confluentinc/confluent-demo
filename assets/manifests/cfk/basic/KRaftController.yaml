@@ -1,0 +1,33 @@
+--- # KRaft Controller
+# Listeners:
+# 9074: CONTROLLER (MTLS)
+# MDS connects to Kafka Replication listener, using mTLS
+
+apiVersion: platform.confluent.io/v1beta1
+kind: KRaftController
+metadata:
+  name: kraft
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  configOverrides:
+    server:
+      # add missing replication listener configs in kraft. Known CFK bug, to be fixed in future release
+      - listener.name.replication.ssl.key.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+      - listener.name.replication.ssl.keystore.location=/mnt/sslcerts/keystore.p12
+      - listener.name.replication.ssl.keystore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+      - listener.name.replication.ssl.truststore.location=/mnt/sslcerts/truststore.p12
+      - listener.name.replication.ssl.truststore.password=${file:/mnt/sslcerts/jksPassword.txt:jksPassword}
+      - listener.security.protocol.map=CONTROLLER:SSL,REPLICATION:SSL
+  clusterID: confluentplatform-demo
+  image:
+    application: confluentinc/cp-server:${CONFLUENT_PLATFORM_VERSION}
+    init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
+  dataVolumeCapacity: 5Gi
+  listeners:
+    controller:
+      # 9074
+      tls:
+        enabled: true
+  tls:
+    secretRef: tls-kraft

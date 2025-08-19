@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: recipe-consumer
+    demo: governance
+  name: recipe-consumer-v1
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipe-consumer
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: recipe-consumer
+        version: v1
+    spec:
+      containers:
+        - name: recipe-consumer
+          image: justinrlee/byte-to-eat-recipe-consumer-v1:${RECIPE_v1_VERSION}
+          env:
+            - name: VAULT_ADDR
+              value: http://vault.vault.svc.cluster.local:8200
+            - name: VAULT_TOKEN
+              value: root
+          volumeMounts:
+            - name: governance-config
+              mountPath: "/app/consumer-recipes.properties"
+              subPath: recipes-consumer.v1.properties
+            - name: client-tls
+              readOnly: true
+              mountPath: /mnt/certs
+      volumes:
+        - name: governance-config
+          configMap:
+            name: governance-config
+        - name: client-tls
+          secret:
+            secretName: tls-client

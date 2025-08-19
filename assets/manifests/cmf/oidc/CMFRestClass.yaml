@@ -1,0 +1,15 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: CMFRestClass
+metadata:
+  name: default
+  namespace: ${NAMESPACE}
+spec:
+  cmfRest:
+    endpoint: http://cmf.${NAMESPACE}.svc.cluster.local
+    authentication:
+      type: oauth
+      oauth:
+        secretRef: cmf-oauth-jaas
+        configuration:
+          tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+          subClaimName: client_id

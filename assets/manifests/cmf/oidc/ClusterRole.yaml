@@ -1,0 +1,27 @@
+## Create a ClusterRole for the Confluent Manager for Apache Flink if rbac is not namespaced else create a Role in the Release Namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ${CMF_SERVICE_ACCOUNT}
+rules:
+  - apiGroups: [ "apps" ]
+    resources: [ "deployments", "deployments/finalizers" ]
+    verbs: [ "*" ]
+  - apiGroups: ["flink.apache.org"]
+    resources: ["flinkdeployments", "flinkdeployments/status"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["services", "namespaces"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [ "" ]
+    resources: [ "configmaps", "pods" ]
+    verbs: [ "*" ]
+  - apiGroups: [ "" ]
+    resources: [ "events" ]
+    verbs: [ "get", "list", "watch" ]
+  - apiGroups: [ "" ]
+    resources: [ "serviceaccounts", "secrets" ]
+    verbs: [ "create", "get", "list", "watch", "delete", "update"]
+  - apiGroups: [ "rbac.authorization.k8s.io" ]
+    resources: [ "roles", "rolebindings" ]
+    verbs: [ "create", "get", "list", "watch", "delete", "update", "patch" ]

@@ -1,0 +1,14 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: default
+  namespace: ${NAMESPACE}
+spec:
+  kafkaRest:
+    authentication:
+      type: oauth
+      oauth:
+        secretRef: oauth-jaas
+        configuration:
+          tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token

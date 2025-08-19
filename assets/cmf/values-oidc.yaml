@@ -1,0 +1,81 @@
+resources:
+  requests:
+    cpu: 100m
+
+encryption:
+  key:
+    kubernetesSecretName: cmf-encryption-key
+    kubernetesSecretProperty: encryption-key
+
+rbac: false
+
+serviceAccount:
+  create: false
+  name: ${CMF_SERVICE_ACCOUNT}
+
+cmf:
+  authentication:
+    type: oauth
+    config:
+      oauthbearer.jwks.endpoint.url: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
+      token.issuer: Confluent
+      oauthbearer.expected.issuer: https://keycloak.${BASE_DOMAIN}/realms/confluent
+      oauthbearer.sub.claim.name: client_id
+      public.key.path: /mount/mds/mdsPublicKey.pem
+      confluent.metadata.bootstrap.server.urls: https://kafka.${NAMESPACE}.svc.cluster.local:8090
+      confluent.metadata.http.auth.credentials.provider: OAUTHBEARER
+      confluent.metadata.oauthbearer.token.endpoint.url: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+      # confluent.metadata.oauthbearer.login.client.id: kafka
+      # confluent.metadata.oauthbearer.login.client.secret: LpXqoU8bqCqXgNsPKAJIJhQ9WafgWwsj
+      confluent.metadata.oauthbearer.login.client.id: cmf
+      confluent.metadata.oauthbearer.login.client.secret: 5f8e9b2c3d4a8e7b6f0c1d2e3f4a5b6c
+      # oauthbearer.groups.claim.name: groups
+      # oauthbearer.expected.audience: "*"
+      # confluent.metadata.ssl.truststore.location: /mount/tls/truststore.p12
+      # confluent.metadata.ssl.truststore.password: confluent
+      ssl.truststore.location: /mount/tls/truststore.p12
+      ssl.truststore.password: confluent
+
+  kafka:
+    oauthbearerAllowedUrls: "*"
+
+  sql:
+    production: true
+    examples-catalog:
+      enabled: true
+  
+  # authorization:
+  #   mdsRestConfig:
+  #     endpoint: https://kafka.${NAMESPACE}.svc.cluster.local:8090
+  #     authentication:
+  #       type: oauth
+  #       config:
+  #         confluent.metadata.http.auth.credentials.provider: OAUTHBEARER
+  #         confluent.metadata.oauthbearer.token.endpoint.url: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+  #         # confluent.metadata.oauthbearer.login.client.id: kafka
+  #         # confluent.metadata.oauthbearer.login.client.secret: LpXqoU8bqCqXgNsPKAJIJhQ9WafgWwsj
+  #         confluent.metadata.oauthbearer.login.client.id: cmf
+  #         confluent.metadata.oauthbearer.login.client.secret: 5f8e9b2c3d4a8e7b6f0c1d2e3f4a5b6c
+  #         confluent.metadata.ssl.truststore.location: /mount/tls/truststore.p12
+  #         confluent.metadata.ssl.truststore.password: confluent
+  #         ssl.truststore.location: /mount/tls/truststore.p12
+  #         ssl.truststore.password: confluent
+
+#   # ssl:
+#   #   trust-store: /mount/tls/truststore.p12
+#   #   trust-store-password: confluent
+
+mountedVolumes:
+  volumes:
+    - name: mds-token
+      secret:
+        secretName: mds-token
+    - name: tls-cmf
+      secret:
+        secretName: tls-cmf-full
+
+  volumeMounts:
+    - name: mds-token
+      mountPath: /mount/mds
+    - name: tls-cmf
+      mountPath: /mount/tls

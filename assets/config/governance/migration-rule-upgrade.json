@@ -1,0 +1,8 @@
+{
+    "name": "split_chef_first_and_last_name",
+    "doc": "Consumer is on new major version and needs the chef name split.",
+    "kind": "TRANSFORM",
+    "type": "JSONATA",
+    "mode": "UPGRADE",
+    "expr": "$merge([$sift($, function($v, $k) { $k != 'chef_name' }), { 'chef_first_name': $split(chef_name, ' ')[1], 'chef_last_name': $split(chef_name, ' ')[2] }])"
+}

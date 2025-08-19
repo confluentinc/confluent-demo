@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: order-consumer
+    demo: governance
+  name: order-consumer
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-consumer
+  template:
+    metadata:
+      labels:
+        app: order-consumer
+    spec:
+      containers:
+        - name: order-consumer
+          image: justinrlee/byte-to-eat-order-consumer:${ORDER_VERSION}
+          env:
+            - name: VAULT_ADDR
+              value: http://vault.vault.svc.cluster.local:8200
+            - name: VAULT_TOKEN
+              value: root
+          volumeMounts:
+            - name: governance-config
+              mountPath: "/app/consumer-orders.properties"
+              subPath: orders-consumer.properties
+            - name: client-tls
+              readOnly: true
+              mountPath: /mnt/certs
+      volumes:
+        - name: governance-config
+          configMap:
+            name: governance-config
+        - name: client-tls
+          secret:
+            secretName: tls-client

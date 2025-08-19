@@ -1,0 +1,17 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: shoe-products
+  namespace: ${NAMESPACE}
+spec:
+  class: "io.confluent.kafka.connect.datagen.DatagenConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    name: shoe-products
+    kafka.topic: shoe-products
+    quickstart: shoes
+    max.interval: "10000"
+    # Serializer configuration should be inherited from the connect worker

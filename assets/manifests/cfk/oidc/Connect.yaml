@@ -1,0 +1,76 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-server-connect:${CONFLUENT_PLATFORM_VERSION}
+    init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
+  authorization:
+    type: rbac
+  build:
+    type: onDemand
+    onDemand:
+      plugins:
+        confluentHub:
+          - name: kafka-connect-datagen
+            owner: confluentinc
+            version: 0.6.6
+  keyConverterType: io.confluent.connect.avro.AvroConverter
+  valueConverterType: io.confluent.connect.avro.AvroConverter
+  tls:
+    secretRef: tls-connect
+  authentication:
+    type: mtls
+  # externalAccess:
+  #   type: loadBalancer
+  #   loadBalancer:
+  #     domain: mydomain.example
+  #     prefix: connect
+  podTemplate:
+    probe:
+      readiness:
+        initialDelaySeconds: 180
+        failureThreshold: 10
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.${NAMESPACE}.svc.cluster.local:9071
+      authentication:
+        type: oauth
+        jaasConfig:
+          secretRef: connect-oauth-jaas
+        oauthSettings:
+          subClaimName: client_id
+          tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+      tls:
+        enabled: true
+    mds:
+      endpoint: https://kafka.${NAMESPACE}.svc.cluster.local:8090
+      tokenKeyPair:
+        secretRef: mds-token
+      authentication:
+        type: oauth
+        oauth:
+          secretRef: connect-oauth-jaas
+          configuration:
+            tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+            expectedIssuer: https://keycloak.${BASE_DOMAIN}/realms/confluent
+            # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
+            jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
+            subClaimName: client_id
+      tls:
+        enabled: true
+    schemaRegistry:
+      authentication:
+        type: oauth
+        oauth:
+          secretRef: connect-oauth-jaas
+          configuration:
+            tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+      tls:
+        enabled: true
+        secretRef: tls-kraft
+      url: https://schemaregistry.${NAMESPACE}.svc.cluster.local:8081

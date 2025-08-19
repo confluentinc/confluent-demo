@@ -1,0 +1,14 @@
+
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: manual-cmf
+  namespace: ${NAMESPACE}
+spec:
+  clustersScopeByIds:
+    cmfId: CMF-id
+  principal:
+    name: "d8e86361-2af0-43ce-92c7-f39a86a9c716"
+    type: user
+  role: SystemAdmin

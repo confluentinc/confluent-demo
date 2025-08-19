@@ -1,0 +1,42 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-server-connect:${CONFLUENT_PLATFORM_VERSION}
+    init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
+  build:
+    type: onDemand
+    onDemand:
+      plugins:
+        confluentHub:
+          - name: kafka-connect-datagen
+            owner: confluentinc
+            version: 0.6.6
+  tls:
+    secretRef: tls-connect
+  keyConverterType: io.confluent.connect.avro.AvroConverter
+  valueConverterType: io.confluent.connect.avro.AvroConverter
+  # Optimized for demo start time; do not use for production
+  podTemplate:
+    probe:
+      readiness:
+        initialDelaySeconds: 30
+        failureThreshold: 30
+      liveness:
+        initialDelaySeconds: 30
+        failureThreshold: 30
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.${NAMESPACE}.svc.cluster.local:9071
+      tls:
+        enabled: true
+    schemaRegistry:
+      tls:
+        enabled: true
+        secretRef: tls-kraft
+      url: https://schemaregistry.${NAMESPACE}.svc.cluster.local:8081

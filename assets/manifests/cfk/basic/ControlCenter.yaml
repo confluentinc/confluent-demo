@@ -1,0 +1,58 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-enterprise-control-center-next-gen:${CONTROL_CENTER_VERSION}
+    init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
+  dataVolumeCapacity: 10Gi
+  configOverrides:
+    server:
+      - confluent.controlcenter.ksql.enable=false
+      - confluent.controlcenter.ui.replicator.monitoring.enable=false
+      - confluent.controlcenter.cmf.enable=true
+      - confluent.controlcenter.cmf.url=http://cmf.${NAMESPACE}.svc.cluster.local
+  dependencies:
+    prometheusClient:
+      url: https://controlcenter.${NAMESPACE}.svc.cluster.local:9090
+      tls:
+        enabled: true
+        secretRef: tls-controlcenter
+    alertManagerClient:
+      url: https://controlcenter.${NAMESPACE}.svc.cluster.local:9093
+      tls:
+        enabled: true
+        secretRef: tls-controlcenter
+    kafka:
+      bootstrapEndpoint: kafka.${NAMESPACE}.svc.cluster.local:9071
+      tls:
+        enabled: true
+    schemaRegistry:
+      tls:
+        enabled: true
+        secretRef: tls-kraft
+      url: https://schemaregistry.${NAMESPACE}.svc.cluster.local:8081
+    connect:
+      - name: connect
+        tls:
+          enabled: true
+          secretRef: tls-kraft
+        url: https://connect.${NAMESPACE}.svc.cluster.local:8083
+  services:
+    prometheus:
+      image: confluentinc/cp-enterprise-prometheus:${CONTROL_CENTER_VERSION}
+      tls:
+        secretRef: tls-controlcenter
+      pvc:
+        dataVolumeCapacity: 10Gi
+    alertmanager:
+      image: confluentinc/cp-enterprise-alertmanager:${CONTROL_CENTER_VERSION}
+      tls:
+        secretRef: tls-controlcenter
+  tls:
+    # enabled: true
+    secretRef: tls-controlcenter

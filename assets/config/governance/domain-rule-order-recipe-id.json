@@ -1,0 +1,14 @@
+{
+    "name": "transform_recipe_name_to_valid_recipe_id",
+    "doc": "Transform the name of a recipe to a valid id",
+    "kind": "TRANSFORM",
+    "mode": "WRITE",
+    "type": "CEL_FIELD",
+    "params": {
+        "dlq.topic": "raw.orders.dlq"
+    },
+    "expr": "name == 'recipe_id' ; 'id-recipe-' + value.lowerAscii().split(' ').filter(w, w != '').join('-')",
+    "onSuccess": "NONE",
+    "onFailure": "DLQ",
+    "disabled": false
+}

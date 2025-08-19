@@ -1,0 +1,100 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-enterprise-control-center-next-gen:${CONTROL_CENTER_VERSION}
+    init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
+  authorization:
+    type: rbac
+  dataVolumeCapacity: 10Gi
+  configOverrides:
+    server:
+      - confluent.controlcenter.ksql.enable=false
+      - confluent.controlcenter.ui.replicator.monitoring.enable=false
+      - confluent.controlcenter.cmf.enable=true
+      - confluent.controlcenter.cmf.url=http://cmf.${NAMESPACE}.svc.cluster.local
+  dependencies:
+    mds:
+      ssoProtocol: oidc
+      endpoint: https://kafka.${NAMESPACE}.svc.cluster.local:8090
+      tokenKeyPair:
+        secretRef: mds-token
+      authentication:
+        type: oauth
+        oauth:
+          secretRef: controlcenter-oauth-jaas
+          configuration:
+            tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+            expectedIssuer: https://keycloak.${BASE_DOMAIN}/realms/confluent
+            # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
+            jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
+            subClaimName: client_id
+      tls:
+        enabled: true
+    prometheusClient:
+      url: https://controlcenter.${NAMESPACE}.svc.cluster.local:9090
+      tls:
+        enabled: true
+        secretRef: tls-controlcenter
+    alertManagerClient:
+      url: https://controlcenter.${NAMESPACE}.svc.cluster.local:9093
+      tls:
+        enabled: true
+        secretRef: tls-controlcenter
+    kafka:
+      bootstrapEndpoint: kafka.${NAMESPACE}.svc.cluster.local:9071
+      authentication:
+        type: oauth
+        jaasConfig:
+          secretRef: controlcenter-oauth-jaas
+        oauthSettings:
+          subClaimName: client_id
+          tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+      tls:
+        enabled: true
+    schemaRegistry:
+      authentication:
+        type: oauth
+        oauth:
+          secretRef: controlcenter-oauth-jaas
+          configuration:
+            tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+      tls:
+        enabled: true
+        secretRef: tls-kraft
+      url: https://schemaregistry.${NAMESPACE}.svc.cluster.local:8081
+    connect:
+      - name: connect
+        authentication:
+          type: oauth
+          oauth:
+            secretRef: controlcenter-oauth-jaas
+            configuration:
+              tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+        # authentication:
+        #   type: basic
+        #   basic:
+        #     secretRef: rest-client
+        tls:
+          enabled: true
+          secretRef: tls-kraft
+        url: https://connect.${NAMESPACE}.svc.cluster.local:8083
+  services:
+    prometheus:
+      image: confluentinc/cp-enterprise-prometheus:${CONTROL_CENTER_VERSION}
+      tls:
+        secretRef: tls-controlcenter
+      pvc:
+        dataVolumeCapacity: 10Gi
+    alertmanager:
+      image: confluentinc/cp-enterprise-alertmanager:${CONTROL_CENTER_VERSION}
+      tls:
+        secretRef: tls-controlcenter
+  tls:
+    # enabled: true
+    secretRef: tls-controlcenter

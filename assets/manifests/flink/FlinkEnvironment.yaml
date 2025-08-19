@@ -1,0 +1,20 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: FlinkEnvironment
+metadata:
+  name: ${NAMESPACE}
+  namespace: ${NAMESPACE}
+spec:
+  kubernetesNamespace: ${NAMESPACE}
+  flinkApplicationDefaults:
+    metadata:
+      labels:
+        "confluent-demo/owned-by": "${NAMESPACE}"
+    spec:
+      flinkConfiguration:
+        "metrics.reporter.prom.factory.class": "org.apache.flink.metrics.prometheus.PrometheusReporterFactory"
+        "metrics.reporter.prom.port": "9249-9250"
+        taskmanager.numberOfTaskSlots: "1"
+        rest.profiling.enabled: "true"
+  cmfRestClassRef:
+    name: default
+    namespace: ${NAMESPACE}

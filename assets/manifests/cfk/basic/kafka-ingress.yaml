@@ -1,0 +1,59 @@
+--- # Ingress for kafka Controller
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kafka
+  namespace: ${NAMESPACE}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  tls:
+    - hosts:
+      - "*.${BASE_DOMAIN}"
+  ingressClassName: nginx
+  rules:
+  - host: kafka.${BASE_DOMAIN}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # Cannot be headless
+            name: kafka-bootstrap
+            port:
+              number: 9092
+  - host: kafka-0.${BASE_DOMAIN}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # Cannot be headless
+            name: kafka-0-internal
+            port:
+              number: 9092
+  - host: kafka-1.${BASE_DOMAIN}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # Cannot be headless
+            name: kafka-1-internal
+            port:
+              number: 9092
+  - host: kafka-2.${BASE_DOMAIN}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # Cannot be headless
+            name: kafka-2-internal
+            port:
+              number: 9092

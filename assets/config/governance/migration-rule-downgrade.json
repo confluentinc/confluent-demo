@@ -1,0 +1,8 @@
+{
+    "name": "join_chef_first_and_last_name",
+    "doc": "Consumer is on old major version and needs the chef name joined.",
+    "kind": "TRANSFORM",
+    "type": "JSONATA",
+    "mode": "DOWNGRADE",
+    "expr": "$merge([$sift($, function($v, $k) { $k != 'chef_first_name' and $k != 'chef_last_name' }), { 'chef_name': chef_first_name & ' ' & chef_last_name }])"
+}

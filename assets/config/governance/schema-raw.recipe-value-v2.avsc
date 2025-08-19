@@ -1,0 +1,88 @@
+{
+    "type": "record",
+    "name": "Recipe",
+    "namespace": "io.confluent.wvella.demo.datacontractsv2",
+    "fields": [
+        {
+            "name": "event_id",
+            "type": "string"
+        },
+        {
+            "name": "recipe_id",
+            "type": "string"
+        },
+        {
+            "name": "chef_first_name",
+            "type": "string"
+        },
+        {
+            "name": "chef_last_name",
+            "type": "string"
+        },
+        {
+            "name": "recipe_name",
+            "type": "string"
+        },
+        {
+            "name": "ingredients",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "Ingredient",
+                    "type": "record",
+                    "fields": [
+                        {
+                            "confluent:tags": [
+                                "Sensitive"
+                            ],
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "name": "quantity",
+                            "type": "int"
+                        },
+                        {
+                            "name": "unit",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "cook_time_minutes",
+            "type": "int"
+        },
+        {
+            "name": "spice_level",
+            "type": {
+                "type": "enum",
+                "name": "SpiceLevel",
+                "symbols": [
+                    "mild",
+                    "medium",
+                    "hot"
+                ]
+            }
+        },
+        {
+            "name": "calories",
+            "type": "int"
+        },
+        {
+            "name": "created_at",
+            "type": {
+                "type": "long",
+                "logicalType": "timestamp-millis"
+            }
+        },
+        {
+            "name": "steps",
+            "type": {
+                "type": "array",
+                "items": "string"
+            }
+        }
+    ]
+}

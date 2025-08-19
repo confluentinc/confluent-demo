@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: ${KEYCLOAK_NAMESPACE}
+  labels:
+    app: keycloak
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: http
+      name: http
+    - protocol: TCP
+      port: 8443
+      targetPort: https
+      name: https
+  selector:
+    app: keycloak
+  type: ClusterIP

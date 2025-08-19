@@ -1,0 +1,19 @@
+{
+    "name": "encrypt_sensitive",
+    "doc": "Encrypt all fields which are tagged with sensitive",
+    "kind": "TRANSFORM",
+    "mode": "WRITEREAD",
+    "type": "ENCRYPT",
+    "tags": [
+        "Sensitive"
+    ],
+    "params": {
+        "encrypt.kek.name": "csfle-hashicorp",
+        "encrypt.kms.key.id": "http://vault.vault.svc.cluster.local:8200/transit/keys/csfle",
+        "encrypt.kms.type": "hcvault",
+        "encrypt.dek.expiry.days": 7
+    },
+    "onSuccess": "NONE,NONE",
+    "onFailure": "ERROR,NONE",
+    "disabled": false
+}

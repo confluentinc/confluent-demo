@@ -1,0 +1,128 @@
+{
+  "type": "record",
+  "name": "Order",
+  "namespace": "io.confluent.wvella.demo.datacontractsv1",
+  "fields": [
+    {
+      "name": "order_id",
+      "type": "string"
+    },
+    {
+      "name": "recipe_id",
+      "type": "string"
+    },
+    {
+      "name": "customer_name",
+      "type": "string"
+    },
+    {
+      "confluent:tags": [
+        "PII"
+      ],
+      "name": "customer_address",
+      "type": "string"
+    },
+    {
+      "name": "quantity",
+      "type": "int"
+    },
+    {
+      "name": "special_requests",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "status",
+      "type": {
+        "type": "enum",
+        "name": "OrderStatus",
+        "symbols": [
+          "PLACED",
+          "IN_PROGRESS",
+          "READY",
+          "SERVED",
+          "CANCELLED"
+        ]
+      }
+    },
+    {
+      "name": "created_at",
+      "type": {
+        "type": "long"
+      }
+    },
+    {
+      "name": "estimated_ready_time",
+      "type": [
+        "null",
+        {
+          "type": "long"
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "payment_information",
+      "type": {
+        "type": "record",
+        "name": "PaymentInformation",
+        "fields": [
+          {
+            "name": "payment_method",
+            "type": {
+              "type": "enum",
+              "name": "PaymentMethod",
+              "symbols": [
+                "CASH",
+                "CREDIT_CARD",
+                "DEBIT_CARD",
+                "MOBILE_PAYMENT"
+              ]
+            }
+          },
+          {
+            "confluent:tags": [
+              "PII"
+            ],
+            "name": "ccn",
+            "type": "string"
+          },
+          {
+            "name": "amount",
+            "type": "double"
+          },
+          {
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "name": "payment_status",
+            "type": {
+              "type": "enum",
+              "name": "PaymentStatus",
+              "symbols": [
+                "PENDING",
+                "COMPLETED",
+                "FAILED",
+                "REFUNDED"
+              ]
+            }
+          },
+          {
+            "name": "payment_time",
+            "type": [
+              "null",
+              {
+                "type": "long"
+              }
+            ],
+            "default": null
+          }
+        ]
+      }
+    }
+  ]
+}

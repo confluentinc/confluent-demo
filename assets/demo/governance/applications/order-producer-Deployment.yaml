@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: order-producer
+    demo: governance
+  name: order-producer
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-producer
+  template:
+    metadata:
+      labels:
+        app: order-producer
+    spec:
+      containers:
+        - name: order-producer
+          image: justinrlee/byte-to-eat-order-producer:${ORDER_VERSION}
+          env:
+            - name: VAULT_ADDR
+              value: http://vault.vault.svc.cluster.local:8200
+            - name: VAULT_TOKEN
+              value: root
+          volumeMounts:
+            - name: governance-config
+              mountPath: "/app/producer-orders.properties"
+              subPath: orders-producer.properties
+            - name: client-tls
+              readOnly: true
+              mountPath: /mnt/certs
+      volumes:
+        - name: governance-config
+          configMap:
+            name: governance-config
+        - name: client-tls
+          secret:
+            secretName: tls-client

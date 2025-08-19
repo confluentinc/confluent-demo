@@ -1,0 +1,14 @@
+{
+    "name": "require_more_than_one_ingredient",
+    "doc": "Check the ingredients list has more than 1 ingredient",
+    "kind": "CONDITION",
+    "mode": "WRITE",
+    "type": "CEL",
+    "params": {
+        "dlq.topic": "raw.recipes.dlq"
+    },
+    "expr": "size(message.ingredients) > 1",
+    "onSuccess": "NONE",
+    "onFailure": "DLQ",
+    "disabled": false
+}

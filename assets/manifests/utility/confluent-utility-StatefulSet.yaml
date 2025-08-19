@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: confluent-utility
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    matchLabels:
+      app: confluent-utility # has to match .spec.template.metadata.labels
+  serviceName: "confluent-utility"
+  replicas: 1 # by default is 1
+  # minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: confluent-utility # has to match .spec.selector.matchLabels
+    spec:
+      serviceAccountName: confluent-utility
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: utility
+          image: justinrlee/confluent-utility:latest
+          env:
+            - name: CONFLUENT_CMF_URL
+              value: http://cmf.${NAMESPACE}.svc.cluster.local
+            - name: CONFLUENT_CMF_CERTIFICATE_AUTHORITY_PATH
+              value: /root/certs/ca.crt
+            - name: NAMESPACE
+              value: ${NAMESPACE}
+            - name: CMF_ENVIRONMENT_NAME
+              value: ${NAMESPACE}
+            - name: VAULT_ADDR
+              value: http://vault.vault.svc.cluster.local:8200
+            - name: VAULT_TOKEN
+              value: root
+            - name: BS
+              value: kafka.confluent-demo.svc.cluster.local:9071
+            - name: SR
+              value: https://schemaregistry.confluent-demo.svc.cluster.local:8081
+          volumeMounts:
+            - name: client-tls
+              readOnly: true
+              mountPath: /root/certs
+            - name: client-tls
+              readOnly: true
+              mountPath: /mnt/certs
+            - name: utility-config
+              readOnly: true
+              mountPath: /root/config
+            - name: utility-config
+              readOnly: true
+              mountPath: /root/client.properties
+              subPath: client.properties
+            - name: utility-governance-config
+              readOnly: true
+              mountPath: /root/governance
+      volumes:
+        - name: client-tls
+          secret:
+            secretName: tls-client
+        - name: utility-config
+          configMap:
+            name: utility-config
+        - name: utility-governance-config
+          configMap:
+            name: utility-governance-config
