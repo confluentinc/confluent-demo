@@ -99,7 +99,7 @@ fi
 
 echo "Checking kubectl connectivity"
 if ! kubectl cluster-info &> /dev/null; then
-    echo "kubectl is not working. Please check your kubectl configuration."
+    echo "❌ kubectl is not working. Please check your kubectl configuration."
     exit 1
 fi
 
@@ -109,31 +109,64 @@ ALLOCATED_CPUS=$(kubectl get nodes -ojson | jq '[.items[].status.allocatable.cpu
 echo "Allocated CPUs: $ALLOCATED_CPUS"
 
 if (( ALLOCATED_CPUS < REQUIRED_CPUS )); then
-    echo "Not enough CPUs allocated. Please consider allocating at least ${REQUIRED_CPUS} CPUs."
+    echo "❌ Not enough CPUs allocated. Please consider allocating at least ${REQUIRED_CPUS} CPUs."
 fi
 
 
 echo "Checking if keytool is installed"
 if ! command -v keytool &> /dev/null; then
-    echo "keytool is not installed; try installing a Java runtime (JRE or JDK)"
+    echo "❌ keytool is not installed; try installing a Java runtime (JRE or JDK)"
+    echo "Please install a Java runtime (JRE or JDK) and try again."
+    echo "For example, on macOS, you can install a Java runtime with Homebrew:"
+    echo "brew install java"
+    echo "For other operating systems, please refer to the Java installation instructions."
     exit 1
 fi
 
 echo "Checking if helm is installed"
 if ! command -v helm &> /dev/null; then
-    echo "helm is not installed"
+    echo "❌ helm is not installed"
+    echo "Please install helm and try again."
+    echo "For example, on macOS, you can install helm with Homebrew:"
+    echo "brew install helm"
+    echo "For other operating systems, please refer to the helm installation instructions."
     exit 1
 fi
 
 echo "Check if openssl is installed"
 if ! command -v openssl &> /dev/null; then
-    echo "openssl is not installed"
+    echo "❌ openssl is not installed"
+    echo "Please install openssl and try again."
+    echo "For example, on macOS, you can install openssl with Homebrew:"
+    echo "brew install openssl"
+    echo "For other operating systems, please refer to the openssl installation instructions."
     exit 1
 fi
 
 echo "Check if cfssl is installed"
 if ! command -v cfssl &> /dev/null; then
-    echo "cfssl is not installed"
+    echo "❌ cfssl is not installed"
+    echo "Please install cfssl and try again."
+    echo "For example, on macOS, you can install cfssl with Homebrew:"
+    echo "brew install cfssl"
+    echo "For other operating systems, please refer to the cfssl installation instructions."
+    exit 1
+fi
+
+echo "Checking if jq is installed"
+if ! command -v jq &> /dev/null; then
+    echo "❌ jq is not installed"
+    echo "Please install jq and try again."
+    echo "For example, on macOS, you can install jq with Homebrew:"
+    echo "brew install jq"
+    echo "For other operating systems, please refer to the jq installation instructions."
+    exit 1
+fi
+
+echo "Testing connectivity to GitHub"
+if ! curl -s https://github.com &> /dev/null; then
+    echo "❌ Unable to connect to GitHub. Please check your internet connection."
+    echo "Please check your internet connection and try again."
     exit 1
 fi
 
@@ -157,7 +190,7 @@ if [[ "$BASE_IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
     echo "Setting BASE_DOMAIN in ./.env to ${BASE_DOMAIN}"
     sed -i.bak "s|^export BASE_DOMAIN=.*$|export BASE_DOMAIN=${BASE_DOMAIN}|g" ./.env
 else
-    echo "${BASE_IP} is not a valid IP"
+    echo "❌ ${BASE_IP} is not a valid IP"
 fi
 
 echo ""
@@ -174,6 +207,8 @@ echo "✅ keytool is installed"
 echo "✅ helm is installed"
 echo "✅ openssl is installed"
 echo "✅ cfssl is installed"
+echo "✅ jq is installed"
+echo "✅ GitHub is accessible"
 echo "✅ BASE_DOMAIN is set to ${BASE_DOMAIN}"
 echo ""
 echo "Confluent Control Center will be accessible at https://controlcenter.${BASE_DOMAIN}"
