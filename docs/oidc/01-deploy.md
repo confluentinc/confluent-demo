@@ -5,7 +5,7 @@
 This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Ingress NGINX controller.
 
 ```bash
-./check_prereqs.sh
+./precheck.sh
 ```
 
 ## Installation

@@ -6,17 +6,12 @@ Migrated from [justinrlee/confluent-demo](github.com/justinrlee/confluent-demo)
 
 This runs a small Confluent Platform cluster on Kubernetes, intended for use on a local workstation (Docker Desktop Kubernetes or Orbstack)
 
-There are two configurations of this demo:
+There is currently one version of this demo: 'basic' mode, which has TLS but no authentication or authorization.
 
-1. 'basic' mode (functionally complete) - has TLS but no authN or authZ
-1. 'oidc' mode (work in progress) - uses OIDC/OAuth2.0 (Keycloak) for authentication, is maybe 40% functionally complete
+The installation script will install the following:
 
-## Architecture
-
-This repo will install the following:
-
-* Ingress NGINX Controller (should probably be replaced with Gateway API)
-* Keycloak pod (in oidc mode)
+* Ingress NGINX Controller
+* Keycloak pod
 * Confluent for Kubernetes (CFK)
 * CFK CRs:
     * 1x KRaft
@@ -32,13 +27,7 @@ This repo will install the following:
 
 ## Start Here
 
-Go to one of these two docs to install everything
-
-Basic Mode
 * [Basic Mode Installation](./docs/basic/01-deploy.md)
 * [Basic Mode CSFLE Demo](./docs/basic/02-csfle.md)
 * [Basic Mode Governance Demo](./docs/basic/02-governance.md)
 * [Basic Mode CP Flink SQL Demo](./docs/basic/03-flink-sql-demo.md)
-
-OIDC Mode - WIP
-* [OIDC Mode Installation](./docs/oidc/01-deploy.md)
