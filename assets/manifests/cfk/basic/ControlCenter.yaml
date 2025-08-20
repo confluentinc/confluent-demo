@@ -12,7 +12,7 @@ spec:
   dataVolumeCapacity: 10Gi
   configOverrides:
     server:
-      - confluent.controlcenter.ksql.enable=false
+      # - confluent.controlcenter.ksql.enable=false
       - confluent.controlcenter.ui.replicator.monitoring.enable=false
       - confluent.controlcenter.cmf.enable=true
       - confluent.controlcenter.cmf.url=http://cmf.${NAMESPACE}.svc.cluster.local
@@ -42,12 +42,12 @@ spec:
           enabled: true
           secretRef: tls-kraft
         url: https://connect.${NAMESPACE}.svc.cluster.local:8083
-    # ksqldb:
-    #   - name: ksqldb
-    #     tls:
-    #       enabled: true
-    #       secretRef: tls-kraft
-    #     url: https://ksqldb.${NAMESPACE}.svc.cluster.local:8088
+    ksqldb:
+      - name: ksqldb
+        tls:
+          enabled: true
+          secretRef: tls-kraft
+        url: https://ksqldb.${NAMESPACE}.svc.cluster.local:8088
   services:
     prometheus:
       image: confluentinc/cp-enterprise-prometheus:${CONTROL_CENTER_VERSION}

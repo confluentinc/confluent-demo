@@ -13,7 +13,7 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 (or use the helper script to get into the utility pod):
 
 ```bash
-./tools/shell.sh
+./shell.sh
 ```
 
 The `confluent` CLI uses these environment variables by default (these are set automatically):
