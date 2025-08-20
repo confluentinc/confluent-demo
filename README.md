@@ -8,6 +8,8 @@ This runs a small Confluent Platform cluster on Kubernetes, intended for use on 
 
 There is currently one version of this demo: 'basic' mode, which has TLS but no authentication or authorization.
 
+(_`oidc`_ mode doesn't currently work)
+
 The installation script will install the following:
 
 * Ingress NGINX Controller

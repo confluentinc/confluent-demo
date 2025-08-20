@@ -23,7 +23,7 @@ CONFLUENT_CMF_CERTIFICATE_AUTHORITY_PATH=/root/certs/ca.crt
 CONFLUENT_CMF_URL=http://cmf.confluent-demo.svc.cluster.local
 ```
 
-Also, there are number of pre-seeded config files in `./config/` (`/root/config/`)
+Also, there are a number of pre-seeded config files in `./config/` (`/root/config/`)
 * `client.properties` - Used for connectivity to Kafka (and Schema Registry)
 * `secret-kafka.json` - CMF Secret, used to configure clients to communicate with Kafka
 * `secret-schemaregistry.json` - CMF Secret, used to configure clients to communicate with Schema Registry

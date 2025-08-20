@@ -1,6 +1,4 @@
-## CSFLE Demo (Basic Mode)
-
-**This is currently only a very simple CSFLE demo**
+## Data Governance Demo (Basic Mode)
 
 After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md)), you can run the Data Governance demo (currently only includes CSFLE)
 
@@ -27,7 +25,7 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 
 *Run from within the utility pod*
 
-Verify the csfle Vault key was properly created (and auth works, etc.)
+Verify the "csfle" Vault key was properly created (and auth works, etc.)
 
 ```bash
 vault kv list transit/keys

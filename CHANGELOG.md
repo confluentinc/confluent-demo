@@ -1,10 +1,8 @@
 # Change Log
 
-## v0.0.0 - YYYY-MM-DD
+## v0.0.2 - 2025-08-20
 
-### Features and Fixes
-
-- Initial release
+Add ksqlDB pipeline (including ElasticSearch and Kibana)
 
 ## v0.0.1 - 2025-08-19
 

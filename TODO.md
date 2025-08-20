@@ -1,4 +1,3 @@
-
 ## TODO (Repo-level)
 
 * Look at Kubernetes Gateway API
@@ -36,8 +35,8 @@
 ## TODO Basic
 
 * Add real Flink job
-* ~~do the rest of data governance~~
 * ... other demo things?
+* ~~do the rest of data governance~~
 * ~~support remote installation~~
 
 ## TODO (OIDC Infra)
@@ -50,7 +49,8 @@
 * ~~rename 'cmf-rbac' to 'cmf-oidc'~~
 * Support remote installation
 
-TODO Demo
+## TODO Demo
+* Replace ksqlDB job with Flink job
 * Flink compute pool, catalog, statements
 * Add connectors (and plugins) - shoe store
 * Add real Flink job
