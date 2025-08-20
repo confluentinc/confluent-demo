@@ -15,7 +15,7 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 (or use the helper script to get into the utility pod):
 
 ```bash
-./tools/shell.sh
+./shell.sh
 ```
 
 *Run from within the utility pod*
@@ -70,7 +70,7 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 (or use the helper script to get into the utility pod):
 
 ```bash
-./tools/shell.sh
+./shell.sh
 ```
 
 In the first utility pod:

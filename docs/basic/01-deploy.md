@@ -74,7 +74,7 @@ Open up the Kibana UI: https://kibana.127-0-0-1.nip.io/
 Exec into the confluent-utility-0 container:
 
 ```bash
-./tools/shell.sh
+./shell.sh
 ```
 
 (This is a wrapper on this command: `kubectl -n confluent-demo exec -it confluent-utility-0 -- bash`)

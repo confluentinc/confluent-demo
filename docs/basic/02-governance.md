@@ -5,7 +5,7 @@ After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md
 From the repo root directory, install the governance add-on resources:
 
 ```bash
-./deploy/40_governance_infra.sh
+./scripts/add/40_governance_infra.sh
 ```
 
 
@@ -20,7 +20,7 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 (or use the helper script to get into the utility pod):
 
 ```bash
-./tools/shell.sh
+./shell.sh
 ```
 
 *Run from within the utility pod*
@@ -94,14 +94,14 @@ Once all the rules are in place, deploy the initial applications (from the proje
 
 ```bash
 # Run in the project directory
-./deploy/42_governance_deploy_v1_apps.sh
+./scripts/add/42_governance_deploy_v1_apps.sh
 ```
 
 Deploy a job with an invalid recipe (not enough ingredients), and observe it landing in the recipe DLQ.
 
 ```bash
 # Run in the project directory
-./deploy/43_governance_invalid_recipe.sh
+./scripts/add/43_governance_invalid_recipe.sh
 ```
 
 _(Run in the utility container)_
@@ -160,7 +160,7 @@ Deploy v2 of recipe applications
 
 ```bash
 # Run in the project directory
-./deploy/44_governance_deploy_v2_apps.sh
+./scripts/add/44_governance_deploy_v2_apps.sh
 ```
 
 Architecture:
