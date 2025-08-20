@@ -23,12 +23,12 @@ wait_for_connector wikipedia-sse-source
 
 # Have to deploy ES mappings before the sink connector starts sending data
 
-echo "Deploying ElasticSearch mapping for wikipedia_count_gt"
+echo "Deploying Elasticsearch mapping for wikipedia_count_gt"
 kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- bash -c '
     curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping_count.json "http://elasticsearch:9200/_template/wikipedia_count_gt?pretty"
 '
 
-echo "Deploying ElasticSearch mapping for wikipediabot"
+echo "Deploying Elasticsearch mapping for wikipediabot"
 kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- bash -c '
     curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping_bot.json "http://elasticsearch:9200/_template/wikipediabot?pretty"
 '
