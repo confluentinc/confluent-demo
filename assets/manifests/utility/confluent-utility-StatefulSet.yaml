@@ -50,11 +50,18 @@ spec:
               mountPath: /root/config
             - name: utility-config
               readOnly: true
+              mountPath: /root/tls.properties
+              subPath: tls.properties
+            - name: utility-config
+              readOnly: true
               mountPath: /root/client.properties
               subPath: client.properties
             - name: utility-governance-config
               readOnly: true
               mountPath: /root/governance
+            - name: utility-pipeline-config
+              readOnly: true
+              mountPath: /root/pipeline
       volumes:
         - name: client-tls
           secret:
@@ -65,3 +72,6 @@ spec:
         - name: utility-governance-config
           configMap:
             name: utility-governance-config
+        - name: utility-pipeline-config
+          configMap:
+            name: utility-pipeline-config

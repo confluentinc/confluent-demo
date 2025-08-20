@@ -12,4 +12,5 @@ helm uninstall confluent-for-kubernetes \
 sleep 2
 
 kubectl delete namespace ${NAMESPACE} \
+    --ignore-not-found=true \
         || true

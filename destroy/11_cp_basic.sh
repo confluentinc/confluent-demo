@@ -1,43 +1,50 @@
 #!/bin/bash
 
 set -e
-set -x
+# set -x
 
 . ./.env
 . ./functions.sh
 
 # From manifests/basic
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     KafkaTopic/shoe-customers \
     KafkaTopic/shoe-products \
     KafkaTopic/shoe-orders \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     controlcenter/controlcenter \
     ingress/controlcenter \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     connect/connect \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     schemaregistry/schemaregistry \
     ingress/schemaregistry \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     kafkarestclass/default \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     kafka/kafka \
     service/kafka-bootstrap \
     ingress/kafka \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     kraftcontroller/kraft \
         || true
 

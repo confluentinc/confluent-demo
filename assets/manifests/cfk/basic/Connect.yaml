@@ -19,10 +19,13 @@ spec:
             version: "0.6.6"
           - name: kafka-connect-elasticsearch
             owner: confluentinc
-            version: "15.0.1"
+            version: "11.0.0"
           - name: kafka-connect-sse
             owner: cjmatta
             version: "1.0"
+          - name: kafka-connect-json-schema
+            owner: jcustenborder
+            version: "0.2.5"
   tls:
     secretRef: tls-connect
   keyConverterType: io.confluent.connect.avro.AvroConverter

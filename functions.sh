@@ -68,6 +68,19 @@ wait_for_c3 () {
     done
 }
 
+wait_for_connector () {
+    set +x
+    while [[ $(kubectl -n ${NAMESPACE} get connector ${1} -ojsonpath='{.status.connectorState}' | grep "RUNNING" | wc -l) -lt 1 ]];
+    do
+        clear
+        echo "Waiting 5s for Connector ${1} to be ready..."
+        echo "Connector ${1} state:"
+        kubectl -n ${NAMESPACE} get connector ${1}
+        echo ""
+        sleep 5
+    done
+}
+
 restart_if_not_ready () {
     if [[ $(kubectl -n ${NAMESPACE} get pod ${1} | grep "1/1" | grep "Running" | wc -l ) -lt 1 ]];
     then

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set -x
+# set -x
 
 . ./.env
 . ./functions.sh
@@ -11,15 +11,22 @@ helm -n ${NAMESPACE} uninstall cmf
 sleep 2
 
 kubectl -n ${NAMESPACE} delete \
-    ClusterRole/${CMF_SERVICE_ACCOUNT} \
-    ClusterRoleBinding/${CMF_SERVICE_ACCOUNT} \
+    --ignore-not-found=true \
     CMFRestClass/default \
     Role/${CMF_SERVICE_ACCOUNT} \
     RoleBinding/${CMF_SERVICE_ACCOUNT} \
     ServiceAccount/${CMF_SERVICE_ACCOUNT} \
         || true
 
+# These resources are not namespaced
+kubectl delete \
+    --ignore-not-found=true \
+    ClusterRole/${CMF_SERVICE_ACCOUNT} \
+    ClusterRoleBinding/${CMF_SERVICE_ACCOUNT} \
+        || true
+
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     Secret/tls-cmf \
     Secret/cmf-encryption-key \
         || true

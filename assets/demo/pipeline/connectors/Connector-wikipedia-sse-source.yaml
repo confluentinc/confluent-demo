@@ -1,0 +1,28 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: wikipedia-sse-source
+  namespace: ${NAMESPACE}
+spec:
+  class: "com.github.cjmatta.kafka.connect.sse.ServerSentEventsSourceConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    name: wikipedia-sse-source
+    kafka.topic: wikipedia.parsed
+    sse.uri: "https://stream.wikimedia.org/v2/stream/recentchange"
+    topic: wikipedia.parsed
+    # transforms: extractData
+    transforms: extractData, parseJSON
+    # This is how you escape a $ in envsubst; ${DNE} is a placeholder for a non-existent variable
+    transforms.extractData.type: "org.apache.kafka.connect.transforms.ExtractField$${DNE}Value"
+    transforms.extractData.field: data
+    transforms.parseJSON.type: "com.github.jcustenborder.kafka.connect.json.FromJson$${DNE}Value"
+    transforms.parseJSON.json.exclude.locations: "#/properties/log_params,#/properties/$${DNE}schema,#/$${DNE}schema"
+    transforms.parseJSON.json.schema.location: "Url"
+    transforms.parseJSON.json.schema.url: "https://raw.githubusercontent.com/wikimedia/mediawiki-event-schemas/master/jsonschema/mediawiki/recentchange/1.0.0.json"
+    transforms.parseJSON.json.schema.validation.enabled: "false"
+
+    # Serializer configuration should be inherited from the connect worker

@@ -8,6 +8,7 @@
 * Refactor: split out deploys from waits
 * Switch CMF cleanup to API calls instead of CLI
 * Improve Documentation
+* Suppress error messages
 
 * ~~Data governance stuff~~
 * ~~Refactor: move cfk secrets from infra to cfk~~

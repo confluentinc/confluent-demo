@@ -1,33 +1,38 @@
 #!/bin/bash
 
 set -e
-set -x
+# set -x
 
 . ./.env
 . ./functions.sh
 
 # From manifests
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     KafkaTopic/shoe-customers \
     KafkaTopic/shoe-products \
     KafkaTopic/shoe-orders \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     controlcenter/controlcenter \
     ingress/controlcenter \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     connect/connect \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     schemaregistry/schemaregistry \
     ingress/schemaregistry \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     ConfluentRolebinding/manual-admin \
     ConfluentRolebinding/manual-admin-connect \
     ConfluentRolebinding/manual-admin-sr \
@@ -38,23 +43,28 @@ kubectl -n ${NAMESPACE} delete \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     kafkarestclass/default \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     kafka/kafka \
     service/kafka-bootstrap \
     ingress/kafka \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     kraftcontroller/kraft
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     statefulset/confluent-utility \
         || true
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     secret \
         oauth-jaas \
         sso-oauth-jaas \

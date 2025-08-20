@@ -3,6 +3,7 @@
 
 # Reverse order of install.sh
 # Governance demo is a special case because it is created manually, so it is not in the install script
+./destroy/50_pipeline_demo.sh
 ./destroy/40_governance_demo.sh
 
 ./destroy/30_cmf_children.sh

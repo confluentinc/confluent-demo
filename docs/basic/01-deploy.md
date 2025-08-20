@@ -36,17 +36,25 @@ It will also validate some of the prerequisites.
 ./install.sh
 ```
 
-Monitor pods as they come up (need Control Center to have 3/3 running containers); this may take some time to start.
-
-```bash
-kubectl -n confluent-demo get pods -w
-```
+The installation script will monitor the deployment process.
 
 (You can also monitor Control Center logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
 
 Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/
 
 ... Poke around?
+
+To add the cp-demo components:
+* ksqlDB
+* ElasticSearch
+* Kibana
+* Wikipedia > SSE > ksqlDB > Elastic pipeline
+
+Run this:
+
+```bash
+./scripts/deploy_demo.sh
+```
 
 #### CLI Login
 

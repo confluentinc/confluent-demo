@@ -10,4 +10,5 @@ helm uninstall ingress-nginx \
     --namespace ${INGRESS_NGINX_NAMESPACE}
 
 kubectl delete namespace ${INGRESS_NGINX_NAMESPACE} \
+    --ignore-not-found=true \
         || true
