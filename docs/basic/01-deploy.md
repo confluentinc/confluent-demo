@@ -2,12 +2,14 @@
 
 ## Install prerequisites
 
-Provision a local Kubernetes cluster. Some options for this include:
+This demo runs entirely in a Kubernetes cluster. Some options for running this locally on a workstation include:
 
-* Docker Desktop (with built-in Kubernetes)
-* Orbstack
+* Docker Desktop (with built-in Kubernetes) - see the [Docker Desktop Documentation](https://docs.docker.com/desktop/features/kubernetes/)
+* Orbstack - see the [Orbstack Documentation](https://orbstack.dev/)
 
-In addition to access to a Kubernetes cluster, your workstation needs the following tools installed ([brew](https://brew.sh/) is a common way to install these on macOS):
+In addition to access to a Kubernetes cluster, your workstation several CLI tools installed. [Brew](https://brew.sh/) is a common way to install these on macOS.
+
+Requirements:
 
 * kubectl (configured with a Kubernetes context to access a Kubernetes cluster)
 * keytool (comes with most Java runtimes)
@@ -16,7 +18,16 @@ In addition to access to a Kubernetes cluster, your workstation needs the follow
 * cfssl
 * jq
 
-Additionally, you need access to github.com (i.e. github.com must not be blocked)
+Additionally, you need access to github.com (i.e. https://github.com must not be blocked)
+
+## Clone the git repo
+
+In some directory on your workstation, clone the git repo, and then change into the directory:
+
+```bash
+git clone https://github.com/confluentinc/confluent-demo
+cd confluent-demo
+```
 
 ## Run pre-check
 
