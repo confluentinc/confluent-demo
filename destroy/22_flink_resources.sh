@@ -1,12 +1,13 @@
 #!/bin/bash
 
 set -e
-set -x
+# set -x
 
 . ./.env
 . ./functions.sh
 
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     FlinkApplication/state-machine-example \
     FlinkEnvironment/${NAMESPACE} \
         || true

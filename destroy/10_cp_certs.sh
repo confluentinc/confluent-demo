@@ -8,6 +8,7 @@
 
 # Basic infra
 kubectl -n ${NAMESPACE} delete \
+    --ignore-not-found=true \
     secret \
         tls-kraft \
         tls-kafka \

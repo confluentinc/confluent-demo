@@ -12,7 +12,11 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
     sh -c \
         'confluent flink --environment ${CMF_ENVIRONMENT_NAME} statement list -ojson \
             | jq -r ".[].metadata.name" \
-            | xargs confluent flink --environment ${CMF_ENVIRONMENT_NAME} statement delete --force'
+            | while read STATEMENT;
+                do
+                echo "Deleting Flink SQL Statement ${STATEMENT}";
+                confluent flink --environment ${CMF_ENVIRONMENT_NAME} statement delete --force ${STATEMENT};
+            done'
 
 echo "Getting and deleting Flink SQL Catalogs"
 # Catalogs are not environment-scoped
@@ -20,7 +24,11 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
     sh -c \
         'confluent flink catalog list -ojson \
             | jq -r ".[].metadata.name" \
-            | xargs confluent flink catalog delete --force'
+            | while read CATALOG;
+                do
+                echo "Deleting Flink Catalog ${CATALOG}";
+                confluent flink catalog delete --force ${CATALOG};
+            done'
 
 echo "Getting and deleting Flink Secret Mappings"
 # Delete all secret mappings
@@ -52,4 +60,8 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
     sh -c \
         'confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool list -ojson \
             | jq -r ".[].metadata.name" \
-            | xargs confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool delete --force'
+            | while read COMPUTE_POOL;
+                do
+                echo "Deleting Flink Compute Pool ${COMPUTE_POOL}";
+                confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool delete --force ${COMPUTE_POOL};
+            done'

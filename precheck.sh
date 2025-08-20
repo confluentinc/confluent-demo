@@ -133,7 +133,7 @@ if ! command -v helm &> /dev/null; then
     exit 1
 fi
 
-echo "Check if openssl is installed"
+echo "Checking if openssl is installed"
 if ! command -v openssl &> /dev/null; then
     echo "❌ openssl is not installed"
     echo "Please install openssl and try again."
@@ -143,7 +143,7 @@ if ! command -v openssl &> /dev/null; then
     exit 1
 fi
 
-echo "Check if cfssl is installed"
+echo "Checking if cfssl is installed"
 if ! command -v cfssl &> /dev/null; then
     echo "❌ cfssl is not installed"
     echo "Please install cfssl and try again."

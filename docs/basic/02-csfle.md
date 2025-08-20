@@ -95,7 +95,7 @@ Enter one-line messages formatted like this (note that the console producer is s
 {"id": "userid1", "name": "firstname lastname", "birthday": "01/01/2020"}
 ```
 
-In another utility pod, start a genric consumer:
+In another utility pod, start a generic consumer:
 
 ```bash
 kafka-console-consumer \

@@ -68,6 +68,19 @@ wait_for_c3 () {
     done
 }
 
+wait_for_connector () {
+    set +x
+    while [[ $(kubectl -n ${NAMESPACE} get connector ${1} -ojsonpath='{.status.connectorState}' | grep "RUNNING" | wc -l) -lt 1 ]];
+    do
+        clear
+        echo "Waiting 5s for Connector ${1} to be ready..."
+        echo "Connector ${1} state:"
+        kubectl -n ${NAMESPACE} get connector ${1}
+        echo ""
+        sleep 5
+    done
+}
+
 restart_if_not_ready () {
     if [[ $(kubectl -n ${NAMESPACE} get pod ${1} | grep "1/1" | grep "Running" | wc -l ) -lt 1 ]];
     then
@@ -91,7 +104,7 @@ check_for_readiness () {
     restart_if_not_ready controlcenter-0
     wait_for_pod app=schemaregistry
     # wait_for schemaregistry 1
-    # Connect takes forever to start, and is not actually necessary for the C3 UI to come up
+    # Connect takes forever to start, and is not actually necessary for the Control Center UI to come up
     # wait_for connect 1
     wait_for_c3
     clear

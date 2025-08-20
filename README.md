@@ -1,12 +1,14 @@
 # confluent-demo
 
-Migrated from [justinrlee/confluent-demo](github.com/justinrlee/confluent-demo)
+Migrated from [justinrlee/confluent-demo](https://github.com/justinrlee/confluent-demo)
 
 ## Architecture
 
 This runs a small Confluent Platform cluster on Kubernetes, intended for use on a local workstation (Docker Desktop Kubernetes or Orbstack)
 
 There is currently one version of this demo: 'basic' mode, which has TLS but no authentication or authorization.
+
+(_`oidc`_ mode doesn't currently work)
 
 The installation script will install the following:
 

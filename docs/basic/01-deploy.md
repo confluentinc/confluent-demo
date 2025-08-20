@@ -7,9 +7,7 @@ Provision a local Kubernetes cluster. Some options for this include:
 * Docker Desktop (with built-in Kubernetes)
 * Orbstack
 
-## Install prereqs
-
-You need the following tools installed ([brew](https://brew.sh/) is a common way to install these on macOS):
+In addition to access to a Kubernetes cluster, your workstation needs the following tools installed ([brew](https://brew.sh/) is a common way to install these on macOS):
 
 * kubectl (configured with a Kubernetes context to access a Kubernetes cluster)
 * keytool (comes with most Java runtimes)
@@ -20,9 +18,11 @@ You need the following tools installed ([brew](https://brew.sh/) is a common way
 
 Additionally, you need access to github.com (i.e. github.com must not be blocked)
 
-## Check Prerequisites
+## Run pre-check
 
 This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Ingress NGINX controller.
+
+It will also validate some of the prerequisites.
 
 (If you're installing to a local Kubernetes cluster, e.g. Docker Desktop or OrbStack, you can use the default `127.0.0.1`)
 
@@ -36,17 +36,27 @@ This will prompt for the Kubernetes context to use, and optionally allow you to 
 ./install.sh
 ```
 
-Monitor pods as they come up (need Control Center to have 3/3 running containers); this may take some time to start.
+The installation script will monitor the deployment process.
 
-```bash
-kubectl -n confluent-demo get pods -w
-```
+(You can also monitor Control Center logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
 
-(You can also monitor C3 logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
-
-Open up the control center UI: https://confluent.127-0-0-1.nip.io/
+Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/
 
 ... Poke around?
+
+To add the cp-demo components:
+* ksqlDB
+* Elasticsearch
+* Kibana
+* Wikipedia > SSE > ksqlDB > Elastic pipeline
+
+Run this:
+
+```bash
+./scripts/deploy_demo.sh
+```
+
+Open up the Kibana UI: https://kibana.127-0-0-1.nip.io/
 
 #### CLI Login
 
@@ -67,6 +77,12 @@ confluent flink environment list
 
 ### Next Steps
 
-* [Data Governance (CSFLE) Demo](./02-csfle.md)
+* [CSFLE Demo](./02-csfle.md)
+* [Data Governance Demo](./02-governance.md)
 * [CP Flink SQL Demo](./03-flink-sql-demo.md)
-* [Cleanup](./99-cleanup.md)
+
+### Cleanup
+
+```bash
+./uninstall.sh
+```

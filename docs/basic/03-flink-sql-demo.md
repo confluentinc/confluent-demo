@@ -23,14 +23,14 @@ CONFLUENT_CMF_CERTIFICATE_AUTHORITY_PATH=/root/certs/ca.crt
 CONFLUENT_CMF_URL=http://cmf.confluent-demo.svc.cluster.local
 ```
 
-Also, there are number of pre-seeded config files in `./config/` (`/root/config/`)
+Also, there are a number of pre-seeded config files in `./config/` (`/root/config/`)
 * `client.properties` - Used for connectivity to Kafka (and Schema Registry)
-* `secret-kafka.json` - CMF Secret, used to configure clients to communciate with Kafka
-* `secret-schemaregistry.json` - CMF Secret, used to configure clients to communciate with Schema Registry
+* `secret-kafka.json` - CMF Secret, used to configure clients to communicate with Kafka
+* `secret-schemaregistry.json` - CMF Secret, used to configure clients to communicate with Schema Registry
 * `esm-kafka.json` - CMF Environment Secret Mapping, associates kafka secret with a given CMF Environment
 * `esm-schemaregistry.json` - CMF Environment Secret Mapping, associates SR secret with a given CMF Environment
-* `pool-with-secrets.json` - CMF Compute Pool (information )
-* `catalog.json` - CMF Catalog (contains information about Kafka cluster and SR cluster to be used by Flink SQL
+* `pool-with-secrets.json` - CMF Compute Pool (template used to provision Flink jobs)
+* `catalog.json` - CMF Catalog (contains information about Kafka cluster and SR cluster to be used by Flink SQL)
 
 # Kafka connectivity test
 
@@ -158,11 +158,11 @@ FROM TABLE(
    HOP(TABLE `shoe-orders`, DESCRIPTOR(`$rowtime`), INTERVAL '5' MINUTES, INTERVAL '10' MINUTES))
 GROUP BY `window_start`, `window_end`;
 
-SELECT 
+SELECT
   `order_id`,
   `shoe-orders`.`$rowtime`,
   `first_name`,
-  `last_name` 
+  `last_name`
 FROM `shoe-orders`
   INNER JOIN `shoe-customers`
   ON `shoe-orders`.`customer_id` = `shoe-customers`.`id`;

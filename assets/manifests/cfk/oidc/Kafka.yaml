@@ -81,7 +81,7 @@ spec:
             # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
             jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
 
-        #sso config is required for enabling SSO for control center
+        #sso config is required for enabling SSO for Control Center
         sso:
           enabled: true
           clientCredentials:

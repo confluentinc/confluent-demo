@@ -1,4 +1,3 @@
-
 ## TODO (Repo-level)
 
 * Look at Kubernetes Gateway API
@@ -8,6 +7,7 @@
 * Refactor: split out deploys from waits
 * Switch CMF cleanup to API calls instead of CLI
 * Improve Documentation
+* Suppress error messages
 
 * ~~Data governance stuff~~
 * ~~Refactor: move cfk secrets from infra to cfk~~
@@ -32,15 +32,14 @@
 * ~~support orbstack~~
 * ~~verify we remove cfk helm chart~~
 
-
 ## TODO Basic
 
 * Add real Flink job
-* ~~do the rest of data governance~~
 * ... other demo things?
+* ~~do the rest of data governance~~
 * ~~support remote installation~~
 
-TODO (OIDC Infra)
+## TODO (OIDC Infra)
 
 * Support custom base domain
 * Fix OIDC for KafkaRestClass for KafkaTopics
@@ -50,7 +49,8 @@ TODO (OIDC Infra)
 * ~~rename 'cmf-rbac' to 'cmf-oidc'~~
 * Support remote installation
 
-TODO Demo
+## TODO Demo
+* Replace ksqlDB job with Flink job
 * Flink compute pool, catalog, statements
 * Add connectors (and plugins) - shoe store
 * Add real Flink job
