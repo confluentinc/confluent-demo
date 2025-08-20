@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -e
+set -e
 # set -x
 
 . ./.env
@@ -10,5 +10,4 @@ helm uninstall ingress-nginx \
     --namespace ${INGRESS_NGINX_NAMESPACE}
 
 kubectl delete namespace ${INGRESS_NGINX_NAMESPACE} \
-    --ignore-not-found=true \
-        || true
+    --ignore-not-found=true

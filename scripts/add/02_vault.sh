@@ -18,7 +18,6 @@ kubectl create namespace ${VAULT_NAMESPACE} --dry-run=client -oyaml | kubectl ap
 # Deploy Vault
 # dev mode results in a root token of `root`, and is unsealed by default
 # The unseal key shows up the vault pod logs
-# TODO: Figure out if we need to save the unseal key (when does vault get automatically sealed?)
 # export VAULT_ADDR=http://vault.vault.svc.cluster.local:8200
 helm upgrade --install vault \
     hashicorp/vault \

@@ -1,25 +1,23 @@
 #!/bin/bash
 
+set -e
+# set -x
+
 . ./.env
 . ./scripts/functions.sh
-
-# TODO: Refactor
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     connector/elasticsearch-sink \
-    connector/wikipedia-sse-source \
-    || true
+    connector/wikipedia-sse-source
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    KafkaTopic/WIKIPEDIABOT \
-    || true
+    KafkaTopic/WIKIPEDIABOT
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    ksqldb/ksqldb \
-    || true
+    ksqldb/ksqldb
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
@@ -28,11 +26,9 @@ kubectl -n ${NAMESPACE} delete \
     Service/elasticsearch \
     Service/kibana \
     Ingress/elasticsearch \
-    Ingress/kibana \
-    || true
+    Ingress/kibana
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     secret \
-        tls-ksqldb \
-    || true
+        tls-ksqldb

@@ -13,7 +13,6 @@ set -x
 
 ### Other
 # CRDs <- not cleaned up
-# Adds repos for helm <- todo custom repo name
 
 # Install Ingress Nginx and Confluent Helm Repos
 helm repo add confluentinc https://packages.confluent.io/helm --force-update

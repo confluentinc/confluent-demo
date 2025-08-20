@@ -11,25 +11,21 @@ kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     KafkaTopic/shoe-customers \
     KafkaTopic/shoe-products \
-    KafkaTopic/shoe-orders \
-        || true
+    KafkaTopic/shoe-orders
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     controlcenter/controlcenter \
-    ingress/controlcenter \
-        || true
+    ingress/controlcenter
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    connect/connect \
-        || true
+    connect/connect
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     schemaregistry/schemaregistry \
-    ingress/schemaregistry \
-        || true
+    ingress/schemaregistry
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
@@ -39,20 +35,17 @@ kubectl -n ${NAMESPACE} delete \
     ConfluentRolebinding/manual-controlcenter \
     ConfluentRolebinding/manual-controlcenter-connect \
     ConfluentRolebinding/manual-controlcenter-sr \
-    ConfluentRoleBinding/manual-connect-sr \
-        || true
+    ConfluentRoleBinding/manual-connect-sr
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    kafkarestclass/default \
-        || true
+    KafkaRestClass/default
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     kafka/kafka \
     service/kafka-bootstrap \
-    ingress/kafka \
-        || true
+    ingress/kafka
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
@@ -60,8 +53,7 @@ kubectl -n ${NAMESPACE} delete \
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    statefulset/confluent-utility \
-        || true
+    statefulset/confluent-utility
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
@@ -72,8 +64,7 @@ kubectl -n ${NAMESPACE} delete \
         schemaregistry-oauth-jaas \
         connect-oauth-jaas \
         controlcenter-oauth-jaas \
-        cmf-oauth-jaas \
-        || true
+        cmf-oauth-jaas
 
 # gt 2: ignore header lines and CFK operator pod
 while [[ $(kubectl -n ${NAMESPACE} get pods -l confluent-platform=true | wc -l ) -gt 2 ]];

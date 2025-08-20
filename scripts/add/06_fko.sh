@@ -9,8 +9,6 @@ set -x
 #### Helm
 # FKO
 
-# TODO: Update CRDs?
-
 # FKO: disable cert-manager cause it's super flaky
 helm upgrade --install cp-flink-kubernetes-operator \
     confluentinc/flink-kubernetes-operator \

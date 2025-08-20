@@ -8,10 +8,10 @@ set -e
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    statefulset/confluent-utility \
-        || true
+    statefulset/confluent-utility
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     configmap utility-config \
-        || true
+    configmap utility-governance-config \
+    configmap utility-pipeline-config

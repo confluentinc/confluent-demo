@@ -51,4 +51,4 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- bash -c '
 echo "Deploying sink connector"
 deploy_single_manifest ./assets/demo/pipeline/connectors Connector-elasticsearch-sink.yaml
 
-echo "Access the Kibana dashboard at https://kibana.127-0-0-1.nip.io/"
+echo "Access the Kibana dashboard at https://kibana.${BASE_DOMAIN}"

@@ -38,7 +38,6 @@ deploy_manifests ./assets/manifests/cmf/oidc
 
 envsubst < ./assets/cmf/values-oidc.yaml > ${LOCAL_DIR}/cmf-values.yaml
 
-# TODO: Update CRDs?
 # CMF
 helm upgrade --install cmf \
     confluentinc/confluent-manager-for-apache-flink \

@@ -9,6 +9,18 @@
 * Improve Documentation
 * Suppress error messages
 
+* Determine whether to update CRDs on all Helm installations:
+    * CMF
+    * FKO
+
+* Determine if we need to save the vault unseal key (in scripts/add/02_vault.sh)
+
+* Determine whether to use custom Helm repos
+
+* Remove all FlinkApplication/FlinkEnvironments before removing FlinkDeployments (scripts/remove/22_flink_resources.sh)
+
+* Determine whether to deploy ksqlDB in initial CP deployment
+
 * ~~Data governance stuff~~
 * ~~Refactor: move cfk secrets from infra to cfk~~
 * ~~Move CP CSFLE manifests to container~~

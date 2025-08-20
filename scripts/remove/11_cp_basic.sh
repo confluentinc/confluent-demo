@@ -11,42 +11,35 @@ kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     KafkaTopic/shoe-customers \
     KafkaTopic/shoe-products \
-    KafkaTopic/shoe-orders \
-        || true
+    KafkaTopic/shoe-orders
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     controlcenter/controlcenter \
-    ingress/controlcenter \
-        || true
+    ingress/controlcenter
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    connect/connect \
-        || true
+    connect/connect
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     schemaregistry/schemaregistry \
-    ingress/schemaregistry \
-        || true
+    ingress/schemaregistry
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    kafkarestclass/default \
-        || true
+    kafkarestclass/default
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     kafka/kafka \
     service/kafka-bootstrap \
-    ingress/kafka \
-        || true
+    ingress/kafka
 
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
-    kraftcontroller/kraft \
-        || true
+    kraftcontroller/kraft
 
 # gt 2: ignore header lines and CFK operator pod
 while [[ $(kubectl -n ${NAMESPACE} get pods -l confluent-platform=true | wc -l ) -gt 2 ]];

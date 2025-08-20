@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -e
+set -e
 # set -x
 
 . ./.env
@@ -15,8 +15,7 @@ kubectl -n ${KEYCLOAK_NAMESPACE} delete \
     service/keycloak-discovery \
     statefulset/keycloak \
     deployment/postgres \
-    service/postgres \
-        || true
+    service/postgres
 
 sleep 10
 
@@ -24,9 +23,7 @@ sleep 10
 kubectl -n ${KEYCLOAK_NAMESPACE} delete \
     --ignore-not-found=true \
     secret/tls-keycloak \
-    configmap/keycloak-realm \
-        || true
+    configmap/keycloak-realm
 
 kubectl delete namespace ${KEYCLOAK_NAMESPACE} \
-    --ignore-not-found=true \
-        || true
+    --ignore-not-found=true

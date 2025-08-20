@@ -6,8 +6,6 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-# TODO: Decide if we want to deploy ksqlDB as initial CP deployment
-
 # Create certificate secret for ksqldb
 create_certificate_secret ksqldb
 

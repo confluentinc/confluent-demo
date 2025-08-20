@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -e
+set -e
 # set -x
 
 . ./.env
@@ -16,5 +16,4 @@ kubectl -n ${NAMESPACE} delete \
         tls-controlcenter \
         tls-schemaregistry \
         tls-client \
-        mds-token \
-        || true
+        mds-token

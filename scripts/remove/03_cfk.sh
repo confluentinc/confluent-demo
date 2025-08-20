@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -e
+set -e
 # set -x
 
 . ./.env
@@ -12,5 +12,4 @@ helm uninstall confluent-for-kubernetes \
 sleep 2
 
 kubectl delete namespace ${NAMESPACE} \
-    --ignore-not-found=true \
-        || true
+    --ignore-not-found=true

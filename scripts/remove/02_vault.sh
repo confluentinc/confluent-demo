@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -e
+set -e
 # set -x
 
 . ./.env
@@ -14,5 +14,4 @@ helm uninstall vault \
     --namespace ${VAULT_NAMESPACE}
 
 kubectl delete namespace ${VAULT_NAMESPACE} \
-    --ignore-not-found=true \
-        || true
+    --ignore-not-found=true

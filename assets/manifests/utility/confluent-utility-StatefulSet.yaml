@@ -35,9 +35,9 @@ spec:
             - name: VAULT_TOKEN
               value: root
             - name: BS
-              value: kafka.confluent-demo.svc.cluster.local:9071
+              value: kafka.${NAMESPACE}.svc.cluster.local:9071
             - name: SR
-              value: https://schemaregistry.confluent-demo.svc.cluster.local:8081
+              value: https://schemaregistry.${NAMESPACE}.svc.cluster.local:8081
           volumeMounts:
             - name: client-tls
               readOnly: true

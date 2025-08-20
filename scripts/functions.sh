@@ -13,7 +13,7 @@ remove_if_deleted () {
         kubectl -n ${NAMESPACE} patch -p '{"metadata":{"finalizers":null}}' --type=merge $1 $2 $3
         echo "Deleting $1 $2"
         # Ignore set -e
-        kubectl -n ${NAMESPACE} delete $1 $2 || true
+        kubectl --ignore-not-found=true -n ${NAMESPACE} delete $1 $2
         sleep 1
     fi
 }
@@ -85,7 +85,7 @@ restart_if_not_ready () {
     if [[ $(kubectl -n ${NAMESPACE} get pod ${1} | grep "1/1" | grep "Running" | wc -l ) -lt 1 ]];
     then
         echo "Restarting pod ${1} in namespace ${NAMESPACE}"
-        kubectl -n ${NAMESPACE} delete pod ${1} || true
+        kubectl --ignore-not-found=true -n ${NAMESPACE} delete pod ${1}
     fi
 }
 
@@ -155,6 +155,7 @@ copy_ca_certs () {
     cp ./assets/certificates/cfssl-cert.json ${CFSSL_DIR}/cfssl-cert.json
 }
 
+# Use provided CA to generate certificates (of multiple formats) for a given resource type
 create_certificate_secret () {
     export RESOURCE=${1}
 

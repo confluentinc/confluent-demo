@@ -9,9 +9,7 @@ set -e
 kubectl -n ${NAMESPACE} delete \
     --ignore-not-found=true \
     FlinkApplication/state-machine-example \
-    FlinkEnvironment/${NAMESPACE} \
-        || true
+    FlinkEnvironment/${NAMESPACE}
 
-# Todo - check for removal of all FA/FE
 clean_up_flinkdeployment
 sleep 2
