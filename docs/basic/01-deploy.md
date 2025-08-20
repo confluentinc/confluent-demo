@@ -56,6 +56,8 @@ Run this:
 ./scripts/deploy_demo.sh
 ```
 
+Open up the Kibana UI: https://kibana.127-0-0-1.nip.io/
+
 #### CLI Login
 
 Exec into the confluent-utility-0 container:
