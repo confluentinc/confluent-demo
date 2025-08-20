@@ -1,6 +1,6 @@
 ## Data Governance Demo (Basic Mode)
 
-After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md)), you can run the Data Governance demo (currently only includes CSFLE)
+After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md)), you can run the Data Governance demo
 
 From the repo root directory, install the governance add-on resources:
 
