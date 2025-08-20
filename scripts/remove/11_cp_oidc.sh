@@ -7,27 +7,27 @@ set -e
 . ./scripts/functions.sh
 
 # From manifests
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     KafkaTopic/shoe-customers \
     KafkaTopic/shoe-products \
     KafkaTopic/shoe-orders
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     controlcenter/controlcenter \
     ingress/controlcenter
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     connect/connect
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     schemaregistry/schemaregistry \
     ingress/schemaregistry
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     ConfluentRolebinding/manual-admin \
     ConfluentRolebinding/manual-admin-connect \
@@ -37,25 +37,25 @@ kubectl -n ${NAMESPACE} delete \
     ConfluentRolebinding/manual-controlcenter-sr \
     ConfluentRoleBinding/manual-connect-sr
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     KafkaRestClass/default
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     kafka/kafka \
     service/kafka-bootstrap \
     ingress/kafka
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     kraftcontroller/kraft
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     statefulset/confluent-utility
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     secret \
         oauth-jaas \
@@ -67,9 +67,9 @@ kubectl -n ${NAMESPACE} delete \
         cmf-oauth-jaas
 
 # gt 2: ignore header lines and CFK operator pod
-while [[ $(kubectl -n ${NAMESPACE} get pods -l confluent-platform=true | wc -l ) -gt 2 ]];
+while [[ $(kubectl -n "${NAMESPACE}" get pods -l confluent-platform=true | wc -l ) -gt 2 ]];
 do
     echo "Waiting 10s for CFK-managed pods to terminate"
-    kubectl -n ${NAMESPACE} get pods -l confluent-platform=true
+    kubectl -n "${NAMESPACE}" get pods -l confluent-platform=true
     sleep 10
 done

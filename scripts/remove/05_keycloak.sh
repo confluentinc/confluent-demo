@@ -7,7 +7,7 @@ set -e
 . ./scripts/functions.sh
 
 # From manifests
-kubectl -n ${KEYCLOAK_NAMESPACE} delete \
+kubectl -n "${KEYCLOAK_NAMESPACE}" delete \
     --ignore-not-found=true \
     ingress/keycloak \
     ingress/keycloak-insecure \
@@ -20,10 +20,10 @@ kubectl -n ${KEYCLOAK_NAMESPACE} delete \
 sleep 10
 
 # Manually created
-kubectl -n ${KEYCLOAK_NAMESPACE} delete \
+kubectl -n "${KEYCLOAK_NAMESPACE}" delete \
     --ignore-not-found=true \
     secret/tls-keycloak \
     configmap/keycloak-realm
 
-kubectl delete namespace ${KEYCLOAK_NAMESPACE} \
+kubectl delete namespace "${KEYCLOAK_NAMESPACE}" \
     --ignore-not-found=true

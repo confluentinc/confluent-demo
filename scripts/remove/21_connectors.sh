@@ -6,7 +6,7 @@ set -e
 . ./.env
 . ./scripts/functions.sh
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     Connector/shoe-customers \
     Connector/shoe-products \

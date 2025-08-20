@@ -27,7 +27,7 @@ remove_if_deleted secret cmf-encryption-key
 
 kubectl create secret generic cmf-encryption-key \
         --from-file=encryption-key=./assets/cmf/cmf.key \
-        --namespace ${NAMESPACE} \
+        --namespace "${NAMESPACE}" \
         --dry-run=client -oyaml --save-config \
     | kubectl apply -f -
 
@@ -42,5 +42,5 @@ envsubst < ./assets/cmf/values-basic.yaml > ${LOCAL_DIR}/cmf-values.yaml
 helm upgrade --install cmf \
     confluentinc/confluent-manager-for-apache-flink \
     --values ${LOCAL_DIR}/cmf-values.yaml \
-    --namespace ${NAMESPACE} \
+    --namespace "${NAMESPACE}" \
     --version ${CMF_VERSION}

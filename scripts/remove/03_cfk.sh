@@ -7,9 +7,9 @@ set -e
 . ./scripts/functions.sh
 
 helm uninstall confluent-for-kubernetes \
-    -n ${NAMESPACE}
+    -n "${NAMESPACE}"
 
 sleep 2
 
-kubectl delete namespace ${NAMESPACE} \
+kubectl delete namespace "${NAMESPACE}" \
     --ignore-not-found=true

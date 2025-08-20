@@ -8,7 +8,7 @@ set -e
 
 # Statements are environment-scoped
 echo "Getting and deleting Flink SQL Statements"
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \
     sh -c \
         'confluent flink --environment ${CMF_ENVIRONMENT_NAME} statement list -ojson \
             | jq -r ".[].metadata.name" \
@@ -20,7 +20,7 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
 
 echo "Getting and deleting Flink SQL Catalogs"
 # Catalogs are not environment-scoped
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \
     sh -c \
         'confluent flink catalog list -ojson \
             | jq -r ".[].metadata.name" \
@@ -32,7 +32,7 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
 
 echo "Getting and deleting Flink Secret Mappings"
 # Delete all secret mappings
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \
     sh -c \
         'curl ${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings \
             | jq -r ".items[].metadata.name" \
@@ -44,7 +44,7 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
 
 echo "Getting and deleting Flink Secrets"
 # Delete all secrets
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \
     sh -c \
         'curl ${CONFLUENT_CMF_URL}/cmf/api/v1/secrets \
             | jq -r ".items[].metadata.name" \
@@ -56,7 +56,7 @@ kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
 
 echo "Getting and deleting Flink Compute Pools"
 # Compute pools are environment-scoped
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- \
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \
     sh -c \
         'confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool list -ojson \
             | jq -r ".[].metadata.name" \

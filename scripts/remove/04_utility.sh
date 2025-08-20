@@ -6,11 +6,11 @@ set -e
 . ./.env
 . ./scripts/functions.sh
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     statefulset/confluent-utility
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     configmap utility-config \
     configmap utility-governance-config \

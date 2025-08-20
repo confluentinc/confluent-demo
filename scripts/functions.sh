@@ -7,13 +7,13 @@
     # remove_if_deleted Secret mds-token
     # remove_if_deleted Secret/mds-token
 remove_if_deleted () {
-    if [[ $(kubectl -n ${NAMESPACE} get $1 $2 -ojsonpath='{.metadata.deletionTimestamp}' | wc -c) -gt 0 ]];
+    if [[ $(kubectl -n "${NAMESPACE}" get $1 $2 -ojsonpath='{.metadata.deletionTimestamp}' | wc -c) -gt 0 ]];
     then
         echo "Removing finalizers for $1 $2"
-        kubectl -n ${NAMESPACE} patch -p '{"metadata":{"finalizers":null}}' --type=merge $1 $2 $3
+        kubectl -n "${NAMESPACE}" patch -p '{"metadata":{"finalizers":null}}' --type=merge $1 $2 $3
         echo "Deleting $1 $2"
         # Ignore set -e
-        kubectl --ignore-not-found=true -n ${NAMESPACE} delete $1 $2
+        kubectl --ignore-not-found=true -n "${NAMESPACE}" delete $1 $2
         sleep 1
     fi
 }
@@ -51,18 +51,18 @@ wait_for_pod () {
 
 # special behavior to account for 3/3 containers in the pod
 wait_for_c3 () {
-    while [[ $(kubectl -n ${NAMESPACE} get pods -l app=controlcenter | grep '3/3' | grep "Running" | wc -l) -lt 1 ]];
+    while [[ $(kubectl -n "${NAMESPACE}" get pods -l app=controlcenter | grep '3/3' | grep "Running" | wc -l) -lt 1 ]];
     do
         clear
         echo "Waiting 5s for ControlCenter pod to be ready..."
         echo "Filtered pods:"
-        kubectl -n ${NAMESPACE} get pods -l app=controlcenter
+        kubectl -n "${NAMESPACE}" get pods -l app=controlcenter
         echo ""
         echo "All pods:"
-        kubectl -n ${NAMESPACE} get pods
+        kubectl -n "${NAMESPACE}" get pods
         echo ""
         echo "Logs:"
-        kubectl -n ${NAMESPACE} logs -l app=controlcenter -c controlcenter --tail 10 || true
+        kubectl -n "${NAMESPACE}" logs -l app=controlcenter -c controlcenter --tail 10 || true
         echo ""
         sleep 5
     done
@@ -70,22 +70,22 @@ wait_for_c3 () {
 
 wait_for_connector () {
     set +x
-    while [[ $(kubectl -n ${NAMESPACE} get connector ${1} -ojsonpath='{.status.connectorState}' | grep "RUNNING" | wc -l) -lt 1 ]];
+    while [[ $(kubectl -n "${NAMESPACE}" get connector ${1} -ojsonpath='{.status.connectorState}' | grep "RUNNING" | wc -l) -lt 1 ]];
     do
         clear
         echo "Waiting 5s for Connector ${1} to be ready..."
         echo "Connector ${1} state:"
-        kubectl -n ${NAMESPACE} get connector ${1}
+        kubectl -n "${NAMESPACE}" get connector ${1}
         echo ""
         sleep 5
     done
 }
 
 restart_if_not_ready () {
-    if [[ $(kubectl -n ${NAMESPACE} get pod ${1} | grep "1/1" | grep "Running" | wc -l ) -lt 1 ]];
+    if [[ $(kubectl -n "${NAMESPACE}" get pod ${1} | grep "1/1" | grep "Running" | wc -l ) -lt 1 ]];
     then
         echo "Restarting pod ${1} in namespace ${NAMESPACE}"
-        kubectl --ignore-not-found=true -n ${NAMESPACE} delete pod ${1}
+        kubectl --ignore-not-found=true -n "${NAMESPACE}" delete pod ${1}
     fi
 }
 
@@ -108,7 +108,7 @@ check_for_readiness () {
     # wait_for connect 1
     wait_for_c3
     clear
-    kubectl -n ${NAMESPACE} get pod
+    kubectl -n "${NAMESPACE}" get pod
     echo ""
     echo "Demo is ready!"
     echo "Access Confluent Control Center at 'https://confluent.${BASE_DOMAIN}'"
@@ -116,10 +116,10 @@ check_for_readiness () {
 }
 
 clean_up_flinkdeployment () {
-    while [[ $(kubectl -n ${NAMESPACE} get FlinkDeployment -oname | wc -w ) -gt 0 ]]; 
+    while [[ $(kubectl -n "${NAMESPACE}" get FlinkDeployment -oname | wc -w ) -gt 0 ]]; 
     do
         echo ""
-        kubectl -n ${NAMESPACE} get FlinkDeployment
+        kubectl -n "${NAMESPACE}" get FlinkDeployment
         echo "Waiting 2s for FlinkDeployments to be removed ..."
         sleep 2
     done
@@ -213,7 +213,7 @@ create_certificate_secret () {
         --from-file=privkey.pem=${CERT_DIR}/${RESOURCE}-key.pem \
         --from-file=truststore.p12=${CERT_DIR}/${RESOURCE}-truststore.p12 \
         --from-file=keystore.p12=${CERT_DIR}/${RESOURCE}.p12 \
-        --namespace ${NAMESPACE} \
+        --namespace "${NAMESPACE}" \
         --save-config \
         --dry-run=client \
     -oyaml | kubectl apply -f -

@@ -25,26 +25,26 @@ wait_for_connector wikipedia-sse-source
 
 echo ""
 echo "Deploying Elasticsearch mapping for wikipedia_count_gt"
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- bash -c '
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping_count.json "http://elasticsearch:9200/_template/wikipedia_count_gt?pretty"
 '
 
 echo ""
 echo "Deploying Elasticsearch mapping for wikipediabot"
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- bash -c '
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping_bot.json "http://elasticsearch:9200/_template/wikipediabot?pretty"
 '
 
 echo ""
 echo "Deploying Kibana dashboard"
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- bash -c '
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     curl -X POST "http://kibana:5601/api/saved_objects/_import?overwrite=true" -H "kbn-xsrf: true" -H "securitytenant: global" --form file=@/root/pipeline/kibana.ndjson
 '
 
 echo ""
 echo ""
 echo "Creating ksqlDB pipelines"
-kubectl -n ${NAMESPACE} exec -it confluent-utility-0 -- bash -c '
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     ksql --config-file /root/tls.properties https://ksqldb:8088 -f /root/pipeline/ksqldb.sql
 '
 

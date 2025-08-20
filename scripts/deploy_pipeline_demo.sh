@@ -12,7 +12,7 @@ set -x
 set +x
 
 clear
-kubectl -n ${NAMESPACE} get pod
+kubectl -n "${NAMESPACE}" get pod
 echo ""
 echo "Demo is ready!"
 echo "Access Confluent Control Center at 'https://confluent.${BASE_DOMAIN}'"

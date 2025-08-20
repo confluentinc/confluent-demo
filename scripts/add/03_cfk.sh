@@ -19,7 +19,7 @@ helm repo add confluentinc https://packages.confluent.io/helm --force-update
 helm repo update
 
 # Create namespaces if they don't exist
-kubectl create namespace ${NAMESPACE} --dry-run=client -oyaml | kubectl apply -f -
+kubectl create namespace "${NAMESPACE}" --dry-run=client -oyaml | kubectl apply -f -
 
 # Upgrade CFK CRDs
 helm show crds confluentinc/confluent-for-kubernetes | kubectl apply --server-side=true -f -

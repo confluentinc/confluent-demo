@@ -14,9 +14,9 @@ deploy_manifests ${MANIFEST_DIR}
 
 kubectl create configmap governance-config \
     --from-file ./assets/demo/governance/config \
-    -n ${NAMESPACE} \
+    -n "${NAMESPACE}" \
     --save-config \
     --dry-run=client \
     -oyaml > ${LOCAL_DIR}/governance-config.yaml
 
-kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/governance-config.yaml
+kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/governance-config.yaml

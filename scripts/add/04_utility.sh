@@ -28,30 +28,30 @@ done
 
 kubectl create configmap utility-config \
     --from-file ${LOCAL_DIR}/config/basic \
-    -n ${NAMESPACE} \
+    -n "${NAMESPACE}" \
     --save-config \
     --dry-run=client \
     -oyaml > ${LOCAL_DIR}/utility-config.yaml
 
-kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/utility-config.yaml
+kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-config.yaml
 
 kubectl create configmap utility-governance-config \
     --from-file ${LOCAL_DIR}/config/governance \
-    -n ${NAMESPACE} \
+    -n "${NAMESPACE}" \
     --save-config \
     --dry-run=client \
     -oyaml > ${LOCAL_DIR}/utility-governance-config.yaml
 
-kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/utility-governance-config.yaml
+kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-governance-config.yaml
 
 kubectl create configmap utility-pipeline-config \
     --from-file ${LOCAL_DIR}/config/pipeline \
-    -n ${NAMESPACE} \
+    -n "${NAMESPACE}" \
     --save-config \
     --dry-run=client \
     -oyaml > ${LOCAL_DIR}/utility-pipeline-config.yaml
 
-kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/utility-pipeline-config.yaml
+kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-pipeline-config.yaml
 
 export MANIFEST_DIR=./assets/manifests/utility
 

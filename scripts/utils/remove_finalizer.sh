@@ -7,4 +7,4 @@ set -e
 . ./.env
 . ./scripts/functions.sh
 
-kubectl -n ${NAMESPACE} patch -p '{"metadata":{"finalizers":null}}' -v8 --type=merge $1 $2 $3
+kubectl -n "${NAMESPACE}" patch -p '{"metadata":{"finalizers":null}}' -v8 --type=merge $1 $2 $3

@@ -6,20 +6,20 @@ set -e
 . ./.env
 . ./scripts/functions.sh
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     connector/elasticsearch-sink \
     connector/wikipedia-sse-source
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     KafkaTopic/WIKIPEDIABOT
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     ksqldb/ksqldb
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     Deployment/elasticsearch \
     Deployment/kibana \
@@ -28,7 +28,7 @@ kubectl -n ${NAMESPACE} delete \
     Ingress/elasticsearch \
     Ingress/kibana
 
-kubectl -n ${NAMESPACE} delete \
+kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     secret \
         tls-ksqldb

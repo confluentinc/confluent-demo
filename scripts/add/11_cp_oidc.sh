@@ -83,7 +83,7 @@ clientId=cmf
 clientSecret=5f8e9b2c3d4a8e7b6f0c1d2e3f4a5b6c
 EOF
 
-kubectl create -n ${NAMESPACE} secret generic \
+kubectl create -n "${NAMESPACE}" secret generic \
     oauth-jaas \
     --from-file=oauth.txt=${LOCAL_DIR}/oauth_jaas.txt \
     --from-file=oidcClientSecret.txt=${LOCAL_DIR}/oauth_jaas.txt \
@@ -91,7 +91,7 @@ kubectl create -n ${NAMESPACE} secret generic \
     > ${LOCAL_DIR}/oauth-jaas.yaml
 kubectl apply -f ${LOCAL_DIR}/oauth-jaas.yaml
 
-kubectl create -n ${NAMESPACE} secret generic \
+kubectl create -n "${NAMESPACE}" secret generic \
     sso-oauth-jaas \
     --from-file=oauth.txt=${LOCAL_DIR}/sso_oauth_jaas.txt \
     --from-file=oidcClientSecret.txt=${LOCAL_DIR}/sso_oauth_jaas.txt \
@@ -99,7 +99,7 @@ kubectl create -n ${NAMESPACE} secret generic \
     > ${LOCAL_DIR}/sso-oauth-jaas.yaml
 kubectl apply -f ${LOCAL_DIR}/sso-oauth-jaas.yaml
 
-kubectl create -n ${NAMESPACE} secret generic \
+kubectl create -n "${NAMESPACE}" secret generic \
     kafka-oauth-jaas \
     --from-file=oauth.txt=${LOCAL_DIR}/kafka_oauth_jaas.txt \
     --from-file=oidcClientSecret.txt=${LOCAL_DIR}/kafka_oauth_jaas.txt \
@@ -107,7 +107,7 @@ kubectl create -n ${NAMESPACE} secret generic \
     > ${LOCAL_DIR}/kafka-oauth-jaas.yaml
 kubectl apply -f ${LOCAL_DIR}/kafka-oauth-jaas.yaml
 
-kubectl create -n ${NAMESPACE} secret generic \
+kubectl create -n "${NAMESPACE}" secret generic \
     schemaregistry-oauth-jaas \
     --from-file=oauth.txt=${LOCAL_DIR}/schemaregistry_oauth_jaas.txt \
     --from-file=oidcClientSecret.txt=${LOCAL_DIR}/schemaregistry_oauth_jaas.txt \
@@ -115,7 +115,7 @@ kubectl create -n ${NAMESPACE} secret generic \
     > ${LOCAL_DIR}/schemaregistry-oauth-jaas.yaml
 kubectl apply -f ${LOCAL_DIR}/schemaregistry-oauth-jaas.yaml
 
-kubectl create -n ${NAMESPACE} secret generic \
+kubectl create -n "${NAMESPACE}" secret generic \
     connect-oauth-jaas \
     --from-file=oauth.txt=${LOCAL_DIR}/connect_oauth_jaas.txt \
     --from-file=oidcClientSecret.txt=${LOCAL_DIR}/connect_oauth_jaas.txt \
@@ -123,7 +123,7 @@ kubectl create -n ${NAMESPACE} secret generic \
     > ${LOCAL_DIR}/connect-oauth-jaas.yaml
 kubectl apply -f ${LOCAL_DIR}/connect-oauth-jaas.yaml
 
-kubectl create -n ${NAMESPACE} secret generic \
+kubectl create -n "${NAMESPACE}" secret generic \
     controlcenter-oauth-jaas \
     --from-file=oauth.txt=${LOCAL_DIR}/controlcenter_oauth_jaas.txt \
     --from-file=oidcClientSecret.txt=${LOCAL_DIR}/controlcenter_oauth_jaas.txt \
@@ -131,7 +131,7 @@ kubectl create -n ${NAMESPACE} secret generic \
     > ${LOCAL_DIR}/controlcenter-oauth-jaas.yaml
 kubectl apply -f ${LOCAL_DIR}/controlcenter-oauth-jaas.yaml
 
-kubectl create -n ${NAMESPACE} secret generic \
+kubectl create -n "${NAMESPACE}" secret generic \
     cmf-oauth-jaas \
     --from-file=oauth.txt=${LOCAL_DIR}/cmf_oauth_jaas.txt \
     --from-file=oidcClientSecret.txt=${LOCAL_DIR}/cmf_oauth_jaas.txt \

@@ -15,5 +15,5 @@ helm upgrade --install cp-flink-kubernetes-operator \
     --set operatorPod.resources.requests.cpu=100m \
     --set watchNamespaces=\{"${NAMESPACE}"\} \
     --set webhook.create=false \
-    --namespace ${NAMESPACE} \
+    --namespace "${NAMESPACE}" \
     --version ${FKO_VERSION}
