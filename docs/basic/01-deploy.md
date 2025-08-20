@@ -46,7 +46,7 @@ Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/
 
 To add the cp-demo components:
 * ksqlDB
-* ElasticSearch
+* Elasticsearch
 * Kibana
 * Wikipedia > SSE > ksqlDB > Elastic pipeline
 
