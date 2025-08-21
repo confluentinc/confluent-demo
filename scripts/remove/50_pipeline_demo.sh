@@ -11,7 +11,7 @@ if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
     exit 0
 fi
 
-if [[ $(kubectl -n "${NAMESPACE}" get pod -l app=connect | grep "1/1" | wc -l) -lt 1 ]]; then
+if [[ $(kubectl -n "${NAMESPACE}" get pod -l app=connect | grep -E "1/1.*Running" | wc -l) -lt 1 ]]; then
     echo "Connect is not running, removing finalizers to skip validation"
     remove_finalizer "${NAMESPACE}" connector/elasticsearch-sink
     remove_finalizer "${NAMESPACE}" connector/wikipedia-sse-source
