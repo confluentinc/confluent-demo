@@ -21,7 +21,7 @@ echo "--------"
 echo "This doesn't currently delete anything, just list all items in the namespace"
 
 echo "To remove the finalizer for a resource, run this:"
-echo "kubectl -n "${NAMESPACE}" patch -p '{\"metadata\":{\"finalizers\":null}}' -v8 --type=merge  <resourcename>/<resourcetype>"
+echo "kubectl -n "${1}" patch -p '{\"metadata\":{\"finalizers\":null}}' -v8 --type=merge  <resourcename>/<resourcetype>"
 
 # echo "for example"
 

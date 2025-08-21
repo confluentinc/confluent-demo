@@ -222,5 +222,5 @@ create_certificate_secret () {
 # Usage: remove_finalizer confluent-demo connector/wikipedia-sse-source
 # If the resource is not found, do nothing
 remove_finalizer () {
-    kubectl -n "${1}" patch -p '{"metadata":{"finalizers":null}}' --type=merge "${2}" || true
+    kubectl -n "${1}" patch -p '{"metadata":{"finalizers":null}}' --type=merge "${2}" ${3:-} || true
 }
