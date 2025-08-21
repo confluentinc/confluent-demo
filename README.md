@@ -4,11 +4,11 @@ Migrated from [justinrlee/confluent-demo](https://github.com/justinrlee/confluen
 
 ## Architecture
 
-This runs a small Confluent Platform cluster on Kubernetes, intended for use on a local workstation (Docker Desktop Kubernetes or Orbstack)
+This runs a small Confluent Platform cluster on Kubernetes, intended for use on a local workstation (Docker Desktop Kubernetes or OrbStack)
 
-There is currently one version of this demo: 'basic' mode, which has TLS but no authentication or authorization.
+There is currently one version of this demo: "basic" mode, which has TLS but no authentication or authorization.
 
-(_`oidc`_ mode doesn't currently work)
+("oidc" mode is currently a work in progress, and doesn't currently work)
 
 The installation script will install the following:
 
@@ -20,7 +20,7 @@ The installation script will install the following:
     * 3x Kafka
     * 1x Schema Registry
     * 1x Connect
-    * 1x Control Center (2.x i.e. "Next Gen")
+    * 1x Control Center (2.x, i.e., "Next Gen")
 * Flink Kubernetes Operator (FKO)
 * Confluent Manager for Apache Flink (CMF)
 * CMF CRs:
@@ -29,7 +29,9 @@ The installation script will install the following:
 
 ## Start Here
 
-* [Basic Mode Installation](./docs/basic/01-deploy.md)
-* [Basic Mode CSFLE Demo](./docs/basic/02-csfle.md)
-* [Basic Mode Governance Demo](./docs/basic/02-governance.md)
-* [Basic Mode CP Flink SQL Demo](./docs/basic/03-flink-sql-demo.md)
+Basic Mode
+* [Installation](./docs/basic/01-deploy.md)
+* [CSFLE Demo](./docs/basic/02-csfle.md)
+* [Governance Demo](./docs/basic/02-governance.md)
+* [Flink SQL - Setup Walkthrough](./docs/basic/03-flink-sql-walkthrough.md)
+* [Flink SQL - Demo](./docs/basic/03-flink-sql-demo.md)

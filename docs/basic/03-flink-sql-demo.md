@@ -1,8 +1,16 @@
-## Demo Flink SQL (in Basic Mode)
+## Flink SQL Demo (in Basic Mode)
 
-After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md)), you can run the CP Flink SQL demo
+After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md)), you can run the Flink SQL demo
+
+This automates most of the setup process; you start with access to the Flink SQL CLI
 
 Everything should be run from the utility pod, which has direct access to CFK and CMF from within the cluster.
+
+Run the setup script:
+
+```bash
+./scripts/deploy_flink_sql_infra.sh
+```
 
 You can exec into the pod with this:
 
@@ -16,81 +24,22 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 ./shell.sh
 ```
 
-The `confluent` CLI uses these environment variables by default (these are set automatically):
+The `confluent` CLI uses these environment variables by default (these are set automatically in the utility pod):
 
 ```bash
 CONFLUENT_CMF_CERTIFICATE_AUTHORITY_PATH=/root/certs/ca.crt
 CONFLUENT_CMF_URL=http://cmf.confluent-demo.svc.cluster.local
 ```
 
-Also, there are a number of pre-seeded config files in `./config/` (`/root/config/`)
-* `client.properties` - Used for connectivity to Kafka (and Schema Registry)
-* `secret-kafka.json` - CMF Secret, used to configure clients to communicate with Kafka
-* `secret-schemaregistry.json` - CMF Secret, used to configure clients to communicate with Schema Registry
-* `esm-kafka.json` - CMF Environment Secret Mapping, associates kafka secret with a given CMF Environment
-* `esm-schemaregistry.json` - CMF Environment Secret Mapping, associates SR secret with a given CMF Environment
-* `pool-with-secrets.json` - CMF Compute Pool (template used to provision Flink jobs)
-* `catalog.json` - CMF Catalog (contains information about Kafka cluster and SR cluster to be used by Flink SQL)
-
-# Kafka connectivity test
+You can verify everything is set up correctly with these commands:
 
 *Run from within the utility pod*
 
 ```bash
-kafka-broker-api-versions --bootstrap-server kafka.confluent-demo.svc.cluster.local:9071 --command-config config/client.properties
-```
-
-Also, most `kafka-X` commands, such as `kafka-topics`, `kafka-console-producer`, and `kafka-console-consumer` should all work.
-
-# Flink environment setup
-
-*Run from within the utility pod*
-
-```bash
-confluent flink environment list
-
-# Create secrets
-curl \
-  -H 'content-type: application/json' \
-  -X POST \
-  ${CONFLUENT_CMF_URL}/cmf/api/v1/secrets \
-  -d@config/secret-kafka.json
-
-curl \
-  -H 'content-type: application/json' \
-  -X POST \
-  ${CONFLUENT_CMF_URL}/cmf/api/v1/secrets \
-  -d@config/secret-schemaregistry.json
-
-# Get secrets
-curl ${CONFLUENT_CMF_URL}/cmf/api/v1/secrets | jq '.'
-
-# Create secret mappings
-curl \
-  -H 'content-type: application/json' \
-  -X POST \
-  ${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings \
-  -d@config/esm-kafka.json
-
-curl \
-  -H 'content-type: application/json' \
-  -X POST \
-  ${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings \
-  -d@config/esm-schemaregistry.json
-
-# Get secretmappings
-curl ${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings | jq '.'
-
-# Create catalog
-confluent flink catalog create config/catalog.json
-
-# List catalog(s)
+# List Flink catalog(s)
 confluent flink catalog list
 
-# Create compute pool
-confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool create config/pool-with-secrets.json
-
-# List compute pool(s)
+# List Flink compute pool(s)
 confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool list
 ```
 
@@ -99,13 +48,16 @@ Verify everything is wired up properly with a basic `SHOW TABLES` query.
 *Run from within the utility pod*
 
 ```bash
-# Run basic 'show tables' command (I think this runs directly from CMF)
 confluent --environment ${CMF_ENVIRONMENT_NAME} flink statement create ddl1 \
   --catalog demo --database kafka --compute-pool pool --output json \
   --sql "SHOW TABLES;"
 ```
 
-# Flink SQL
+(Optional) Remove the statement
+
+```bash
+confluent --environment ${CMF_ENVIRONMENT_NAME} flink statement delete --force ddl1
+```
 
 Start the Flink SQL Shell
 
@@ -139,7 +91,7 @@ SELECT * FROM `demo`.`kafka`.`shoe-customers`;
 kubectl -n confluent-demo get pods
 ```
 
-... Do other things?
+Try other Flink SQL queries, subject to the limitations of the Confluent Platform for Apache Flink SQL capabilities.
 
 Couple of queries to try (I think these all work)
 

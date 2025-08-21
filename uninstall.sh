@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+# set -x
 
 # Reverse order of install.sh
 # Governance demo is a special case because it is created manually, so it is not in the install script

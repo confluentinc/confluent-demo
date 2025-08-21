@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 set -x
 
 . ./.env
@@ -13,7 +13,7 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
 
 # Create namespace if it doesn't exist
-kubectl create namespace ${VAULT_NAMESPACE} --dry-run=client -oyaml | kubectl apply -f -
+kubectl create namespace "${VAULT_NAMESPACE}" --dry-run=client -oyaml | kubectl apply -f -
 
 # Deploy Vault
 # dev mode results in a root token of `root`, and is unsealed by default
@@ -21,15 +21,15 @@ kubectl create namespace ${VAULT_NAMESPACE} --dry-run=client -oyaml | kubectl ap
 # export VAULT_ADDR=http://vault.vault.svc.cluster.local:8200
 helm upgrade --install vault \
     hashicorp/vault \
-    --namespace ${VAULT_NAMESPACE} \
+    --namespace "${VAULT_NAMESPACE}" \
     --set "server.dev.enabled=true" \
     --version ${VAULT_CHART_VERSION}
 
-wait_for_pod app.kubernetes.io/name=vault 1 ${VAULT_NAMESPACE}
+wait_for_pod app.kubernetes.io/name=vault 1 "${VAULT_NAMESPACE}"
 
 # Includes the following resources:
 # Ingress/vault
 deploy_manifests ${MANIFEST_DIR}
 
-kubectl -n ${VAULT_NAMESPACE} exec -it vault-0 -- sh -c "vault secrets enable transit" || true
-kubectl -n ${VAULT_NAMESPACE} exec -it vault-0 -- sh -c "vault write -f transit/keys/csfle" || true
+kubectl -n "${VAULT_NAMESPACE}" exec -it vault-0 -- sh -c "vault secrets enable transit" || true
+kubectl -n "${VAULT_NAMESPACE}" exec -it vault-0 -- sh -c "vault write -f transit/keys/csfle" || true

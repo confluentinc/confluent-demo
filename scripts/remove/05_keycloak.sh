@@ -1,10 +1,15 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 # set -x
 
 . ./.env
 . ./scripts/functions.sh
+
+if [[ $(kubectl get namespace | grep "${KEYCLOAK_NAMESPACE}" | wc -l) -lt 1 ]]; then
+    echo "Namespace ${KEYCLOAK_NAMESPACE} does not exist, skipping Keycloak deletion"
+    exit 0
+fi
 
 # From manifests
 kubectl -n "${KEYCLOAK_NAMESPACE}" delete \

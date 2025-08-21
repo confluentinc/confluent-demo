@@ -12,7 +12,7 @@ remove_if_deleted () {
         echo "Removing finalizers for $1 $2"
         kubectl -n "${NAMESPACE}" patch -p '{"metadata":{"finalizers":null}}' --type=merge $1 $2 $3
         echo "Deleting $1 $2"
-        # Ignore set -e
+        # Ignore set -euo pipefail
         kubectl --ignore-not-found=true -n "${NAMESPACE}" delete $1 $2
         sleep 1
     fi
@@ -32,18 +32,18 @@ wait_for_pod () {
 
     echo "Waiting for ${POD_COUNT} pods with the label ${LABEL_SELECTOR} to be ready in namespace ${NS}"
 
-    while [[ $(kubectl -n ${NS} get pods -l ${LABEL_SELECTOR} | grep "1/1" | grep "Running" | wc -l ) -lt ${POD_COUNT} ]]; 
+    while [[ $(kubectl -n "${NS}" get pods -l ${LABEL_SELECTOR} | grep "1/1" | grep "Running" | wc -l ) -lt ${POD_COUNT} ]];
     do
         clear
         echo "Waiting 5s for ${POD_COUNT}x pods with label ${LABEL_SELECTOR} to be ready..."
         echo "Filtered pods:"
-        kubectl -n ${NS} get pods -l ${LABEL_SELECTOR}
+        kubectl -n "${NS}" get pods -l ${LABEL_SELECTOR}
         echo ""
         echo "All pods:"
-        kubectl -n ${NS} get pods
+        kubectl -n "${NS}" get pods
         echo ""
         echo "Logs:"
-        kubectl -n ${NS} logs -l ${LABEL_SELECTOR} --tail 5 || true
+        kubectl -n "${NS}" logs -l ${LABEL_SELECTOR} --tail 5 || true
         echo ""
         sleep 5
     done
@@ -116,7 +116,7 @@ check_for_readiness () {
 }
 
 clean_up_flinkdeployment () {
-    while [[ $(kubectl -n "${NAMESPACE}" get FlinkDeployment -oname | wc -w ) -gt 0 ]]; 
+    while [[ $(kubectl -n "${NAMESPACE}" get FlinkDeployment -oname | wc -w ) -gt 0 ]];
     do
         echo ""
         kubectl -n "${NAMESPACE}" get FlinkDeployment
@@ -129,7 +129,7 @@ deploy_manifests () {
     mkdir -p ${LOCAL_DIR}
 
     export MANIFEST_DIR=${1}
-    
+
     ls -1 ${MANIFEST_DIR} | grep yaml
 
     for f in \
@@ -217,4 +217,10 @@ create_certificate_secret () {
         --save-config \
         --dry-run=client \
     -oyaml | kubectl apply -f -
+}
+
+# Usage: remove_finalizer confluent-demo connector/wikipedia-sse-source
+# If the resource is not found, do nothing
+remove_finalizer () {
+    kubectl -n "${1}" patch -p '{"metadata":{"finalizers":null}}' --type=merge $2 || true
 }

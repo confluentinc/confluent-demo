@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 set -x
 
 . ./.env
@@ -26,13 +26,13 @@ wait_for_connector wikipedia-sse-source
 echo ""
 echo "Deploying Elasticsearch mapping for wikipedia_count_gt"
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
-    curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping_count.json "http://elasticsearch:9200/_template/wikipedia_count_gt?pretty"
+    curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping-count.json "http://elasticsearch:9200/_template/wikipedia_count_gt?pretty"
 '
 
 echo ""
 echo "Deploying Elasticsearch mapping for wikipediabot"
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
-    curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping_bot.json "http://elasticsearch:9200/_template/wikipediabot?pretty"
+    curl -X PUT -H "content-type:application/json" -d @/root/pipeline/mapping-bot.json "http://elasticsearch:9200/_template/wikipediabot?pretty"
 '
 
 echo ""

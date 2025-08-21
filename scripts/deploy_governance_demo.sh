@@ -6,4 +6,4 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-check_for_readiness
+./scripts/add/40_governance_infra.sh

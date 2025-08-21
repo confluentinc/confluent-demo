@@ -1,14 +1,14 @@
 #!/bin/bash
 
 if [[ $1 == "oidc" ]]; then
-    echo "Running in OIDC mode"
+    echo 'Running in "oidc" mode'
     export INSTALL_MODE=1
 else
-    echo "Running in basic mode"
+    echo 'Running in "basic" mode'
     export INSTALL_MODE=0
 fi
 
-set -e
+set -euo pipefail
 set -x
 
 . ./.env
@@ -24,11 +24,11 @@ set -x
 ./scripts/add/10_cp_certs.sh
 
 if [[ $INSTALL_MODE == 1 ]]; then
-    echo "Installing OIDC CP and CMF"
+    echo 'Installing "oidc" CP and CMF'
     ./scripts/add/11_cp_oidc.sh
     ./scripts/add/12_cmf_oidc.sh
 else
-    echo "Installing Basic CP and CMF"
+    echo 'Installing "basic" CP and CMF'
     ./scripts/add/11_cp_basic.sh
     ./scripts/add/12_cmf_basic.sh
 fi

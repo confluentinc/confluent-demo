@@ -1,7 +1,8 @@
-
 #!/bin/bash
 
-set -e
+set -eo pipefail
+# No set -u because we want to allow empty variables
+# set -u
 # set -x
 
 . ./.env

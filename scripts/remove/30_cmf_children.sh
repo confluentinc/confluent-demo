@@ -1,10 +1,15 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 # set -x
 
 . ./.env
 . ./scripts/functions.sh
+
+if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
+    echo "Namespace ${NAMESPACE} does not exist, skipping CMF children deletion"
+    exit 0
+fi
 
 # Statements are environment-scoped
 echo "Getting and deleting Flink SQL Statements"
@@ -34,7 +39,7 @@ echo "Getting and deleting Flink Secret Mappings"
 # Delete all secret mappings
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \
     sh -c \
-        'curl ${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings \
+        'curl -s ${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings \
             | jq -r ".items[].metadata.name" \
             | while read SECRET_MAPPING;
                 do
@@ -46,7 +51,7 @@ echo "Getting and deleting Flink Secrets"
 # Delete all secrets
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \
     sh -c \
-        'curl ${CONFLUENT_CMF_URL}/cmf/api/v1/secrets \
+        'curl -s ${CONFLUENT_CMF_URL}/cmf/api/v1/secrets \
             | jq -r ".items[].metadata.name" \
             | while read SECRET;
                 do
