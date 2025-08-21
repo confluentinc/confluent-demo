@@ -5,9 +5,9 @@
 This demo runs entirely in a Kubernetes cluster. Some options for running this locally on a workstation include:
 
 * Docker Desktop (with built-in Kubernetes) - see the [Docker Desktop Documentation](https://docs.docker.com/desktop/features/kubernetes/)
-* Orbstack - see the [Orbstack Documentation](https://orbstack.dev/)
+* OrbStack - see the [OrbStack Documentation](https://orbstack.dev/)
 
-In addition to access to a Kubernetes cluster, your workstation several CLI tools installed. [Brew](https://brew.sh/) is a common way to install these on macOS.
+In addition to access to a Kubernetes cluster, your workstation needs several CLI tools installed. [Brew](https://brew.sh/) is a common way to install these on macOS.
 
 Requirements:
 
@@ -35,7 +35,7 @@ This will prompt for the Kubernetes context to use, and optionally allow you to 
 
 It will also validate some of the prerequisites.
 
-(If you're installing to a local Kubernetes cluster, e.g. Docker Desktop or OrbStack, you can use the default `127.0.0.1`)
+(If you're installing to a local Kubernetes cluster, e.g. Docker Desktop or OrbStack, you can use the default `127.0.0.1`, which translates to a nip.io domain of `127-0-0-1.nip.io`)
 
 ```bash
 ./precheck.sh
@@ -51,11 +51,9 @@ The installation script will monitor the deployment process.
 
 (You can also monitor Control Center logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
 
-Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/
+Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/ and explore both the Kafka and Flink components of Confluent Platform.
 
-... Poke around?
-
-To add the cp-demo components:
+To add the pipeline demo (copied from [cp-demo](https://github.com/confluentinc/cp-demo)) components:
 * ksqlDB
 * Elasticsearch
 * Kibana
@@ -64,7 +62,7 @@ To add the cp-demo components:
 Run this:
 
 ```bash
-./scripts/deploy_demo.sh
+./scripts/deploy_pipeline_demo.sh
 ```
 
 Open up the Kibana UI: https://kibana.127-0-0-1.nip.io/
@@ -80,7 +78,7 @@ Exec into the confluent-utility-0 container:
 (This is a wrapper on this command: `kubectl -n confluent-demo exec -it confluent-utility-0 -- bash`)
 
 
-Confluent CLI should generally work for interacting with CP Flink:
+The included Confluent CLI (`confluent`) is preconfigured to interact with Confluent Manager for Apache Flink (CMF):
 
 ```bash
 confluent flink environment list
@@ -90,7 +88,8 @@ confluent flink environment list
 
 * [CSFLE Demo](./02-csfle.md)
 * [Data Governance Demo](./02-governance.md)
-* [CP Flink SQL Demo](./03-flink-sql-demo.md)
+* [Flink SQL - Setup Walkthrough](./03-flink-sql-walkthrough.md)
+* [Flink SQL - Demo](./03-flink-sql-demo.md)
 
 ### Cleanup
 

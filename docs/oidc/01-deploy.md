@@ -26,7 +26,7 @@ Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/
 
 Log in with `admin`/`admin`
 
-... Poke around?
+Explore the Confluent Platform UI, both for Kafka and Flink.
 
 #### CLI Login
 

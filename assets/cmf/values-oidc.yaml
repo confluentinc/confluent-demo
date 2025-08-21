@@ -43,7 +43,7 @@ cmf:
     production: true
     examples-catalog:
       enabled: true
-  
+
   # authorization:
   #   mdsRestConfig:
   #     endpoint: https://kafka.${NAMESPACE}.svc.cluster.local:8090

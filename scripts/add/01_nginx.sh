@@ -2,7 +2,7 @@
 
 ## INSTALL NGINX INGRESS
 
-set -e
+set -euo pipefail
 set -x
 
 . ./.env
