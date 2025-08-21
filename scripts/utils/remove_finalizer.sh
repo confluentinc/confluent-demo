@@ -1,10 +1,13 @@
-
 #!/bin/bash
 
-set -e
+set -euo pipefail
 # set -x
+
+# Usage (either will work):
+# ./scripts/utils/remove_finalizer.sh confluent-demo connector shoe-products
+# ./scripts/utils/remove_finalizer.sh confluent-demo connector/shoe-products
 
 . ./.env
 . ./scripts/functions.sh
 
-kubectl -n "${NAMESPACE}" patch -p '{"metadata":{"finalizers":null}}' -v8 --type=merge $1 $2 $3
+remove_finalizer $@

@@ -45,7 +45,7 @@ jq -s '{
 }' governance/csfle-schema.json governance/csfle-encryptionRule.json | tee csfle.json
 
 # Create a topic
-kafka-topics --bootstrap-server ${BS} --command-config config/client.properties --create --topic csfle --replication-factor=3
+kafka-topics --bootstrap-server "${BS}" --command-config config/client.properties --create --topic csfle --replication-factor=3
 
 # Register the schema
 curl \
@@ -82,7 +82,7 @@ curl -k ${SR}/subjects/csfle-value/versions/latest
 export CSFLE_SCHEMA_ID=$(curl -k ${SR}/subjects/csfle-value/versions/latest | jq '.id')
 
 kafka-avro-console-producer \
-    --bootstrap-server ${BS} \
+    --bootstrap-server "${BS}" \
     --producer.config config/client.properties \
     --reader-config config/client.properties \
     --property schema.registry.url=${SR} \
@@ -99,7 +99,7 @@ In another utility pod, start a generic consumer:
 
 ```bash
 kafka-console-consumer \
-    --bootstrap-server ${BS} \
+    --bootstrap-server "${BS}" \
     --consumer.config config/client.properties \
     --topic csfle \
     --from-beginning
@@ -109,7 +109,7 @@ In another utility pod, start an avro consumer:
 
 ```bash
 kafka-avro-console-consumer \
-    --bootstrap-server ${BS} \
+    --bootstrap-server "${BS}" \
     --consumer.config config/client.properties \
     --property schema.registry.url=${SR} \
     --formatter-config config/client.properties \
@@ -123,7 +123,7 @@ In another utility pod, start an avro consumer, and remove the VAULT_TOKEN envir
 ```bash
 unset VAULT_TOKEN
 kafka-avro-console-consumer \
-    --bootstrap-server ${BS} \
+    --bootstrap-server "${BS}" \
     --consumer.config config/client.properties \
     --property schema.registry.url=${SR} \
     --formatter-config config/client.properties \

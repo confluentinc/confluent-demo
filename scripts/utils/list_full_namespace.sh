@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-# set -x
+set -euo pipefail
+set -x
 
 . ./.env
 . ./scripts/functions.sh
@@ -9,17 +9,19 @@ set -e
 RESOURCES=$(kubectl api-resources --namespaced=true -oname --verbs=get | grep -v event)
 
 for R in ${RESOURCES[@]};
-do 
+do
 # echo ${R}
-kubectl get ${R} -n "${NAMESPACE}" -oname
+kubectl get ${R} -n "${1}" -oname
 done
+
+set +x
 
 echo "--------"
 
 echo "This doesn't currently delete anything, just list all items in the namespace"
 
 echo "To remove the finalizer for a resource, run this:"
-echo "kubectl -n "${NAMESPACE}" patch -p '{\"metadata\":{\"finalizers\":null}}' -v8 --type=merge  <resourcename>/<resourcetype>"
+echo "kubectl -n "${1}" patch -p '{\"metadata\":{\"finalizers\":null}}' -v8 --type=merge  <resourcename>/<resourcetype>"
 
 # echo "for example"
 

@@ -34,7 +34,7 @@ for i in "${!context_array[@]}"; do
     # Get the current context and mark it with an asterisk for easy identification.
     current_context=$(kubectl config current-context)
     display_name="${context_array[$i]}"
-    
+
     if [ "$display_name" == "$current_context" ]; then
         echo "$((i+1)). $display_name (current)"
     else

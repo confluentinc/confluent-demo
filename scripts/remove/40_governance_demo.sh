@@ -1,10 +1,15 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 # set -x
 
 . ./.env
 . ./scripts/functions.sh
+
+if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
+    echo "Namespace ${NAMESPACE} does not exist, skipping governance demo deletion"
+    exit 0
+fi
 
 # These are safe to delete, even if they don't exist
 kubectl -n "${NAMESPACE}" delete \

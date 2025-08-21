@@ -1,10 +1,15 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 # set -x
 
 . ./.env
 . ./scripts/functions.sh
+
+if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
+    echo "Namespace ${NAMESPACE} does not exist, skipping FKO deletion"
+    exit 0
+fi
 
 # gt 2: ignore header lines and CMF pod
 while [[ $(kubectl -n "${NAMESPACE}" get pods -l platform.confluent.io/origin=flink | wc -l ) -gt 2 ]];

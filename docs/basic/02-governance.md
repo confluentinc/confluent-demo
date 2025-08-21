@@ -5,7 +5,7 @@ After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md
 From the repo root directory, install the governance add-on resources:
 
 ```bash
-./scripts/add/40_governance_infra.sh
+./scripts/deploy_governance_demo.sh
 ```
 
 
