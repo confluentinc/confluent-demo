@@ -1,0 +1,24 @@
+--- # Ingress for schemaregistry
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: controlcenter
+  namespace: confluent-demo
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: confluent.127-0-0-1.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # Cannot be headless
+            name: controlcenter-0-internal
+            port:
+              number: 9021

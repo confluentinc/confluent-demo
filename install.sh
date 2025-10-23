@@ -3,6 +3,9 @@
 if [[ $1 == "oidc" ]]; then
     echo 'Running in "oidc" mode'
     export INSTALL_MODE=1
+elif [[ $1 == "plaintext" ]]; then
+    echo 'Running in "plaintext" mode'
+    export INSTALL_MODE=2
 else
     echo 'Running in "basic" mode'
     export INSTALL_MODE=0
@@ -27,6 +30,10 @@ if [[ $INSTALL_MODE == 1 ]]; then
     echo 'Installing "oidc" CP and CMF'
     ./scripts/add/11_cp_oidc.sh
     ./scripts/add/12_cmf_oidc.sh
+elif [[ $INSTALL_MODE == 2 ]]; then
+    echo 'Installing "plaintext" CP and CMF'
+    ./scripts/add/11_cp_plaintext.sh
+    # ./scripts/add/12_cmf_plaintext.sh
 else
     echo 'Installing "basic" CP and CMF'
     ./scripts/add/11_cp_basic.sh
