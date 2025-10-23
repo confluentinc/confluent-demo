@@ -12,10 +12,10 @@ spec:
   dataVolumeCapacity: 10Gi
   configOverrides:
     server:
-      # - confluent.controlcenter.ksql.enable=false
-      # - confluent.controlcenter.ui.replicator.monitoring.enable=false
-      # - confluent.controlcenter.cmf.enable=true
-      # - confluent.controlcenter.cmf.url=http://cmf.${NAMESPACE}.svc.cluster.local
+      - confluent.controlcenter.ksql.enable=false
+      - confluent.controlcenter.ui.replicator.monitoring.enable=false
+      - confluent.controlcenter.cmf.enable=true
+      - confluent.controlcenter.cmf.url=http://cmf.${NAMESPACE}.svc.cluster.local
   dependencies:
     prometheusClient:
       url: http://controlcenter.${NAMESPACE}.svc.cluster.local:9090
