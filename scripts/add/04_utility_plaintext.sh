@@ -19,7 +19,9 @@ for f in ./assets/config/basic-plaintext/*; do
 done
 
 for f in ./assets/config/governance/*; do
-    envsubst < ${f} > ${LOCAL_DIR}/config/governance/$(basename ${f})
+    # Governance configs have a bunch of '$'' in them, so we can't use envsubst
+    # envsubst < ${f} > ${LOCAL_DIR}/config/governance/$(basename ${f})
+    cp ${f} ${LOCAL_DIR}/config/governance/$(basename ${f})
 done
 
 for f in ./assets/config/pipeline/*; do
@@ -53,6 +55,6 @@ kubectl create configmap utility-pipeline-config \
 
 kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-pipeline-config.yaml
 
-export MANIFEST_DIR=./assets/manifests/utility
+export MANIFEST_DIR=./assets/manifests/utility/plaintext
 
 deploy_manifests ${MANIFEST_DIR}

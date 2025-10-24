@@ -3,12 +3,15 @@
 if [[ $1 == "oidc" ]]; then
     echo 'Running in "oidc" mode'
     export INSTALL_MODE=1
+    echo 'oidc' > ./local/mode
 elif [[ $1 == "plaintext" ]]; then
     echo 'Running in "plaintext" mode'
     export INSTALL_MODE=2
+    echo 'plaintext' > ./local/mode
 else
     echo 'Running in "basic" mode'
     export INSTALL_MODE=0
+    echo 'basic' > ./local/mode
 fi
 
 set -euo pipefail
