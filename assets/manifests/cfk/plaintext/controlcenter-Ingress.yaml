@@ -1,9 +1,9 @@
---- # Ingress for schemaregistry
+--- # Ingress for controlcenter
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: controlcenter
-  namespace: confluent-demo
+  namespace: ${NAMESPACE}
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: confluent.127-0-0-1.nip.io
+  - host: confluent.${BASE_DOMAIN}
     http:
       paths:
       - path: /
