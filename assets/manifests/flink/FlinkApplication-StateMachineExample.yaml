@@ -5,21 +5,23 @@ metadata:
   namespace: ${NAMESPACE}
 spec:
   flinkEnvironment: ${NAMESPACE}
-  image: confluentinc/cp-flink:1.19.1-cp1
-  flinkVersion: v1_19
+  image: confluentinc/cp-flink:${CP_FLINK_TAG}
+  flinkVersion: ${CP_FLINK_MAJOR_VERSION}
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "1"
+    kubernetes.taskmanager.cpu.limit-factor: "10"
+    kubernetes.jobmanager.cpu.limit-factor: "10"
   #   "metrics.reporter.prom.factory.class": "org.apache.flink.metrics.prometheus.PrometheusReporterFactory"
   #   "metrics.reporter.prom.port": "9249-9250"
   serviceAccount: flink
   jobManager:
     resource:
       memory: 1048m
-      cpu: 1
+      cpu: 100m
   taskManager:
     resource:
       memory: 1048m
-      cpu: 1
+      cpu: 100m
   job:
     jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
     state: running

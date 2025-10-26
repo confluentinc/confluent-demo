@@ -1,0 +1,29 @@
+--- # Kafka Brokers
+# Listeners:
+# 9071: INTERNAL (mTLS)
+# 9092: EXTERNAL (SASL_SSL, OIDC) - exposed externally on port 443
+# 9072: REPLICATION (MTLS)
+# 9073: TOKEN (SASL_SSL, OAUTHBEARER w/ MDS)
+
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 3
+  image:
+    application: confluentinc/cp-server:${CONFLUENT_PLATFORM_VERSION}
+    init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
+  dataVolumeCapacity: 5Gi
+  listeners:
+  metricReporter:
+    enabled: false
+  dependencies:
+    kRaftController:
+      clusterRef:
+        name: kraft
+    metricsClient:
+      url: http://controlcenter.${NAMESPACE}.svc.cluster.local:9090
+    schemaRegistry:
+      url: http://schemaregistry.${NAMESPACE}.svc.cluster.local:8081

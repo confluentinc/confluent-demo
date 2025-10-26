@@ -14,7 +14,7 @@ rm ${LOCAL_DIR}/config/basic/* || true
 rm ${LOCAL_DIR}/config/governance/* || true
 rm ${LOCAL_DIR}/config/pipeline/* || true
 
-for f in ./assets/config/basic/*; do
+for f in ./assets/config/basic-plaintext/*; do
     envsubst < ${f} > ${LOCAL_DIR}/config/basic/$(basename ${f})
 done
 
@@ -55,6 +55,6 @@ kubectl create configmap utility-pipeline-config \
 
 kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-pipeline-config.yaml
 
-export MANIFEST_DIR=./assets/manifests/utility/basic
+export MANIFEST_DIR=./assets/manifests/utility/plaintext
 
 deploy_manifests ${MANIFEST_DIR}
