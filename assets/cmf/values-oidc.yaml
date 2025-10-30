@@ -72,7 +72,7 @@ mountedVolumes:
         secretName: mds-token
     - name: tls-cmf
       secret:
-        secretName: tls-cmf-full
+        secretName: tls-cmf
 
   volumeMounts:
     - name: mds-token

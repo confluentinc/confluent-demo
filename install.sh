@@ -1,6 +1,10 @@
 #!/bin/bash
 
-if [[ $1 == "oidc" ]]; then
+if [[ $1 == "basic" || -z "${1}" ]]; then
+    echo 'Running in "basic" mode'
+    export INSTALL_MODE=0
+    echo 'basic' > ./local/mode
+elif [[ $1 == "oidc" ]]; then
     echo 'Running in "oidc" mode'
     export INSTALL_MODE=1
     echo 'oidc' > ./local/mode
@@ -9,9 +13,9 @@ elif [[ $1 == "plaintext" ]]; then
     export INSTALL_MODE=2
     echo 'plaintext' > ./local/mode
 else
-    echo 'Running in "basic" mode'
-    export INSTALL_MODE=0
-    echo 'basic' > ./local/mode
+    echo "Invalid mode provided: ${1}"
+    echo "Valid options are 'basic', 'oidc', or 'plaintext'"
+    exit 1
 fi
 
 set -euo pipefail

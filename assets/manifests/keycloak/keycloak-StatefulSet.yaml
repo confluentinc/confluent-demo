@@ -38,9 +38,9 @@ spec:
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
             - name: KC_HTTPS_CERTIFICATE_FILE
-              value: /opt/keycloak/conf/certs/tls.crt
+              value: /opt/keycloak/conf/certs/keycloak.crt
             - name: KC_HTTPS_CERTIFICATE_KEY_FILE
-              value: /opt/keycloak/conf/certs/tls.key
+              value: /opt/keycloak/conf/certs/keycloak.key
             - name: KC_HTTP_ENABLED
               value: "true"
             # In this explorative setup, no strict hostname is set.

@@ -158,6 +158,7 @@ copy_ca_certs () {
 # Use provided CA to generate certificates (of multiple formats) for a given resource type
 create_certificate_secret () {
     export RESOURCE=${1}
+    export LOCAL_NS=${2:-${NAMESPACE}}
 
     echo "Creating certificate secret for ${RESOURCE}"
 
@@ -213,7 +214,7 @@ create_certificate_secret () {
         --from-file=privkey.pem=${CERT_DIR}/${RESOURCE}-key.pem \
         --from-file=truststore.p12=${CERT_DIR}/${RESOURCE}-truststore.p12 \
         --from-file=keystore.p12=${CERT_DIR}/${RESOURCE}.p12 \
-        --namespace "${NAMESPACE}" \
+        --namespace "${LOCAL_NS}" \
         --save-config \
         --dry-run=client \
     -oyaml | kubectl apply -f -
