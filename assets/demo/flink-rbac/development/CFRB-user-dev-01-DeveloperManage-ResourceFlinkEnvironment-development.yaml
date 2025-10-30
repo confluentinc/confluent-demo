@@ -1,0 +1,20 @@
+---
+# User: dev
+# Specific FlinkEnvironment in CMF
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-dev-developermanage-fe-development
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'dev', identified by UUID
+    name: "044fc917-68fe-4ba2-8217-305555be129c"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+  resourcePatterns:
+    - patternType: LITERAL
+      name: development
+      resourceType: FlinkEnvironment
+  role: DeveloperManage

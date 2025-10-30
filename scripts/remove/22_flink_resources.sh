@@ -11,6 +11,7 @@ if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
     exit 0
 fi
 
+# TODO: all flink environments, all flink applications
 kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     FlinkApplication/state-machine-example \

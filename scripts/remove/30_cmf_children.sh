@@ -6,6 +6,13 @@ set -euo pipefail
 . ./.env
 . ./scripts/functions.sh
 
+export MODE=$(cat ./local/mode)
+
+if [[ ${MODE} == "oidc" ]]; then
+    echo "Skipping CMF children deletion in OIDC mode"
+    exit 0
+fi
+
 if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
     echo "Namespace ${NAMESPACE} does not exist, skipping CMF children deletion"
     exit 0

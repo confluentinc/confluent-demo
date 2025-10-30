@@ -1,0 +1,17 @@
+---
+# Client: cmf
+# Resources in FlinkEnvironment development
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-client-cmf-clusteradmin-fe-development
+  namespace: confluent-demo
+spec:
+  principal:
+    # client 'cmf', identified by clientId
+    name: "cmf"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: development
+  role: ClusterAdmin

@@ -36,7 +36,8 @@ create_certificate_secret cmf
 
 deploy_manifests ./assets/manifests/cmf/oidc
 
-envsubst < ./assets/cmf/values-oidc.yaml > ${LOCAL_DIR}/cmf-values.yaml
+# envsubst < ./assets/cmf/values-oidc.yaml > ${LOCAL_DIR}/cmf-values.yaml
+envsubst < ./assets/cmf/values-oidc-rbac.yaml > ${LOCAL_DIR}/cmf-values.yaml
 
 # CMF
 helm upgrade --install cmf \

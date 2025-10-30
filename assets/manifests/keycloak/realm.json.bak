@@ -655,7 +655,6 @@
       "groups": []
     },
     {
-      "id": "27237be5-0b24-4022-8699-5e45183f10f8",
       "username": "admin",
       "enabled": true,
       "emailVerified": true,
@@ -673,46 +672,6 @@
       ],
       "groups": [
         "/administrators"
-      ]
-    },
-    {
-      "id": "044fc917-68fe-4ba2-8217-305555be129c",
-      "username": "dev",
-      "enabled": true,
-      "emailVerified": true,
-      "firstName": "dev",
-      "lastName": "dev",
-      "email": "dev@example.com",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "dev"
-        }
-      ],
-      "realmRoles": [
-        "default-roles-confluent"
-      ],
-      "groups": [
-      ]
-    },
-    {
-      "id": "6195f0e9-ca66-4081-af57-967c0ef3f427",
-      "username": "prod",
-      "enabled": true,
-      "emailVerified": true,
-      "firstName": "prod",
-      "lastName": "prod",
-      "email": "prod@example.com",
-      "credentials": [
-        {
-          "type": "password",
-          "value": "prod"
-        }
-      ],
-      "realmRoles": [
-        "default-roles-confluent"
-      ],
-      "groups": [
       ]
     }
   ],
