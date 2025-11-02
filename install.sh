@@ -28,18 +28,7 @@ set -x
 ./scripts/add/02_vault.sh
 ./scripts/add/03_cfk.sh
 
-if [[ $INSTALL_MODE == 1 ]]; then
-    # TODO: Implement oidc mode utility
-    echo 'Installing "oidc" mode utility'
-    ./scripts/add/04_utility.sh
-elif [[ $INSTALL_MODE == 2 ]]; then
-    echo 'Installing "plaintext" mode utility'
-    ./scripts/add/04_utility_plaintext.sh
-else
-    # TODO Refactor: rename to 04_utility_basic.sh
-    echo 'Installing "basic" mode utility'
-    ./scripts/add/04_utility.sh
-fi
+./scripts/add/04_utility.sh
 
 ./scripts/add/05_keycloak.sh
 ./scripts/add/06_fko.sh
@@ -47,18 +36,13 @@ fi
 ./scripts/add/10_cp_certs.sh
 
 if [[ $INSTALL_MODE == 1 ]]; then
-    echo 'Installing "oidc" CP and CMF'
-    ./scripts/add/11_cp_oidc.sh
-    ./scripts/add/12_cmf_oidc.sh
-elif [[ $INSTALL_MODE == 2 ]]; then
-    echo 'Installing "plaintext" CP and CMF'
-    ./scripts/add/11_cp_plaintext.sh
-    ./scripts/add/12_cmf_plaintext.sh
-else
-    echo 'Installing "basic" CP and CMF'
-    ./scripts/add/11_cp_basic.sh
-    ./scripts/add/12_cmf_basic.sh
+    echo 'Installing "oidc" CP Creds'
+    ./scripts/add/10_cp_creds.sh
 fi
+
+./scripts/add/11_cp.sh
+
+./scripts/add/12_cmf.sh
 
 ./scripts/add/20_topics.sh
 ./scripts/add/21_connectors.sh

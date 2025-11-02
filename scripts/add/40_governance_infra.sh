@@ -6,15 +6,14 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-###### ./assets/manifests/topics includes these objects:
+###### ./assets/demos/governance/topics includes these objects:
 
-export MANIFEST_DIR=./assets/demo/governance/topics
+export MANIFEST_DIR=./assets/demos/governance/topics
 
 deploy_manifests ${MANIFEST_DIR}
 
-export MODE=$(cat ./local/mode)
 kubectl create configmap governance-config \
-    --from-file ./assets/demo/governance/config/${MODE} \
+    --from-file ./assets/demos/governance/config/${MODE} \
     -n "${NAMESPACE}" \
     --save-config \
     --dry-run=client \

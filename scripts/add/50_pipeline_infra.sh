@@ -9,13 +9,13 @@ set -x
 # Create certificate secret for ksqldb
 create_certificate_secret ksqldb
 
-###### ./assets/demo/pipeline/manifests includes these objects:
+###### ./assets/demos/pipeline/infrastructure includes these objects:
 # * ksqldb (CFK CR)
 # * kibana (Deployment, Service, Ingress)
 # * elasticsearch (Deployment, Service, Ingress)
 # * KafkaTopic 'wikipedia.parsed'
 
-export MANIFEST_DIR=./assets/demo/pipeline/manifests
+export MANIFEST_DIR=./assets/demos/pipeline/infrastructure
 
 deploy_manifests ${MANIFEST_DIR}
 

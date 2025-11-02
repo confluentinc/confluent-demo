@@ -6,30 +6,33 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-mkdir -p ${LOCAL_DIR}/config/basic
+mkdir -p ${LOCAL_DIR}/config/utility
 mkdir -p ${LOCAL_DIR}/config/governance
 mkdir -p ${LOCAL_DIR}/config/pipeline
 
-rm ${LOCAL_DIR}/config/basic/* || true
+rm ${LOCAL_DIR}/config/utility/* || true
 rm ${LOCAL_DIR}/config/governance/* || true
 rm ${LOCAL_DIR}/config/pipeline/* || true
 
-for f in ./assets/config/basic/*; do
-    envsubst < ${f} > ${LOCAL_DIR}/config/basic/$(basename ${f})
+# Mode-specific
+for f in ./assets/infrastructure/config/utility/${MODE}/*; do
+    envsubst < ${f} > ${LOCAL_DIR}/config/utility/$(basename ${f})
 done
 
-for f in ./assets/config/governance/*; do
+# Generic
+for f in ./assets/infrastructure/config/governance/*; do
     # Governance configs have a bunch of '$'' in them, so we can't use envsubst
     # envsubst < ${f} > ${LOCAL_DIR}/config/governance/$(basename ${f})
     cp ${f} ${LOCAL_DIR}/config/governance/$(basename ${f})
 done
 
-for f in ./assets/config/pipeline/*; do
+# Generic
+for f in ./assets/infrastructure/config/pipeline/*; do
     envsubst < ${f} > ${LOCAL_DIR}/config/pipeline/$(basename ${f})
 done
 
 kubectl create configmap utility-config \
-    --from-file ${LOCAL_DIR}/config/basic \
+    --from-file ${LOCAL_DIR}/config/utility \
     -n "${NAMESPACE}" \
     --save-config \
     --dry-run=client \
@@ -55,6 +58,6 @@ kubectl create configmap utility-pipeline-config \
 
 kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-pipeline-config.yaml
 
-export MANIFEST_DIR=./assets/manifests/utility/basic
+export MANIFEST_DIR=./assets/infrastructure/manifests/utility/${MODE}
 
 deploy_manifests ${MANIFEST_DIR}

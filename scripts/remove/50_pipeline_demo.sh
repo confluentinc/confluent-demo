@@ -6,8 +6,6 @@ set -euo pipefail
 . ./.env
 . ./scripts/functions.sh
 
-export MODE=$(cat ./local/mode)
-
 if [[ ${MODE} == "oidc" ]]; then
     echo "Skipping pipeline demo deletion in OIDC mode"
     exit 0

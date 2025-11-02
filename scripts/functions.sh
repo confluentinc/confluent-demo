@@ -2,6 +2,8 @@
 
 . ./.env
 
+export MODE=$(cat ./local/mode)
+
 # If a resource has a deletionTimestamp, remove finalizers and delete it
 # Sample Usage (either should work):
     # remove_if_deleted Secret mds-token
@@ -149,10 +151,10 @@ deploy_single_manifest () {
 }
 
 copy_ca_certs () {
-    cp ./assets/certificates/ca.crt ${CERT_DIR}/ca.crt
-    cp ./assets/certificates/ca.key ${CERT_DIR}/ca.key
-    cp ./assets/certificates/cfssl-ca.json ${CFSSL_DIR}/cfssl-ca.json
-    cp ./assets/certificates/cfssl-cert.json ${CFSSL_DIR}/cfssl-cert.json
+    cp ./assets/infrastructure/security/certificates/ca.crt ${CERT_DIR}/ca.crt
+    cp ./assets/infrastructure/security/certificates/ca.key ${CERT_DIR}/ca.key
+    cp ./assets/infrastructure/security/certificates/cfssl-ca.json ${CFSSL_DIR}/cfssl-ca.json
+    cp ./assets/infrastructure/security/certificates/cfssl-cert.json ${CFSSL_DIR}/cfssl-cert.json
 }
 
 # Use provided CA to generate certificates (of multiple formats) for a given resource type

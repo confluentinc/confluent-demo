@@ -6,8 +6,8 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-###### ./assets/manifests/flink includes these objects:
+###### ./assets/resources/flink includes these objects:
 
-export MANIFEST_DIR=./assets/manifests/flink
+export MANIFEST_DIR=./assets/resources/flink
 
 deploy_manifests ${MANIFEST_DIR}
