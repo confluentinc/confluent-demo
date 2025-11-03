@@ -81,6 +81,8 @@ curl -k ${SR}/subjects/csfle-value/versions/latest
 
 export CSFLE_SCHEMA_ID=$(curl -k ${SR}/subjects/csfle-value/versions/latest | jq '.id')
 
+echo "Using schema ID ${CSFLE_SCHEMA_ID} for CSFLE producer"
+
 kafka-avro-console-producer \
     --bootstrap-server "${BS}" \
     --producer.config config/client.properties \

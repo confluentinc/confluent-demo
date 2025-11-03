@@ -26,6 +26,9 @@ spec:
       - User:mds
       - User:kafka
       - User:operator
+      - User:admin
+      - User:cmf
+      - User:27237be5-0b24-4022-8699-5e45183f10f8
   # Has to be exactly 22 characters
   clusterID: confluentplatform-demo
   # clusterID: cp-local-kind-mac-demo

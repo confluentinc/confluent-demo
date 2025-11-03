@@ -14,5 +14,10 @@ fi
 helm uninstall ingress-nginx \
     --namespace ${INGRESS_NGINX_NAMESPACE}
 
-kubectl delete namespace ${INGRESS_NGINX_NAMESPACE} \
-    --ignore-not-found=true
+# Used for dev; nginx namespace takes a really long time to delete for some reason
+if [[ ${KEEP_NGINX:-false} == "true" ]]; then
+    echo "Keeping NGINX namespace ${INGRESS_NGINX_NAMESPACE}"
+else
+    kubectl delete namespace ${INGRESS_NGINX_NAMESPACE} \
+        --ignore-not-found=true
+fi

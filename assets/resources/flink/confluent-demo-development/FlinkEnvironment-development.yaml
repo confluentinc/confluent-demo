@@ -1,14 +1,15 @@
+---
 apiVersion: platform.confluent.io/v1beta1
 kind: FlinkEnvironment
 metadata:
-  name: ${NAMESPACE}
-  namespace: ${NAMESPACE}
+  name: ${FLINK_DEV_ENV_NAME}
+  namespace: ${FLINK_DEV_NAMESPACE}
 spec:
-  kubernetesNamespace: ${NAMESPACE}
+  kubernetesNamespace: ${FLINK_DEV_NAMESPACE}
   flinkApplicationDefaults:
     metadata:
       labels:
-        "confluent-demo/owned-by": "${NAMESPACE}"
+        "${NAMESPACE}/owned-by": "${NAMESPACE}"
     spec:
       flinkConfiguration:
         "metrics.reporter.prom.factory.class": "org.apache.flink.metrics.prometheus.PrometheusReporterFactory"
@@ -17,4 +18,4 @@ spec:
         rest.profiling.enabled: "true"
   cmfRestClassRef:
     name: default
-    namespace: ${NAMESPACE}
+    namespace: "${NAMESPACE}"

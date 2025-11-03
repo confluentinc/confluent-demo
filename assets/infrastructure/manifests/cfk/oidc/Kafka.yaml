@@ -24,6 +24,7 @@ spec:
       - User:operator
       - User:admin
       - User:cmf
+      - User:27237be5-0b24-4022-8699-5e45183f10f8
     type: rbac
   image:
     application: confluentinc/cp-server:${CONFLUENT_PLATFORM_VERSION}
@@ -88,7 +89,8 @@ spec:
             secretRef: sso-oauth-jaas
           configurations:
             groupsClaimName: groups
-            subClaimName: sub
+            # Pull username from the `email` claim
+            subClaimName: email
             issuer: https://keycloak.${BASE_DOMAIN}/realms/confluent
             jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
             tokenBaseEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token

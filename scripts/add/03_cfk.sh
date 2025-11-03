@@ -30,5 +30,5 @@ helm upgrade --install confluent-for-kubernetes \
     --namespace ${OPERATOR_NAMESPACE} \
     --set namespaced=true \
     --set enableCMFDay2Ops=true \
-    --set namespaceList=\{"${NAMESPACE}","${OPERATOR_NAMESPACE}"\} \
+    --set namespaceList=\{"${NAMESPACE}","${OPERATOR_NAMESPACE}","${FLINK_DEV_NAMESPACE}","${FLINK_PROD_NAMESPACE}"\} \
     --version ${CFK_CHART_VERSION}

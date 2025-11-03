@@ -117,12 +117,13 @@ check_for_readiness () {
     echo 'Exec into utility pod with `./shell.sh`'
 }
 
-clean_up_flinkdeployment () {
-    while [[ $(kubectl -n "${NAMESPACE}" get FlinkDeployment -oname | wc -w ) -gt 0 ]];
+wait_for_flink_deployments_to_be_removed () {
+    export NS=${1}
+    while [[ $(kubectl -n "${NS}" get FlinkDeployment -oname | wc -w ) -gt 0 ]];
     do
         echo ""
-        kubectl -n "${NAMESPACE}" get FlinkDeployment
-        echo "Waiting 2s for FlinkDeployments to be removed ..."
+        kubectl -n "${NS}" get FlinkDeployment
+        echo "Waiting 2s for FlinkDeployments to be removed from namespace ${NS}..."
         sleep 2
     done
 }
@@ -148,6 +149,22 @@ deploy_single_manifest () {
     export MANIFEST_FILE=${2}
     envsubst < ${MANIFEST_DIR}/${MANIFEST_FILE} > ${LOCAL_DIR}/${MANIFEST_FILE}
     kubectl apply -f ${LOCAL_DIR}/${MANIFEST_FILE}
+}
+
+delete_manifests () {
+    mkdir -p ${LOCAL_DIR}
+
+    export MANIFEST_DIR=${1}
+
+    ls -1 ${MANIFEST_DIR} | grep yaml
+    
+    for f in \
+        $(ls -1 ${MANIFEST_DIR} | grep yaml)
+    do
+        echo ${f}
+        envsubst < ${MANIFEST_DIR}/${f} > ${LOCAL_DIR}/${f}
+        kubectl delete -f ${LOCAL_DIR}/${f}
+    done
 }
 
 copy_ca_certs () {

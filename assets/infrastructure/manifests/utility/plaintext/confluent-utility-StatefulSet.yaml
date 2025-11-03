@@ -29,7 +29,7 @@ spec:
             - name: NAMESPACE
               value: ${NAMESPACE}
             - name: CMF_ENVIRONMENT_NAME
-              value: ${NAMESPACE}
+              value: ${FLINK_DEV_ENV_NAME}
             - name: VAULT_ADDR
               value: http://vault.vault.svc.cluster.local:8200
             - name: VAULT_TOKEN

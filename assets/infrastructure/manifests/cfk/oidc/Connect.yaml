@@ -19,6 +19,10 @@ spec:
           - name: kafka-connect-datagen
             owner: confluentinc
             version: 0.6.6
+  configOverrides:
+    server:
+      # Significantly speeds up startup time by only loading plugins from the mounted volume
+      - plugin.path=/usr/share/confluent-hub-components,/mnt/plugins
   keyConverterType: io.confluent.connect.avro.AvroConverter
   valueConverterType: io.confluent.connect.avro.AvroConverter
   tls:

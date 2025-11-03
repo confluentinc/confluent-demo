@@ -1,0 +1,50 @@
+---
+# User: admin
+# All FlinkEnvironments in CMF
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-admin-clusteradmin-global
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'admin', identified by email
+    name: "admin@example.com"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+  role: ClusterAdmin
+---
+# User: admin
+# Resources in FlinkEnvironment development
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-admin-clusteradmin-fe-development
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'admin', identified by email
+    name: "admin@example.com"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: development
+  role: ClusterAdmin
+---
+# User: admin
+# Resources in FlinkEnvironment development
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-admin-clusteradmin-fe-production
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'admin', identified by email
+    name: "admin@example.com"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: production
+  role: ClusterAdmin
