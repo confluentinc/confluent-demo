@@ -11,7 +11,7 @@ if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
     exit 0
 fi
 
-helm -n "${NAMESPACE}" uninstall cmf
+helm -n "${NAMESPACE}" uninstall cmf || true
 
 sleep 2
 

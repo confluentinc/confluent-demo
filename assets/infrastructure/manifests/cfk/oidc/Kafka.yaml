@@ -69,6 +69,20 @@ spec:
       tls:
         enabled: true
     # TOKEN: 9073?
+    custom:
+      - name: client
+        authentication:
+          type: oauth
+          jaasConfig:
+            secretRef: kafka-oauth-jaas
+          oauthSettings:
+            subClaimName: client_id
+            expectedIssuer: https://keycloak.${BASE_DOMAIN}/realms/confluent
+            jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
+            tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+        port: 9096
+        tls:
+          enabled: true
   metricReporter:
     enabled: false
   services:

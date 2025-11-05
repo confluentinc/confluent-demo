@@ -8,7 +8,7 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-schema-registry:${CONFLUENT_PLATFORM_VERSION}
+    application: confluentinc/cp-schema-registry:${CONFLUENT_PLATFORM_SR_VERSION}
     # application: confluentinc/cp-schema-registry:${CONFLUENT_PLATFORM_SR_VERSION}
     init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
   tls:
@@ -17,7 +17,8 @@ spec:
     type: rbac
   configOverrides:
     jvm:
-      - "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=*"
+      # 7.9.x doesn't allow for wildcard here
+      - "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
     server:
       - "resource.extension.class=io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"
   dependencies:

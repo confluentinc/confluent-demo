@@ -13,6 +13,9 @@ spec:
   tls:
     secretRef: tls-schemaregistry
   configOverrides:
+    # Only necessary for OIDC
+    # jvm:
+    #   - "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=*"
     server:
       # Only works with 7.9 and below
       - "resource.extension.class=io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"

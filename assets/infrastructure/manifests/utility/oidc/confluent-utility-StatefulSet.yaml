@@ -35,9 +35,21 @@ spec:
             - name: VAULT_TOKEN
               value: root
             - name: BS
-              value: kafka.${NAMESPACE}.svc.cluster.local:9071
+              value: kafka.${NAMESPACE}.svc.cluster.local:9096
             - name: SR
               value: https://schemaregistry.${NAMESPACE}.svc.cluster.local:8081
+            - name: KAFKA_OPTS
+              value: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=*"
+            - name: SCHEMA_REGISTRY_OPTS
+              value: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=*"
+            - name: TOKEN_ENDPOINT_URL
+              value: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+            - name: CLIENT_ID
+              value: ${CLIENT_ID}
+            - name: CLIENT_SECRET
+              value: ${CLIENT_SECRET}
+            - name: SCOPE
+              value: openid profile email
           volumeMounts:
             - name: client-tls
               readOnly: true
@@ -62,6 +74,9 @@ spec:
             - name: utility-pipeline-config
               readOnly: true
               mountPath: /root/pipeline
+            - name: utility-bin-config
+              readOnly: true
+              mountPath: /root/bin
       volumes:
         - name: client-tls
           secret:
@@ -75,3 +90,7 @@ spec:
         - name: utility-pipeline-config
           configMap:
             name: utility-pipeline-config
+        - name: utility-bin-config
+          configMap:
+            name: utility-bin-config
+            defaultMode: 0755

@@ -62,6 +62,9 @@ spec:
             - name: utility-pipeline-config
               readOnly: true
               mountPath: /root/pipeline
+            - name: utility-bin-config
+              readOnly: true
+              mountPath: /root/bin
       volumes:
         - name: client-tls
           secret:
@@ -75,3 +78,7 @@ spec:
         - name: utility-pipeline-config
           configMap:
             name: utility-pipeline-config
+        - name: utility-bin-config
+          configMap:
+            name: utility-bin-config
+            defaultMode: 0755

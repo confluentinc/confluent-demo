@@ -1,0 +1,3 @@
+#!/bin/bash
+kafka-broker-api-versions \
+    --bootstrap-server kafka.${NAMESPACE}.svc.cluster.local:9071
