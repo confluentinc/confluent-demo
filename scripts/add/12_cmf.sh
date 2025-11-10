@@ -36,7 +36,7 @@ create_certificate_secret cmf
 
 deploy_manifests ./assets/infrastructure/manifests/cmf/${MODE}
 
-envsubst < ./assets/infrastructure/helm-values/cmf/${MODE}/values.yaml > ${LOCAL_DIR}/cmf-values.yaml
+envsubst < ./assets/infrastructure/helm-values/cmf/${MODE}/cmf-values.yaml > ${LOCAL_DIR}/cmf-values.yaml
 
 # CMF
 helm upgrade --install cmf \

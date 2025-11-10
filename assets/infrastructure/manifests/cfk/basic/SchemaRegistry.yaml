@@ -14,8 +14,9 @@ spec:
     secretRef: tls-schemaregistry
   configOverrides:
     # Only necessary for OIDC
+    # 7.9.x doesn't allow for wildcard here
     # jvm:
-    #   - "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=*"
+    #   - "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
     server:
       # Only works with 7.9 and below
       - "resource.extension.class=io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"

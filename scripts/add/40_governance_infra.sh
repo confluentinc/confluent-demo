@@ -1,12 +1,27 @@
 #!/bin/bash
 
+###### Governance Demo Infra
+
+# Creates these topics:
+# * KafkaTopic/enriched.orders
+# * KafkaTopic/raw.orders
+# * KafkaTopic/raw.recipes
+# * KafkaTopic/raw.recipes.dlq
+
+# Creates a ConfigMap with these files:
+# * orders-consumer.properties
+# * orders-producer.properties
+# * recipes-consumer.v1.properties
+# * recipes-consumer.v2.properties
+# * recipes-producer.v1.properties
+# * recipes-producer.v2.properties
+
 set -euo pipefail
 set -x
 
 . ./.env
 . ./scripts/functions.sh
 
-###### ./assets/demos/governance/topics includes these objects:
 
 export MANIFEST_DIR=./assets/demos/governance/topics
 

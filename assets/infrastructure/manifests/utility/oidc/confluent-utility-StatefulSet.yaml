@@ -30,6 +30,10 @@ spec:
               value: ${NAMESPACE}
             - name: CMF_ENVIRONMENT_NAME
               value: ${FLINK_DEV_ENV_NAME}
+            - name: FLINK_DEV_ENV_NAME
+              value: ${FLINK_DEV_ENV_NAME}
+            - name: FLINK_PROD_ENV_NAME
+              value: ${FLINK_PROD_ENV_NAME}
             - name: VAULT_ADDR
               value: http://vault.vault.svc.cluster.local:8200
             - name: VAULT_TOKEN
@@ -39,9 +43,9 @@ spec:
             - name: SR
               value: https://schemaregistry.${NAMESPACE}.svc.cluster.local:8081
             - name: KAFKA_OPTS
-              value: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=*"
+              value: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
             - name: SCHEMA_REGISTRY_OPTS
-              value: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=*"
+              value: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
             - name: TOKEN_ENDPOINT_URL
               value: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
             - name: CLIENT_ID

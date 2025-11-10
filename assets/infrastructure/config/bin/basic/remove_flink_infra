@@ -1,0 +1,263 @@
+#!/bin/bash
+
+# Get all environments
+# For each environment, delete the following:
+    # Statement Savepoints (DELETE /cmf/api/v1/environments/{envName}/statements/{stmtName}/savepoints/{savepointName})
+    # Statements (DELETE /cmf/api/v1/environments/{envName}/statements/{stmtName})
+    
+    # Application Savepoints (DELETE /cmf/api/v1/environments/{envName}/applications/{appName}/savepoints/{savepointName})
+    # Applications (DELETE /cmf/api/v1/environments/{envName}/applications/{appName})
+    
+    # Secret mappings (DELETE /cmf/api/v1/environments/{envName}/secret-mappings/{name})
+    # Compute pools (DELETE /cmf/api/v1/environments/{envName}/compute-pools/{computePoolName})
+
+# Delete all non-environment-scoped resources:
+    # Databases (/cmf/api/v1/catalogs/kafka/{catName}/databases/{dbName}) - depend on catalog
+    # Catalogs (DELETE /cmf/api/v1/catalogs/kafka/{catName})) - depend on secrets
+    # Secrets (DELETE /cmf/api/v1/secrets/{secretName})
+    # Detached Savepoints (DELETE /cmf/api/v1/detached-savepoints/{detachedSavepointName})
+
+# Delete all environments (DELETE /cmf/api/v1/environments/{envName})
+
+echo "Getting Flink Environments..."
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X GET \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/environments" \
+    | jq -r ".items[].name" \
+    | tee /tmp/environments.txt
+
+# Iterate over environments
+cat /tmp/environments.txt | while read ENV; do
+    # Get all statements for the environment
+    echo "Getting statements for environment ${ENV}..."
+    curl \
+        -s \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X GET \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/statements" \
+        | jq -r ".items[].metadata.name" \
+        | tee /tmp/${ENV}_statements.txt
+
+    # Iterate over statements
+    cat /tmp/${ENV}_statements.txt | while read STATEMENT; do
+        # For each statement, get savepoints and delete them
+        echo "Getting savepoints for statement ${STATEMENT}..."
+        curl \
+            -s \
+            -H "content-type: application/json" \
+            -H "Authorization: Bearer $(generate_token)" \
+            -X GET \
+            "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/statements/${STATEMENT}/savepoints" \
+            | jq -r ".items[].metadata.name" \
+            | tee /tmp/${ENV}_${STATEMENT}_savepoints.txt
+
+        echo "Deleting savepoints for statement ${STATEMENT}..."
+        cat /tmp/${ENV}_${STATEMENT}_savepoints.txt | while read SAVEPOINT; do
+            curl \
+                -s \
+                -H "content-type: application/json" \
+                -H "Authorization: Bearer $(generate_token)" \
+                -X DELETE \
+                "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/statements/${STATEMENT}/savepoints/${SAVEPOINT}"
+        done
+
+        # Delete statement
+        echo "Deleting statement ${STATEMENT}..."
+        curl \
+            -s \
+            -H "content-type: application/json" \
+            -H "Authorization: Bearer $(generate_token)" \
+            -X DELETE \
+            "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/statements/${STATEMENT}"
+    done
+
+    # Get all applications for the environment
+    echo "Getting applications for environment ${ENV}..."
+    curl \
+        -s \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X GET \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/applications" \
+        | jq -r ".items[].metadata.name" \
+        | tee /tmp/${ENV}_applications.txt
+
+    # Iterate over applications
+    cat /tmp/${ENV}_applications.txt | while read APPLICATION; do
+        # For each application, get savepoints and delete them
+        echo "Getting savepoints for application ${APPLICATION} in environment ${ENV}..."
+        curl \
+            -s \
+            -H "content-type: application/json" \
+            -H "Authorization: Bearer $(generate_token)" \
+            -X GET \
+            "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/applications/${APPLICATION}/savepoints" \
+            | jq -r ".items[].metadata.name" \
+            | tee /tmp/${ENV}_${APPLICATION}_savepoints.txt
+
+        echo "Deleting savepoints for application ${APPLICATION} in environment ${ENV}..."
+        cat /tmp/${ENV}_${APPLICATION}_savepoints.txt | while read SAVEPOINT; do
+            curl \
+                -s \
+                -H "content-type: application/json" \
+                -H "Authorization: Bearer $(generate_token)" \
+                -X DELETE \
+                "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/applications/${APPLICATION}/savepoints/${SAVEPOINT}"
+        done
+
+        # Do not delete application - this is managed by CRDs
+        # curl \
+        #     -s \
+        #     -H "content-type: application/json" \
+        #     -H "Authorization: Bearer $(generate_token)" \
+        #     -X DELETE \
+        #     "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/applications/${APPLICATION}"
+    done
+
+    # Get all secret mappings for the environment
+    echo "Getting secret mappings for environment ${ENV}..."
+    curl \
+        -s \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X GET \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/secret-mappings" \
+        | jq -r ".items[].metadata.name" \
+        | tee /tmp/${ENV}_secret-mappings.txt
+
+    # Iterate over secret mappings; delete each one
+    cat /tmp/${ENV}_secret-mappings.txt | while read SECRET_MAPPING; do
+        echo "Deleting secret mapping ${SECRET_MAPPING} for environment ${ENV}..."
+        curl \
+            -s \
+            -H "content-type: application/json" \
+            -H "Authorization: Bearer $(generate_token)" \
+            -X DELETE \
+            "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/secret-mappings/${SECRET_MAPPING}"
+    done
+
+    # Get all compute pools for the environment
+    echo "Getting compute pools for environment ${ENV}..."
+    curl \
+        -s \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X GET \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/compute-pools" \
+        | jq -r ".items[].metadata.name" \
+        | tee /tmp/${ENV}_compute-pools.txt
+
+    # Iterate over compute pools; delete each one
+    cat /tmp/${ENV}_compute-pools.txt | while read COMPUTE_POOL; do
+        echo "Deleting compute pool ${COMPUTE_POOL} for environment ${ENV}..."
+        curl \
+            -s \
+            -H "content-type: application/json" \
+            -H "Authorization: Bearer $(generate_token)" \
+            -X DELETE \
+            "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}/compute-pools/${COMPUTE_POOL}"
+    done
+done
+
+# Get all catalogs
+echo "Getting catalogs..."
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X GET \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/catalogs/kafka" \
+    | jq -r ".items[].metadata.name" \
+    | tee /tmp/catalogs.txt
+
+# Iterate over catalogs; delete each one
+cat /tmp/catalogs.txt | while read CATALOG; do
+    # Delete databases
+    echo "Getting databases for catalog ${CATALOG}..."
+    curl \
+        -s \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X GET \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/catalogs/kafka/${CATALOG}/databases" \
+        | jq -r ".items[].metadata.name" \
+        | tee /tmp/${CATALOG}_databases.txt
+
+    cat /tmp/${CATALOG}_databases.txt | while read DATABASE; do
+        echo "Deleting database ${DATABASE} for catalog ${CATALOG}..."
+        curl \
+            -s \
+            -H "content-type: application/json" \
+            -H "Authorization: Bearer $(generate_token)" \
+            -X DELETE \
+            "${CONFLUENT_CMF_URL}/cmf/api/v1/catalogs/kafka/${CATALOG}/databases/${DATABASE}"
+    done
+
+    # Delete catalog
+    echo "Deleting catalog ${CATALOG}..."
+    curl \
+        -s \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X DELETE \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/catalogs/kafka/${CATALOG}"
+done
+
+# Get all secrets
+echo "Getting secrets..."
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X GET \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/secrets" \
+    | jq -r ".items[].metadata.name" \
+    | tee /tmp/secrets.txt
+
+# Iterate over secrets; delete each one
+cat /tmp/secrets.txt | while read SECRET; do
+    echo "Deleting secret ${SECRET}..."
+    curl \
+        -s \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X DELETE \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/secrets/${SECRET}"
+done
+
+# Todo: Set up permissions for this to work
+# # Delete detached savepoints
+# echo "Getting detached savepoints..."
+# curl \
+#     -s \
+#     -H "content-type: application/json" \
+#     -H "Authorization: Bearer $(generate_token)" \
+#     -X GET \
+#     "${CONFLUENT_CMF_URL}/cmf/api/v1/detached-savepoints" \
+#     | jq -r ".items[].metadata.name" \
+#     | tee /tmp/detached-savepoints.txt
+
+# # Iterate over detached savepoints; delete each one
+# cat /tmp/detached-savepoints.txt | while read DETACHED_SAVEPOINT; do
+#     echo "Deleting detached savepoint ${DETACHED_SAVEPOINT}..."
+#     curl \
+#         -s \
+#         -H "content-type: application/json" \
+#         -H "Authorization: Bearer $(generate_token)" \
+#         -X DELETE \
+#         "${CONFLUENT_CMF_URL}/cmf/api/v1/detached-savepoints/${DETACHED_SAVEPOINT}"
+# done
+
+# Do not delete environments - this is managed by CRDs
+# cat /tmp/environments.txt | while read ENV; do
+#     curl \
+#         -s \
+#         -H "content-type: application/json" \
+#         -H "Authorization: Bearer $(generate_token)" \
+#         -X DELETE \
+#         "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${ENV}"
+# done

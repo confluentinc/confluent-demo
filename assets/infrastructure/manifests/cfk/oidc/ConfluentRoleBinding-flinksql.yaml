@@ -1,0 +1,42 @@
+# TODO: May be too many permissions
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: kafka-cmf-flink-clusteradmin-global
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    name: kafka
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: kafka-cmf-flink-clusteradmin-fe-${FLINK_DEV_ENV_NAME}
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    name: kafka
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: ${FLINK_DEV_ENV_NAME}
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: kafka-cmf-flink-clusteradmin-fe-${FLINK_PROD_ENV_NAME}
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    name: kafka
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: ${FLINK_PROD_ENV_NAME}
+  role: ClusterAdmin

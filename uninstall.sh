@@ -6,7 +6,7 @@ set -euo pipefail
 # Reverse order of install.sh
 # Governance demo is a special case because it is created manually, so it is not in the install script
 ./scripts/remove/50_pipeline_demo.sh
-./scripts/remove/40_governance_demo.sh
+./scripts/remove/40_governance_infra.sh
 
 ./scripts/remove/30_cmf_children.sh
 ./scripts/remove/22_flink_resources.sh

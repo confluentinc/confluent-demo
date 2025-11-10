@@ -54,7 +54,7 @@ curl \
     -H "Authorization: Bearer $(generate_token)" \
     -H 'content-type:application/json' \
     ${SR}/subjects/csfle-value/versions \
-    -d @csfle.json
+    -d @csfle.json | jq '.'
 ```
 
 In the UI (accessible at https://confluent.127-0-0-1.nip.io/), navigate to the `csfle` topic ([Direct Link](https://confluent.127-0-0-1.nip.io/clusters/confluentplatform-demo/management/topics/csfle/message-viewer))

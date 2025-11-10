@@ -1,0 +1,66 @@
+#!/bin/bash
+
+echo "Creating CMF Secret for kafka"
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X POST \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/secrets" \
+    -d@/root/config/secret-kafka.json | jq '.'
+
+echo "Creating CMF Secrets for schemaregistry"
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X POST \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/secrets" \
+    -d@/root/config/secret-schemaregistry.json | jq '.'
+
+echo "Creating CMF Secret Mapping for kafka with environment ${FLINK_DEV_ENV_NAME}"
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X POST \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${FLINK_DEV_ENV_NAME}/secret-mappings" \
+    -d@/root/config/esm-kafka.json | jq '.'
+
+echo "Creating CMF Secret Mapping for schemaregistry with environment ${FLINK_DEV_ENV_NAME}"
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X POST \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${FLINK_DEV_ENV_NAME}/secret-mappings" \
+    -d@/root/config/esm-schemaregistry.json | jq '.'
+
+# TODO: Decide whether to add prod secret mappings
+
+echo "Creating Flink Catalog (Schema Registry association) with catalog name 'demo'"
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X POST \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/catalogs/kafka" \
+    -d@/root/config/catalogv2.json | jq '.'
+
+echo "Attaching database (Kafka connection) to catalog with catalog name 'demo' and database name 'kafka'"
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X POST \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/catalogs/kafka/demo/databases" \
+    -d@/root/config/databasev2.json | jq '.'
+
+echo "Creating Flink Compute Pool with environment ${FLINK_DEV_ENV_NAME}"
+curl \
+    -s \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $(generate_token)" \
+    -X POST \
+    "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${FLINK_DEV_ENV_NAME}/compute-pools" \
+    -d@/root/config/pool-with-secrets.json | jq '.'

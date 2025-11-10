@@ -1,5 +1,11 @@
 #!/bin/bash
 
+###### Governance Demo Applications - v1
+# * Recipe producer v1
+# * Recipe consumer v1
+# * Order producer
+# * Order consumer
+
 set -euo pipefail
 set -x
 

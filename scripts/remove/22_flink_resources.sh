@@ -13,6 +13,7 @@ for NS in ${FLINK_DEV_NAMESPACE} ${FLINK_PROD_NAMESPACE}; do
         continue
     else
         export MANIFEST_DIR=./assets/resources/flink/${NS}
+        echo "Removing Flink resources from namespace ${NS}..."
         delete_manifests ${MANIFEST_DIR}
 
         wait_for_flink_deployments_to_be_removed ${NS}

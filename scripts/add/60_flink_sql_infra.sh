@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "This script has been replaced by `deploy_flink_infra`, which can be run from the utility pod"
+
+exit 0
+
 set -euo pipefail
 set -x
 
@@ -16,7 +20,9 @@ echo ""
 echo "Creating CMF Secrets for kafka and schemaregistry"
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     curl \
+        -v \
         -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
         -X POST \
         "${CONFLUENT_CMF_URL}/cmf/api/v1/secrets" \
         -d@/root/config/secret-kafka.json
@@ -24,7 +30,9 @@ kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
 
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     curl \
+        -v \
         -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
         -X POST \
         "${CONFLUENT_CMF_URL}/cmf/api/v1/secrets" \
         -d@/root/config/secret-schemaregistry.json
@@ -34,16 +42,41 @@ echo ""
 echo "Creating CMF Secret Mappings associating kafka and schemaregistry secrets with CMF Environment"
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     curl \
+        -v \
         -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
         -X POST \
-        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings" \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${FLINK_DEV_ENV_NAME}/secret-mappings" \
         -d@/root/config/esm-kafka.json
 '
+
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
     curl \
+        -v \
         -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
         -X POST \
-        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${CMF_ENVIRONMENT_NAME}/secret-mappings" \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${FLINK_DEV_ENV_NAME}/secret-mappings" \
+        -d@/root/config/esm-schemaregistry.json
+'
+
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
+    curl \
+        -v \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X POST \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${FLINK_PROD_ENV_NAME}/secret-mappings" \
+        -d@/root/config/esm-kafka.json
+'
+
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
+    curl \
+        -v \
+        -H "content-type: application/json" \
+        -H "Authorization: Bearer $(generate_token)" \
+        -X POST \
+        "${CONFLUENT_CMF_URL}/cmf/api/v1/environments/${FLINK_PROD_ENV_NAME}/secret-mappings" \
         -d@/root/config/esm-schemaregistry.json
 '
 

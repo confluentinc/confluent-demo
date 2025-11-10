@@ -163,7 +163,7 @@ delete_manifests () {
     do
         echo ${f}
         envsubst < ${MANIFEST_DIR}/${f} > ${LOCAL_DIR}/${f}
-        kubectl delete -f ${LOCAL_DIR}/${f}
+        kubectl delete -f ${LOCAL_DIR}/${f} --ignore-not-found=true
     done
 }
 

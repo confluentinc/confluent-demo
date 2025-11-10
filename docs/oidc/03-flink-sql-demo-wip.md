@@ -6,12 +6,6 @@ This automates most of the setup process; you start with access to the Flink SQL
 
 Everything should be run from the utility pod, which has direct access to CFK and CMF from within the cluster.
 
-Run the setup script:
-
-```bash
-./scripts/deploy_flink_sql_infra.sh
-```
-
 You can exec into the pod with this:
 
 ```bash
@@ -24,7 +18,14 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 ./shell.sh
 ```
 
+Create the various CP Flink resources (script exists at `/root/bin/deploy_flink_infra` if you would like to examine it)
+
+```bash
+deploy_flink_infra
+```
+
 The `confluent` CLI uses these environment variables by default (these are set automatically in the utility pod):
+
 
 ```bash
 CONFLUENT_CMF_CERTIFICATE_AUTHORITY_PATH=/root/certs/ca.crt
@@ -34,6 +35,12 @@ CONFLUENT_CMF_URL=http://cmf.confluent-demo.svc.cluster.local
 You can verify everything is set up correctly with these commands:
 
 *Run from within the utility pod*
+
+Log into MDS (will require that you copy a link into a browser to log in). Log in with the username `admin` and password `admin` (and click "Yes")
+
+```bash
+confluent login --url https://kafka:8090 --certificate-authority-path certs/ca.crt  --no-browser
+```
 
 ```bash
 # List Flink catalog(s)

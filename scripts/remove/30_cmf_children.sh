@@ -16,6 +16,13 @@ if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
     exit 0
 fi
 
+# echo "This script has been replaced by `remove_flink_infra`, which can be run from the utility pod"
+echo "Running `remove_flink_infra` in utility pod..."
+kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
+    ./assets/infrastructure/config/bin/basic/remove_flink_infra
+'
+exit 0
+
 # Statements are environment-scoped
 echo "Getting and deleting Flink SQL Statements"
 kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- \

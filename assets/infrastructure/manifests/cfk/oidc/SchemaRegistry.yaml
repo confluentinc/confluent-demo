@@ -9,18 +9,30 @@ spec:
   replicas: 1
   image:
     application: confluentinc/cp-schema-registry:${CONFLUENT_PLATFORM_SR_VERSION}
-    # application: confluentinc/cp-schema-registry:${CONFLUENT_PLATFORM_SR_VERSION}
     init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
   tls:
     secretRef: tls-schemaregistry
   authorization:
     type: rbac
   configOverrides:
+    # 7.9.x doesn't allow for wildcard here
     jvm:
-      # 7.9.x doesn't allow for wildcard here
       - "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
     server:
-      - "resource.extension.class=io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"
+      # Only works with 7.9 and below
+      # RBAC does not work with DEK Registry in 7.9
+      - "dek.registry.rbac.enable=true"
+      - "schema.registry.resource.extension.class=io.confluent.kafka.schemaregistry.security.SchemaRegistrySecurityResourceExtension,io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"
+      # - "schema.registry.resource.extension.class=io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"
+  # Optimized for demo start time; do not use for production
+  podTemplate:
+    probe:
+      readiness:
+        initialDelaySeconds: 30
+        failureThreshold: 30
+      liveness:
+        initialDelaySeconds: 30
+        failureThreshold: 30
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.${NAMESPACE}.svc.cluster.local:9071
