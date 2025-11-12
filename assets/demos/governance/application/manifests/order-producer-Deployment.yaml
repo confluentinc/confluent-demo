@@ -15,6 +15,7 @@ spec:
     metadata:
       labels:
         app: order-producer
+        demo: governance
     spec:
       containers:
         - name: order-producer

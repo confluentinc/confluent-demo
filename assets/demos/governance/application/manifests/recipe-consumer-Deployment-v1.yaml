@@ -17,6 +17,7 @@ spec:
       labels:
         app: recipe-consumer
         version: v1
+        demo: governance
     spec:
       containers:
         - name: recipe-consumer
