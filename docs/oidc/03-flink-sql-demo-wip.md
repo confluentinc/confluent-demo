@@ -52,6 +52,8 @@ confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool list
 
 Verify everything is wired up properly with a basic `SHOW TABLES` query.
 
+# This does not currently work, due to a bug in CMF.
+
 *Run from within the utility pod*
 
 ```bash

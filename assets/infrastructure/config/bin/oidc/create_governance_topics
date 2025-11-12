@@ -1,0 +1,33 @@
+#!/bin/bash
+
+kafka-topics \
+    --bootstrap-server "${BS}" \
+    --command-config config/client.properties \
+    --create \
+    --topic enriched.orders \
+    --replication-factor=3 \
+    --partitions=1
+
+kafka-topics \
+    --bootstrap-server "${BS}" \
+    --command-config config/client.properties \
+    --create \
+    --topic raw.orders \
+    --replication-factor=3 \
+    --partitions=1
+
+kafka-topics \
+    --bootstrap-server "${BS}" \
+    --command-config config/client.properties \
+    --create \
+    --topic raw.recipes \
+    --replication-factor=3 \
+    --partitions=1
+
+kafka-topics \
+    --bootstrap-server "${BS}" \
+    --command-config config/client.properties \
+    --create \
+    --topic raw.recipes.dlq \
+    --replication-factor=3 \
+    --partitions=1

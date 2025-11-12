@@ -36,16 +36,16 @@ cat governance/csfle-encryptionRule.json
 Combine schema and encryption rule into single data governance rule:
 
 ```bash
+# Create a topic
+kafka-topics --bootstrap-server "${BS}" --command-config config/client.properties --create --topic csfle --replication-factor=3
+
 jq -s '{
     schema: (.[0] | tojson),
     schemaType: "AVRO",
     ruleSet: {
         domainRules: [.[1]]
     }
-}' governance/csfle-schema.json governance/csfle-encryptionRule.json | tee csfle.json
-
-# Create a topic
-kafka-topics --bootstrap-server "${BS}" --command-config config/client.properties --create --topic csfle --replication-factor=3
+}' governance/csfle-schema.json governance/csfle-encryptionRule.json | tee csfle.json | jq '.'
 
 # Register the schema
 curl \
@@ -53,7 +53,7 @@ curl \
     -X POST \
     -H 'content-type:application/json' \
     ${SR}/subjects/csfle-value/versions \
-    -d @csfle.json
+    -d @csfle.json | jq '.'
 ```
 
 In the UI (accessible at https://confluent.127-0-0-1.nip.io/), navigate to the `csfle` topic ([Direct Link](https://confluent.127-0-0-1.nip.io/clusters/confluentplatform-demo/management/topics/csfle/message-viewer))

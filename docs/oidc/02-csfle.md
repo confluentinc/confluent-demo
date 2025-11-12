@@ -77,10 +77,9 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 In the first utility pod:
 
 ```bash
-# See the schema (might be 6, depending on what else you've done)
 curl \
     -H "Authorization: Bearer $(generate_token)" \
-    -k ${SR}/subjects/csfle-value/versions/latest
+    -k ${SR}/subjects/csfle-value/versions/latest | jq '.'
 
 export CSFLE_SCHEMA_ID=$(curl -H "Authorization: Bearer $(generate_token)" -k ${SR}/subjects/csfle-value/versions/latest | jq '.id')
 
