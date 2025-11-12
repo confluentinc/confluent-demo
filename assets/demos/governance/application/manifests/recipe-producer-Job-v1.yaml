@@ -7,6 +7,8 @@ metadata:
   namespace: ${NAMESPACE}
   labels:
     demo: governance
+    app: recipe-producer
+    version: v1
 spec:
   template:
     metadata:
