@@ -6,8 +6,8 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-###### ./assets/manifests/topics includes these objects:
+###### ./assets/resources/topics includes these objects:
 
-export MANIFEST_DIR=./assets/manifests/topics
+export MANIFEST_DIR=./assets/resources/topics
 
 deploy_manifests ${MANIFEST_DIR}

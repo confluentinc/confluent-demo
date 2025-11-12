@@ -1,8 +1,0 @@
-apiVersion: platform.confluent.io/v1beta1
-kind: CMFRestClass
-metadata:
-  name: default
-  namespace: ${NAMESPACE}
-spec:
-  cmfRest:
-    endpoint: http://cmf.${NAMESPACE}.svc.cluster.local

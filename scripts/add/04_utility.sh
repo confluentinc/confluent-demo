@@ -6,55 +6,37 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-mkdir -p ${LOCAL_DIR}/config/basic
-mkdir -p ${LOCAL_DIR}/config/governance
-mkdir -p ${LOCAL_DIR}/config/pipeline
+# Mode-specific configmaps; general utility configs
+create_configmap_from_dir_with_envsubst \
+    ./assets/infrastructure/config/utility/${MODE} \
+    config/utility \
+    utility-config
 
-rm ${LOCAL_DIR}/config/basic/* || true
-rm ${LOCAL_DIR}/config/governance/* || true
-rm ${LOCAL_DIR}/config/pipeline/* || true
+# Governance configs have a bunch of '$' in them, so we can't use envsubst
+create_configmap_from_dir_without_envsubst \
+    ./assets/infrastructure/config/governance \
+    config/governance \
+    utility-governance-config
 
-for f in ./assets/config/basic/*; do
-    envsubst < ${f} > ${LOCAL_DIR}/config/basic/$(basename ${f})
-done
+# Pipeline configs
+create_configmap_from_dir_with_envsubst \
+    ./assets/infrastructure/config/pipeline \
+    config/pipeline \
+    utility-pipeline-config
 
-for f in ./assets/config/governance/*; do
-    # Governance configs have a bunch of '$'' in them, so we can't use envsubst
-    # envsubst < ${f} > ${LOCAL_DIR}/config/governance/$(basename ${f})
-    cp ${f} ${LOCAL_DIR}/config/governance/$(basename ${f})
-done
+# Mode-specific utility scripts; this gets mounted with defaultMode: 0755
+create_configmap_from_dir_without_envsubst \
+    ./assets/infrastructure/config/bin/${MODE} \
+    config/bin \
+    utility-bin-config
 
-for f in ./assets/config/pipeline/*; do
-    envsubst < ${f} > ${LOCAL_DIR}/config/pipeline/$(basename ${f})
-done
+# Used to deploy the governance demo applications from the utility container
+# No mode specific manifests; these do have environment substitutions
+create_configmap_from_dir_with_envsubst \
+    ./assets/demos/governance/application/manifests \
+    governance/application/manifests \
+    governance-application-manifests
 
-kubectl create configmap utility-config \
-    --from-file ${LOCAL_DIR}/config/basic \
-    -n "${NAMESPACE}" \
-    --save-config \
-    --dry-run=client \
-    -oyaml > ${LOCAL_DIR}/utility-config.yaml
-
-kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-config.yaml
-
-kubectl create configmap utility-governance-config \
-    --from-file ${LOCAL_DIR}/config/governance \
-    -n "${NAMESPACE}" \
-    --save-config \
-    --dry-run=client \
-    -oyaml > ${LOCAL_DIR}/utility-governance-config.yaml
-
-kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-governance-config.yaml
-
-kubectl create configmap utility-pipeline-config \
-    --from-file ${LOCAL_DIR}/config/pipeline \
-    -n "${NAMESPACE}" \
-    --save-config \
-    --dry-run=client \
-    -oyaml > ${LOCAL_DIR}/utility-pipeline-config.yaml
-
-kubectl -n "${NAMESPACE}" apply -f ${LOCAL_DIR}/utility-pipeline-config.yaml
-
-export MANIFEST_DIR=./assets/manifests/utility/basic
+export MANIFEST_DIR=./assets/infrastructure/manifests/utility/${MODE}
 
 deploy_manifests ${MANIFEST_DIR}

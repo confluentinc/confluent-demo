@@ -1,0 +1,13 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: csfle-kafka-admin
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    name: kafka
+    type: user
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_confluent-demo
+  role: SystemAdmin

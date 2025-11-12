@@ -1,0 +1,41 @@
+---
+# User: prod
+# Specific FlinkEnvironment in CMF
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-prod-developermanage-fe-production
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'prod', identified by email
+    name: "prod@example.com"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+  resourcePatterns:
+    - patternType: LITERAL
+      name: production
+      resourceType: FlinkEnvironment
+  role: DeveloperManage
+---
+# User: prod
+# Specific FlinkApplication in FlinkEnvironment production
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-prod-developermanage-fa-production-my-app-one
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'prod', identified by email
+    name: "prod@example.com"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: production
+  resourcePatterns:
+    - patternType: LITERAL
+      name: my-app-one
+      resourceType: FlinkApplication
+  role: DeveloperManage

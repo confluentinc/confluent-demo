@@ -53,20 +53,6 @@ The installation script will monitor the deployment process.
 
 Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/ and explore both the Kafka and Flink components of Confluent Platform.
 
-To add the pipeline demo (copied from [cp-demo](https://github.com/confluentinc/cp-demo)) components:
-* ksqlDB
-* Elasticsearch
-* Kibana
-* Wikipedia > SSE > ksqlDB > Elastic pipeline
-
-Run this:
-
-```bash
-./scripts/deploy_pipeline_demo.sh
-```
-
-Open up the Kibana UI: https://kibana.127-0-0-1.nip.io/
-
 #### CLI Login
 
 Exec into the confluent-utility-0 container:
@@ -88,7 +74,6 @@ confluent flink environment list
 
 * [CSFLE Demo](./02-csfle.md)
 * [Data Governance Demo](./02-governance.md)
-* [Flink SQL - Setup Walkthrough](./03-flink-sql-walkthrough.md)
 * [Flink SQL - Demo](./03-flink-sql-demo.md)
 
 ### Cleanup

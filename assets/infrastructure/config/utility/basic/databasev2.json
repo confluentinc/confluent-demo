@@ -1,0 +1,19 @@
+{
+    "apiVersion": "cmf.confluent.io/v1",
+    "kind": "KafkaDatabase",
+    "metadata": {
+      "name": "kafka"
+    },
+    "spec": {
+      "kafkaCluster": {
+        "connectionConfig": {
+          "bootstrap.servers": "kafka.confluent-demo.svc.cluster.local:9071"
+        },
+        "connectionSecretId": "kafka"
+      },
+      "alterEnvironments": [
+        "development",
+        "production"
+      ]
+    }
+  }

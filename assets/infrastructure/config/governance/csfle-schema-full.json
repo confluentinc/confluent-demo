@@ -1,0 +1,24 @@
+{
+    "schema": "{\"name\":\"PersonalData\",\"type\":\"record\",\"namespace\":\"demo\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\",\"confluent:tags\":[\"PII\"]},{\"name\":\"birthday\",\"type\":\"string\"}]}",
+    "schemaType": "AVRO",
+    "ruleSet": {
+      "domainRules": [
+        {
+          "name": "encryptPII",
+          "kind": "TRANSFORM",
+          "type": "ENCRYPT",
+          "mode": "WRITEREAD",
+          "tags": [
+            "PII"
+          ],
+          "params": {
+            "encrypt.kek.name": "csfle-hashicorp",
+            "encrypt.kms.key.id": "http://vault.vault.svc.cluster.local:8200/transit/keys/csfle",
+            "encrypt.kms.type": "hcvault",
+            "encrypt.dek.expiry.days": 7
+          },
+          "onFailure": "ERROR,NONE"
+        }
+      ]
+    }
+  }

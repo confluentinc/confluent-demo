@@ -6,6 +6,11 @@ set -euo pipefail
 . ./.env
 . ./scripts/functions.sh
 
+if [[ ${MODE} == "oidc" ]]; then
+    echo "Skipping pipeline demo deletion in OIDC mode"
+    exit 0
+fi
+
 if [[ $(kubectl get namespace | grep "${NAMESPACE}" | wc -l) -lt 1 ]]; then
     echo "Namespace ${NAMESPACE} does not exist, skipping pipeline demo deletion"
     exit 0

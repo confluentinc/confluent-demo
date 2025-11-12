@@ -1,0 +1,31 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: FlinkApplication
+metadata:
+  name: ${FLINK_PROD_APP1_NAME}
+  namespace: ${FLINK_PROD_NAMESPACE}
+spec:
+  flinkEnvironment: ${FLINK_PROD_ENV_NAME}
+  image: confluentinc/cp-flink:1.19.3-cp1
+  flinkVersion: v1_19
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "1"
+    kubernetes.taskmanager.cpu.limit-factor: "10"
+    kubernetes.jobmanager.cpu.limit-factor: "10"
+  serviceAccount: flink
+  jobManager:
+    resource:
+      memory: 1024m
+      cpu: 100m
+  taskManager:
+    resource:
+      memory: 1024m
+      cpu: 100m
+  job:
+    jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
+    state: running
+    parallelism: 1
+    upgradeMode: stateless
+  cmfRestClassRef:
+    name: default
+    namespace: "${NAMESPACE}"

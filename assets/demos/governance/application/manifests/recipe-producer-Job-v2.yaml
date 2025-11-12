@@ -1,0 +1,45 @@
+---
+# Recipe producer v1 - runs once and then exits
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: recipe-producer-v2
+  namespace: ${NAMESPACE}
+  labels:
+    demo: governance
+    app: recipe-producer
+    version: v2
+spec:
+  template:
+    metadata:
+      labels:
+        demo: governance
+        app: recipe-producer
+        version: v2
+    spec:
+      containers:
+      - name: recipe-producer
+        image: justinrlee/byte-to-eat-recipe-producer-v2:${RECIPE_v2_VERSION}
+        env:
+        - name: LIST_ALL_INGREDIENTS
+          value: "true"
+        - name: VAULT_ADDR
+          value: http://vault.vault.svc.cluster.local:8200
+        - name: VAULT_TOKEN
+          value: root
+        volumeMounts:
+        - name: governance-application-config
+          mountPath: "/app/producer-recipes.properties"
+          subPath: recipes-producer.v2.properties
+        - name: client-tls
+          readOnly: true
+          mountPath: /mnt/certs
+      restartPolicy: Never
+      volumes:
+      - name: governance-application-config
+        configMap:
+          name: governance-application-config
+      - name: client-tls
+        secret:
+          secretName: tls-client
+  backoffLimit: 4

@@ -1,0 +1,37 @@
+---
+# User: dev
+# Specific FlinkEnvironment in CMF
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-dev-developermanage-fe-development
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'dev', identified by email
+    name: "dev@example.com"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+  resourcePatterns:
+    - patternType: LITERAL
+      name: development
+      resourceType: FlinkEnvironment
+  role: DeveloperManage
+---
+# User: dev
+# All FlinkApplications in FlinkEnvironment development
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: flink-user-dev-clusteradmin-fe-development
+  namespace: confluent-demo
+spec:
+  principal:
+    # user 'dev', identified by email
+    name: "dev@example.com"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: development
+  role: ClusterAdmin

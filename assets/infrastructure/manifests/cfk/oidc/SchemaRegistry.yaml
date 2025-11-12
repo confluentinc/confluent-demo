@@ -1,0 +1,63 @@
+
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+  namespace: ${NAMESPACE}
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-schema-registry:${CONFLUENT_PLATFORM_SR_VERSION}
+    init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
+  tls:
+    secretRef: tls-schemaregistry
+  authorization:
+    type: rbac
+  configOverrides:
+    # 7.9.x doesn't allow for wildcard here
+    jvm:
+      - "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
+    server:
+      # Only works with 7.9 and below
+      # RBAC does not work with DEK Registry in 7.9
+      - "dek.registry.rbac.enable=true"
+      - "schema.registry.resource.extension.class=io.confluent.kafka.schemaregistry.security.SchemaRegistrySecurityResourceExtension,io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"
+      # - "schema.registry.resource.extension.class=io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension,io.confluent.dekregistry.DekRegistryResourceExtension"
+  # Optimized for demo start time; do not use for production
+  podTemplate:
+    probe:
+      readiness:
+        initialDelaySeconds: 30
+        failureThreshold: 30
+      liveness:
+        initialDelaySeconds: 30
+        failureThreshold: 30
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.${NAMESPACE}.svc.cluster.local:9071
+      authentication:
+        type: oauth
+        jaasConfig:
+          secretRef: schemaregistry-oauth-jaas
+        oauthSettings:
+          subClaimName: client_id
+          tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+      tls:
+        enabled: true
+    mds:
+      endpoint: https://kafka.${NAMESPACE}.svc.cluster.local:8090
+      tokenKeyPair:
+        secretRef: mds-token
+      authentication:
+        type: oauth
+        oauth:
+          secretRef: schemaregistry-oauth-jaas
+          configuration:
+            tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
+            expectedIssuer: https://keycloak.${BASE_DOMAIN}/realms/confluent
+            # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
+            jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
+            subClaimName: client_id
+      tls:
+        enabled: true

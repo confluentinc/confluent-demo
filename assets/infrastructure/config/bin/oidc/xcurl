@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl -vk --header 'content-type: application/json' --header "Authorization: Bearer $(generate_token)" $@

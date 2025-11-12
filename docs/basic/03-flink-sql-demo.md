@@ -6,12 +6,6 @@ This automates most of the setup process; you start with access to the Flink SQL
 
 Everything should be run from the utility pod, which has direct access to CFK and CMF from within the cluster.
 
-Run the setup script:
-
-```bash
-./scripts/deploy_flink_sql_infra.sh
-```
-
 You can exec into the pod with this:
 
 ```bash
@@ -29,6 +23,11 @@ The `confluent` CLI uses these environment variables by default (these are set a
 ```bash
 CONFLUENT_CMF_CERTIFICATE_AUTHORITY_PATH=/root/certs/ca.crt
 CONFLUENT_CMF_URL=http://cmf.confluent-demo.svc.cluster.local
+```
+
+Run the infrastructure deployment script (creates resources using the CMF REST API)
+```bash
+deploy_flink_sql_infra
 ```
 
 You can verify everything is set up correctly with these commands:

@@ -1,0 +1,58 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: manual-cmf
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    # Principal is pulled from token claim identified by `oauthbearer.sub.claim.name` in cmf config
+    # client 'cmf', UUID 'd8e86361-2af0-43ce-92c7-f39a86a9c716'
+    name: "cmf"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: manual-cmf-c3
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    # Principal is pulled from token claim identified by `oauthbearer.sub.claim.name` in cmf config
+    # client 'cmf', UUID 'd8e86361-2af0-43ce-92c7-f39a86a9c716'
+    name: "controlcenter"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+  role: SystemAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: manual-cmf-environment-development
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    name: "cmf"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: development
+  role: ClusterAdmin
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: manual-cmf-environment-production
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    name: "cmf"
+    type: user
+  clustersScopeByIds:
+    cmfId: CMF-id
+    flinkEnvironmentId: production
+  role: ClusterAdmin

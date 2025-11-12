@@ -1,0 +1,15 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: schemaregistry-csfle
+  namespace: ${NAMESPACE}
+spec:
+  principal:
+    name: schemaregistry
+    type: user
+  resourcePatterns:
+  - name: _dek_registry_keys
+    patternType: LITERAL
+    resourceType: Topic
+  role: ResourceOwner

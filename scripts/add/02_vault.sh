@@ -6,7 +6,7 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-export MANIFEST_DIR=./assets/manifests/vault
+export MANIFEST_DIR=./assets/infrastructure/manifests/vault
 
 # Install Vault repo
 helm repo add hashicorp https://helm.releases.hashicorp.com

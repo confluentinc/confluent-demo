@@ -6,7 +6,7 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-###### ./assets/demo/pipeline/connectors includes these objects
+###### ./assets/demos/pipeline/connectors includes these objects
 # * Connector-wikipedia-sse-source
 # * Connector-elasticsearch-sink
 
@@ -17,7 +17,7 @@ set -x
 # 4. Create ksqlDB pipelines (must be done after source data is present)
 # 5. Deploy sink connector (must be done after ES mappings are created)
 
-deploy_single_manifest ./assets/demo/pipeline/connectors Connector-wikipedia-sse-source.yaml
+deploy_single_manifest ./assets/demos/pipeline/connectors Connector-wikipedia-sse-source.yaml
 
 wait_for_connector wikipedia-sse-source
 
@@ -49,6 +49,6 @@ kubectl -n "${NAMESPACE}" exec -it confluent-utility-0 -- bash -c '
 '
 
 echo "Deploying sink connector"
-deploy_single_manifest ./assets/demo/pipeline/connectors Connector-elasticsearch-sink.yaml
+deploy_single_manifest ./assets/demos/pipeline/connectors Connector-elasticsearch-sink.yaml
 
 echo "Access the Kibana dashboard at https://kibana.${BASE_DOMAIN}"

@@ -6,8 +6,13 @@ set -x
 . ./.env
 . ./scripts/functions.sh
 
-###### ./assets/manifests/flink includes these objects:
+###### ./assets/resources/flink includes these objects:
 
-export MANIFEST_DIR=./assets/manifests/flink
+for NS in ${FLINK_DEV_NAMESPACE} ${FLINK_PROD_NAMESPACE}; do
+    kubectl create namespace "${NS}" --dry-run=client -oyaml | kubectl apply -f -
 
-deploy_manifests ${MANIFEST_DIR}
+    create_certificate_secret client ${NS}
+
+    export MANIFEST_DIR=./assets/resources/flink/${NS}
+    deploy_manifests ${MANIFEST_DIR}
+done

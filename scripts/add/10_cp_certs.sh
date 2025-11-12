@@ -35,8 +35,8 @@ create_certificate_secret client
 remove_if_deleted secret mds-token
 
 kubectl create secret generic mds-token \
-  --from-file=mdsPublicKey.pem=assets/mds/mds.pub \
-  --from-file=mdsTokenKeyPair.pem=assets/mds/mds.key \
+  --from-file=mdsPublicKey.pem=./assets/infrastructure/security/mds/mds.pub \
+  --from-file=mdsTokenKeyPair.pem=./assets/infrastructure/security/mds/mds.key \
   --namespace "${NAMESPACE}" \
     --save-config \
     --dry-run=client \

@@ -2,6 +2,8 @@
 
 . ./.env
 
+export MODE=$(cat ./local/mode)
+
 # If a resource has a deletionTimestamp, remove finalizers and delete it
 # Sample Usage (either should work):
     # remove_if_deleted Secret mds-token
@@ -115,12 +117,13 @@ check_for_readiness () {
     echo 'Exec into utility pod with `./shell.sh`'
 }
 
-clean_up_flinkdeployment () {
-    while [[ $(kubectl -n "${NAMESPACE}" get FlinkDeployment -oname | wc -w ) -gt 0 ]];
+wait_for_flink_deployments_to_be_removed () {
+    export NS=${1}
+    while [[ $(kubectl -n "${NS}" get FlinkDeployment -oname | wc -w ) -gt 0 ]];
     do
         echo ""
-        kubectl -n "${NAMESPACE}" get FlinkDeployment
-        echo "Waiting 2s for FlinkDeployments to be removed ..."
+        kubectl -n "${NS}" get FlinkDeployment
+        echo "Waiting 2s for FlinkDeployments to be removed from namespace ${NS}..."
         sleep 2
     done
 }
@@ -148,16 +151,33 @@ deploy_single_manifest () {
     kubectl apply -f ${LOCAL_DIR}/${MANIFEST_FILE}
 }
 
+delete_manifests () {
+    mkdir -p ${LOCAL_DIR}
+
+    export MANIFEST_DIR=${1}
+
+    ls -1 ${MANIFEST_DIR} | grep yaml
+    
+    for f in \
+        $(ls -1 ${MANIFEST_DIR} | grep yaml)
+    do
+        echo ${f}
+        envsubst < ${MANIFEST_DIR}/${f} > ${LOCAL_DIR}/${f}
+        kubectl delete -f ${LOCAL_DIR}/${f} --ignore-not-found=true
+    done
+}
+
 copy_ca_certs () {
-    cp ./assets/certificates/ca.crt ${CERT_DIR}/ca.crt
-    cp ./assets/certificates/ca.key ${CERT_DIR}/ca.key
-    cp ./assets/certificates/cfssl-ca.json ${CFSSL_DIR}/cfssl-ca.json
-    cp ./assets/certificates/cfssl-cert.json ${CFSSL_DIR}/cfssl-cert.json
+    cp ./assets/infrastructure/security/certificates/ca.crt ${CERT_DIR}/ca.crt
+    cp ./assets/infrastructure/security/certificates/ca.key ${CERT_DIR}/ca.key
+    cp ./assets/infrastructure/security/certificates/cfssl-ca.json ${CFSSL_DIR}/cfssl-ca.json
+    cp ./assets/infrastructure/security/certificates/cfssl-cert.json ${CFSSL_DIR}/cfssl-cert.json
 }
 
 # Use provided CA to generate certificates (of multiple formats) for a given resource type
 create_certificate_secret () {
     export RESOURCE=${1}
+    export LOCAL_NS=${2:-${NAMESPACE}}
 
     echo "Creating certificate secret for ${RESOURCE}"
 
@@ -213,7 +233,7 @@ create_certificate_secret () {
         --from-file=privkey.pem=${CERT_DIR}/${RESOURCE}-key.pem \
         --from-file=truststore.p12=${CERT_DIR}/${RESOURCE}-truststore.p12 \
         --from-file=keystore.p12=${CERT_DIR}/${RESOURCE}.p12 \
-        --namespace "${NAMESPACE}" \
+        --namespace "${LOCAL_NS}" \
         --save-config \
         --dry-run=client \
     -oyaml | kubectl apply -f -
@@ -223,4 +243,50 @@ create_certificate_secret () {
 # If the resource is not found, do nothing
 remove_finalizer () {
     kubectl -n "${1}" patch -p '{"metadata":{"finalizers":null}}' --type=merge "${2}" ${3:-} || true
+}
+
+create_configmap_from_dir_with_envsubst () {
+    export SOURCE_DIR=${1}
+    export LOCAL_PATH=${2}
+    export CONFIGMAP_NAME=${3}
+
+    mkdir -p ${LOCAL_DIR}/${LOCAL_PATH}
+
+    rm ${LOCAL_DIR}/${LOCAL_PATH}/* || true
+
+    for f in ${SOURCE_DIR}/*; do
+        envsubst < ${f} > ${LOCAL_DIR}/${LOCAL_PATH}/$(basename ${f})
+    done
+
+    kubectl create configmap ${CONFIGMAP_NAME} \
+        --from-file ${LOCAL_DIR}/${LOCAL_PATH} \
+        -n ${NAMESPACE} \
+        --save-config \
+        --dry-run=client \
+        -oyaml > ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
+        
+    kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
+}
+
+create_configmap_from_dir_without_envsubst () {
+    export SOURCE_DIR=${1}
+    export LOCAL_PATH=${2}
+    export CONFIGMAP_NAME=${3}
+
+    mkdir -p ${LOCAL_DIR}/${LOCAL_PATH}
+
+    rm ${LOCAL_DIR}/${LOCAL_PATH}/* || true
+
+    for f in ${SOURCE_DIR}/*; do
+        cp ${f} ${LOCAL_DIR}/${LOCAL_PATH}/$(basename ${f})
+    done
+
+    kubectl create configmap ${CONFIGMAP_NAME} \
+        --from-file ${LOCAL_DIR}/${LOCAL_PATH} \
+        -n ${NAMESPACE} \
+        --save-config \
+        --dry-run=client \
+        -oyaml > ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
+        
+    kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
 }
