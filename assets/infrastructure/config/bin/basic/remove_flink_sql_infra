@@ -229,7 +229,7 @@ cat /tmp/secrets.txt | while read SECRET; do
         "${CONFLUENT_CMF_URL}/cmf/api/v1/secrets/${SECRET}"
 done
 
-# Todo: Set up permissions for this to work
+# TODO: Set up permissions for this to work
 # # Delete detached savepoints
 # echo "Getting detached savepoints..."
 # curl \

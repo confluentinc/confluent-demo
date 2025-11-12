@@ -33,5 +33,4 @@ Basic Mode
 * [Installation](./docs/basic/01-deploy.md)
 * [CSFLE Demo](./docs/basic/02-csfle.md)
 * [Governance Demo](./docs/basic/02-governance.md)
-* [Flink SQL - Setup Walkthrough](./docs/basic/03-flink-sql-walkthrough.md)
-* [Flink SQL - Demo](./docs/basic/03-flink-sql-demo.md)
+* [Flink SQL Demo](./docs/basic/03-flink-sql-demo.md)

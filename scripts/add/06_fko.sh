@@ -16,5 +16,3 @@ helm upgrade --install cp-flink-kubernetes-operator \
     --set webhook.create=false \
     --namespace "${NAMESPACE}" \
     --version ${FKO_VERSION}
-
-    # --set watchNamespaces=\{"${NAMESPACE}"\} \
