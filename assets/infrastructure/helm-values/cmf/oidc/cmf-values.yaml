@@ -88,4 +88,4 @@ mountedVolumes:
     - name: tls-cmf
       mountPath: /mount/tls
 
-# jvmArgs: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
+jvmArgs: "-Dorg.apache.kafka.sasl.oauthbearer.allowed.urls=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token"
