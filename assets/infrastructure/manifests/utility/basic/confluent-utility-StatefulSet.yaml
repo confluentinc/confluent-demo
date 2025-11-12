@@ -69,6 +69,9 @@ spec:
             - name: utility-bin-config
               readOnly: true
               mountPath: /root/bin
+            - name: governance-application-manifests
+              readOnly: true
+              mountPath: /root/governance/applications
       volumes:
         - name: client-tls
           secret:
@@ -86,3 +89,6 @@ spec:
           configMap:
             name: utility-bin-config
             defaultMode: 0755
+        - name: governance-application-manifests
+          configMap:
+            name: governance-application-manifests

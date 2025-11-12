@@ -21,7 +21,7 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 Create the various CP Flink resources (script exists at `/root/bin/deploy_flink_infra` if you would like to examine it)
 
 ```bash
-deploy_flink_infra
+deploy_flink_sql_infra
 ```
 
 The `confluent` CLI uses these environment variables by default (these are set automatically in the utility pod):

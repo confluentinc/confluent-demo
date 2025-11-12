@@ -244,3 +244,49 @@ create_certificate_secret () {
 remove_finalizer () {
     kubectl -n "${1}" patch -p '{"metadata":{"finalizers":null}}' --type=merge "${2}" ${3:-} || true
 }
+
+create_configmap_from_dir_with_envsubst () {
+    export SOURCE_DIR=${1}
+    export LOCAL_PATH=${2}
+    export CONFIGMAP_NAME=${3}
+
+    mkdir -p ${LOCAL_DIR}/${LOCAL_PATH}
+
+    rm ${LOCAL_DIR}/${LOCAL_PATH}/* || true
+
+    for f in ${SOURCE_DIR}/*; do
+        envsubst < ${f} > ${LOCAL_DIR}/${LOCAL_PATH}/$(basename ${f})
+    done
+
+    kubectl create configmap ${CONFIGMAP_NAME} \
+        --from-file ${LOCAL_DIR}/${LOCAL_PATH} \
+        -n ${NAMESPACE} \
+        --save-config \
+        --dry-run=client \
+        -oyaml > ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
+        
+    kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
+}
+
+create_configmap_from_dir_without_envsubst () {
+    export SOURCE_DIR=${1}
+    export LOCAL_PATH=${2}
+    export CONFIGMAP_NAME=${3}
+
+    mkdir -p ${LOCAL_DIR}/${LOCAL_PATH}
+
+    rm ${LOCAL_DIR}/${LOCAL_PATH}/* || true
+
+    for f in ${SOURCE_DIR}/*; do
+        cp ${f} ${LOCAL_DIR}/${LOCAL_PATH}/$(basename ${f})
+    done
+
+    kubectl create configmap ${CONFIGMAP_NAME} \
+        --from-file ${LOCAL_DIR}/${LOCAL_PATH} \
+        -n ${NAMESPACE} \
+        --save-config \
+        --dry-run=client \
+        -oyaml > ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
+        
+    kubectl -n ${NAMESPACE} apply -f ${LOCAL_DIR}/${CONFIGMAP_NAME}.yaml
+}

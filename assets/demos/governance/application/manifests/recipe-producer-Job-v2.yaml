@@ -21,7 +21,7 @@ spec:
         - name: VAULT_TOKEN
           value: root
         volumeMounts:
-        - name: governance-config
+        - name: governance-application-config
           mountPath: "/app/producer-recipes.properties"
           subPath: recipes-producer.v2.properties
         - name: client-tls
@@ -29,9 +29,9 @@ spec:
           mountPath: /mnt/certs
       restartPolicy: Never
       volumes:
-      - name: governance-config
+      - name: governance-application-config
         configMap:
-          name: governance-config
+          name: governance-application-config
       - name: client-tls
         secret:
           secretName: tls-client

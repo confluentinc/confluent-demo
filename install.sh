@@ -55,7 +55,8 @@ if [[ $INSTALL_MODE -ne 1 ]]; then
     ./scripts/add/21_connectors.sh
 fi
 
-
 ./scripts/add/22_flink_resources.sh
+
+./scripts/add/30_demo_infra.sh
 
 ./scripts/add/99_check_for_readiness.sh

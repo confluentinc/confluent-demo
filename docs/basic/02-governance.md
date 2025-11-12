@@ -5,7 +5,6 @@ After doing the initial deployment (instructions in [Basic Setup](./01-deploy.md
 From the repo root directory, install the governance add-on resources:
 
 ```bash
-./scripts/deploy_governance_demo.sh
 ```
 
 
@@ -24,6 +23,10 @@ kubectl -n confluent-demo exec -it confluent-utility-0 -- bash
 ```
 
 *Run from within the utility pod*
+
+```
+create_governance_topics
+```
 
 Verify the "csfle" Vault key was properly created (and auth works, etc.)
 
@@ -90,23 +93,24 @@ curl \
 ```
 
 
-Once all the rules are in place, deploy the initial applications (from the project directory)
-
-```bash
-# Run in the project directory
-./scripts/add/42_governance_deploy_v1_apps.sh
-```
-
-Deploy a job with an invalid recipe (not enough ingredients), and observe it landing in the recipe DLQ.
-
-```bash
-# Run in the project directory
-./scripts/add/43_governance_invalid_recipe.sh
-```
+Once all the rules are in place, deploy the initial applications (run from utility container)
 
 _(Run in the utility container)_
+```bash
+kubectl apply -f /root/governance/applications/recipe-producer-Job-v1.yaml
+kubectl apply -f /root/governance/applications/recipe-consumer-Deployment-v1.yaml
+kubectl apply -f /root/governance/applications/order-producer-Deployment.yaml
+kubectl apply -f /root/governance/applications/order-consumer-Deployment.yaml
+```
 
-Register compatibility group:
+Also, deploy an application that creates an invalid recipe (not enough ingredients), and observe it landing in the recipe DLQ.
+
+_(Run in the utility container)_
+```bash
+kubectl apply -f /root/governance/applications/recipe-producer-Job-v1-invalid.yaml
+```
+
+To demonstrate migration rules, register a compatibility group for the `raw.recipes-value` subject.
 
 ```bash
 # Run in the utility container
@@ -156,11 +160,12 @@ curl \
     -d @raw.recipes-value.v2.json
 ```
 
-Deploy v2 of recipe applications
+And deploy v2 of the recipe application (note that it runs in parallel with v2 of the recipe application, even though it has a different schema)
 
 ```bash
-# Run in the project directory
-./scripts/add/44_governance_deploy_v2_apps.sh
+# Run in the utility container
+kubectl apply -f /root/governance/applications/recipe-producer-Job-v2.yaml
+kubectl apply -f /root/governance/applications/recipe-consumer-Deployment-v2.yaml
 ```
 
 Architecture:

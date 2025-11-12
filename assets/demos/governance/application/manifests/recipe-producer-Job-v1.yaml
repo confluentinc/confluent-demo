@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: recipe-producer-v1-invalid
+  name: recipe-producer-v1
   namespace: ${NAMESPACE}
   labels:
     demo: governance
@@ -15,13 +15,13 @@ spec:
         image: justinrlee/byte-to-eat-recipe-producer-v1:${RECIPE_v1_VERSION}
         env:
         - name: LIST_ALL_INGREDIENTS
-          value: "false"
+          value: "true"
         - name: VAULT_ADDR
           value: http://vault.vault.svc.cluster.local:8200
         - name: VAULT_TOKEN
           value: root
         volumeMounts:
-        - name: governance-config
+        - name: governance-application-config
           mountPath: "/app/producer-recipes.properties"
           subPath: recipes-producer.v1.properties
         - name: client-tls
@@ -29,9 +29,9 @@ spec:
           mountPath: /mnt/certs
       restartPolicy: Never
       volumes:
-      - name: governance-config
+      - name: governance-application-config
         configMap:
-          name: governance-config
+          name: governance-application-config
       - name: client-tls
         secret:
           secretName: tls-client

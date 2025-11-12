@@ -1,13 +1,12 @@
-
+All are run from utility container
 
 # CSFLE
 
 ```bash
-# Get key
+alias k='kubectl'
+
 vault kv list transit/keys
 
-#####
-# Create Schema
 jq -s '{
     schema: (.[0] | tojson),
     schemaType: "AVRO",
@@ -16,7 +15,7 @@ jq -s '{
     }
 }' governance/csfle-schema.json governance/csfle-encryptionRule.json | tee csfle.json
 
-# Create topic
+# Create a topic
 kafka-topics --bootstrap-server "${BS}" --command-config config/client.properties --create --topic csfle --replication-factor=3
 
 # Register the schema
@@ -27,18 +26,13 @@ curl \
     ${SR}/subjects/csfle-value/versions \
     -d @csfle.json
 
-######
-# See the schema (might be 6, depending on what else you've done)
 curl -k ${SR}/subjects/csfle-value/versions/latest
 
-# Get schema
-export CSFLE_SCHEMA_ID=$(curl -k ${SR}/subjects/csfle-value/versions/latest | jq '.id')
+export CSFLE_SCHEMA_ID=$(curl -sk ${SR}/subjects/csfle-value/versions/latest | jq '.id')
 
-echo ${CSFLE_SCHEMA_ID}
+echo "Using schema ID ${CSFLE_SCHEMA_ID} for CSFLE producer"
 
-# Produce message
-echo '{"id": "userid1", "name": "firstname lastname", "birthday": "01/01/2020"}' | \
-kafka-avro-console-producer \
+echo '{"id": "userid1", "name": "firstname lastname", "birthday": "01/01/2020"}' | kafka-avro-console-producer \
     --bootstrap-server "${BS}" \
     --producer.config config/client.properties \
     --reader-config config/client.properties \
@@ -46,10 +40,18 @@ kafka-avro-console-producer \
     --property value.schema.id=${CSFLE_SCHEMA_ID} \
     --topic csfle
 
-# Read message
 kafka-console-consumer \
     --bootstrap-server "${BS}" \
     --consumer.config config/client.properties \
+    --topic csfle \
+    --from-beginning \
+    --max-messages=1
+
+kafka-avro-console-consumer \
+    --bootstrap-server "${BS}" \
+    --consumer.config config/client.properties \
+    --property schema.registry.url=${SR} \
+    --formatter-config config/client.properties \
     --topic csfle \
     --from-beginning \
     --max-messages=1
@@ -58,12 +60,8 @@ kafka-console-consumer \
 # Governance
 
 ```bash
-# Run in the project directory
-./scripts/deploy_governance_demo.sh
-```
+create_governance_topics
 
-
-```bash
 jq -s '{
     schema: (.[0] | tojson),
     metadata: .[1],
@@ -115,23 +113,24 @@ curl \
     -H 'content-type:application/json' \
     ${SR}/subjects/raw.recipes-value/versions \
     -d @raw.recipes-value.v1.json
-```
 
-```bash
-./scripts/add/42_governance_deploy_v1_apps.sh
-./scripts/add/43_governance_invalid_recipe.sh
-```
+kubectl apply -f /root/governance/applications/recipe-producer-Job-v1.yaml
+kubectl apply -f /root/governance/applications/recipe-consumer-Deployment-v1.yaml
+kubectl apply -f /root/governance/applications/order-producer-Deployment.yaml
+kubectl apply -f /root/governance/applications/order-consumer-Deployment.yaml
 
-```bash
-# Run in the utility container
-curl \
-    -k \
-    -X PUT \
-    -H 'content-type:application/json' \
-    ${SR}/config/raw.recipes-value \
-    -d @governance/compatibility-config.json
+kubectl apply -f /root/governance/applications/recipe-producer-Job-v1-invalid.yaml
 
-# Run in the utility container
+kafka-console-consumer \
+    --bootstrap-server "${BS}" \
+    --consumer.config config/client.properties \
+    --topic raw.recipes.dlq \
+    --from-beginning \
+    --max-messages=1
+
+### wait
+
+
 jq -s '{
     schema: (.[0] | tojson),
     metadata: .[1],
@@ -164,48 +163,38 @@ curl \
     -H 'content-type:application/json' \
     ${SR}/subjects/raw.recipes-value/versions \
     -d @raw.recipes-value.v2.json
-```
 
 
-```bash
-# Run in the project directory
-./scripts/add/44_governance_deploy_v2_apps.sh
+kubectl apply -f /root/governance/applications/recipe-producer-Job-v2.yaml
+kubectl apply -f /root/governance/applications/recipe-consumer-Deployment-v2.yaml
 ```
 
 # Flink SQL
 
-
 ```bash
-./scripts/deploy_flink_sql_infra.sh
+deploy_flink_sql_infra
+
+# List Flink catalog(s)
+confluent flink catalog list
+
+# List Flink compute pool(s)
+confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool list
 ```
 
-```bash
-confluent flink --environment ${CMF_ENVIRONMENT_NAME} compute-pool list
+Verify everything is wired up properly with a basic `SHOW TABLES` query.
 
+*Run from within the utility pod*
+
+```bash
 confluent --environment ${CMF_ENVIRONMENT_NAME} flink statement create ddl1 \
   --catalog demo --database kafka --compute-pool pool --output json \
   --sql "SHOW TABLES;"
 
-
 confluent --environment ${CMF_ENVIRONMENT_NAME} flink statement delete --force ddl1
-
 
 confluent --environment ${CMF_ENVIRONMENT_NAME} --compute-pool pool flink shell
 ```
 
 ```sql
-show catalogs;
-
-show databases;
-
---- Use demo catalog and kafka database
-use `demo`.`kafka`;
-
-show tables;
-
---- Do a select (note that when you run this, it has to pull a Docker image and start several containers, so this may take some time)
 SELECT * FROM `demo`.`kafka`.`shoe-customers`;
 ```
-
-# Namespace
-kubectl patch -p '{"metadata":{"finalizers":null}}' --type=merge -v=8 namespace ingress-nginx

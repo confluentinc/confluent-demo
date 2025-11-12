@@ -27,7 +27,7 @@ CONFLUENT_CMF_URL=http://cmf.confluent-demo.svc.cluster.local
 
 Run the infrastructure deployment script (creates resources using the CMF REST API)
 ```bash
-deploy_flink_infra
+deploy_flink_sql_infra
 ```
 
 You can verify everything is set up correctly with these commands:
