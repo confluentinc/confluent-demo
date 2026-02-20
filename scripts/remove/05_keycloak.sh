@@ -14,8 +14,8 @@ fi
 # From manifests
 kubectl -n "${KEYCLOAK_NAMESPACE}" delete \
     --ignore-not-found=true \
-    ingress/keycloak \
-    ingress/keycloak-insecure \
+    TLSRoute/keycloak \
+    TLSRoute/keycloak-insecure \
     service/keycloak \
     service/keycloak-discovery \
     statefulset/keycloak \

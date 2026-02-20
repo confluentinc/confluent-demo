@@ -21,7 +21,7 @@ kubectl -n "${NAMESPACE}" delete \
 kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     controlcenter/controlcenter \
-    ingress/controlcenter
+    TLSRoute/controlcenter
 
 kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
@@ -30,7 +30,7 @@ kubectl -n "${NAMESPACE}" delete \
 kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     schemaregistry/schemaregistry \
-    ingress/schemaregistry
+    TLSRoute/schemaregistry
 
 kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
@@ -40,7 +40,10 @@ kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \
     kafka/kafka \
     service/kafka-bootstrap \
-    ingress/kafka
+    TLSRoute/kafka-bootstrap \
+    TLSRoute/kafka-0 \
+    TLSRoute/kafka-1 \
+    TLSRoute/kafka-2
 
 kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \

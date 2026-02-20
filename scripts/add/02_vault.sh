@@ -28,6 +28,7 @@ helm upgrade --install vault \
 wait_for_pod app.kubernetes.io/name=vault 1 "${VAULT_NAMESPACE}"
 
 # Includes the following resources:
+# TODO: doesn't currently exist, needs to be migrated from Ingress to Gateway
 # Ingress/vault
 deploy_manifests ${MANIFEST_DIR}
 

@@ -41,8 +41,8 @@ kubectl -n "${NAMESPACE}" delete \
     Deployment/kibana \
     Service/elasticsearch \
     Service/kibana \
-    Ingress/elasticsearch \
-    Ingress/kibana
+    TLSRoute/elasticsearch \
+    TLSRoute/kibana
 
 kubectl -n "${NAMESPACE}" delete \
     --ignore-not-found=true \

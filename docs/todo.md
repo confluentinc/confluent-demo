@@ -1,6 +1,14 @@
 ## TODO (Repo-level)
 
+
+* Bump utility container
+
 * Look at Kubernetes Gateway API
+    * Add gateway paths for:
+        * vault
+        * insecure keycloak
+        * plaintext stuff?
+
 * Look at jq or kustomize templating for basic vs. oidc
 
 * Refactor: combine prereqs scripts

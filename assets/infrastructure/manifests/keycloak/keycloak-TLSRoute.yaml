@@ -1,0 +1,16 @@
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
+metadata:
+  name: keycloak
+  namespace: ${KEYCLOAK_NAMESPACE}
+spec:
+  parentRefs:
+  - name: envoy-gateway
+    namespace: ${ENVOY_GATEWAY_NAMESPACE}
+  hostnames:
+  - "keycloak.${BASE_DOMAIN}"  # The SNI hostname to look for
+  rules:
+  - backendRefs:
+    - name: keycloak
+      port: 8443  # The port on your pod where TLS is terminated

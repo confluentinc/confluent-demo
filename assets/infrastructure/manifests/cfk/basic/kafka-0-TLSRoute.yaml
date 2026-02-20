@@ -1,0 +1,16 @@
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
+metadata:
+  name: kafka-0
+  namespace: ${NAMESPACE}
+spec:
+  parentRefs:
+  - name: envoy-gateway
+    namespace: ${ENVOY_GATEWAY_NAMESPACE}
+  hostnames:
+  - "kafka-0.${BASE_DOMAIN}"  # The SNI hostname to look for
+  rules:
+  - backendRefs:
+    - name: kafka-0-internal
+      port: 9092  # The port on your pod where TLS is terminated

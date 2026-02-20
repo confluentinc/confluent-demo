@@ -1,0 +1,18 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-gateway
+  namespace: ${ENVOY_GATEWAY_NAMESPACE}
+spec:
+  gatewayClassName: envoy-gateway
+  listeners:
+  - name: https-passthrough
+    protocol: TLS
+    port: 443
+    tls:
+      # Enable SNI-based passthrough
+      mode: Passthrough
+    allowedRoutes:
+      namespaces:
+        from: All

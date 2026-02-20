@@ -133,6 +133,11 @@ deploy_manifests () {
 
     export MANIFEST_DIR=${1}
 
+    if [[ $(ls -1 ${MANIFEST_DIR} | grep yaml | wc -l) -eq 0 ]]; then
+        echo "No manifests found in ${MANIFEST_DIR}"
+        return
+    fi
+
     ls -1 ${MANIFEST_DIR} | grep yaml
 
     for f in \

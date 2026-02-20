@@ -13,7 +13,7 @@ fi
 
 kubectl -n "${VAULT_NAMESPACE}" delete \
     --ignore-not-found=true \
-    Ingress/vault
+    TLSRoute/vault
 
 helm uninstall vault \
     --namespace "${VAULT_NAMESPACE}"
