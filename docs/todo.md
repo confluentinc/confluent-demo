@@ -18,6 +18,7 @@
 * Suppress error messages
 
 * Determine whether to update CRDs on all Helm installations:
+    * Gateway
     * CMF
     * FKO
 

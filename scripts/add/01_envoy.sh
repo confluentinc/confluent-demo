@@ -10,12 +10,6 @@ set -x
 
 kubectl create namespace ${ENVOY_GATEWAY_NAMESPACE} --dry-run=client -oyaml | kubectl apply -f -
 
-# Need to figure out why this is failing
-# helm upgrade --install envoy-gateway-crds \
-#     oci://docker.io/envoyproxy/gateway-crds-helm \
-#     --version ${ENVOY_GATEWAY_VERSION} \
-#     --namespace ${ENVOY_GATEWAY_NAMESPACE}
-
 helm upgrade --install envoy-gateway \
     oci://docker.io/envoyproxy/gateway-helm \
     --version ${ENVOY_GATEWAY_VERSION} \
