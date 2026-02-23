@@ -1,5 +1,5 @@
 ---
-apiVersion: gateway.networking.k8s.io/v1alpha2
+apiVersion: gateway.networking.k8s.io/v1alpha3
 kind: TLSRoute
 metadata:
   name: controlcenter
@@ -8,8 +8,9 @@ spec:
   parentRefs:
   - name: envoy-gateway
     namespace: ${ENVOY_GATEWAY_NAMESPACE}
+    sectionName: tls-passthrough
   hostnames:
-  - "confluent.${BASE_DOMAIN}"  # The SNI hostname to look for
+  - "confluent.${BASE_EXT_DOMAIN}"  # The SNI hostname to look for
   rules:
   - backendRefs:
     - name: controlcenter-0-internal

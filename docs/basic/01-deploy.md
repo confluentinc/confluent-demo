@@ -51,7 +51,7 @@ The installation script will monitor the deployment process.
 
 (You can also monitor Control Center logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
 
-Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/ and explore both the Kafka and Flink components of Confluent Platform.
+Open up the Control Center UI: https://confluent.ext.127-0-0-1.nip.io/ and explore both the Kafka and Flink components of Confluent Platform.
 
 #### CLI Login
 

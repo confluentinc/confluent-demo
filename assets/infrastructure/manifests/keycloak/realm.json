@@ -931,8 +931,8 @@
       "clientId": "confluent-sso",
       "name": "",
       "description": "",
-      "rootUrl": "https://confluent.127-0-0-1.nip.io",
-      "adminUrl": "https://confluent.127-0-0-1.nip.io",
+      "rootUrl": "https://confluent.ext.127-0-0-1.nip.io",
+      "adminUrl": "https://confluent.ext.127-0-0-1.nip.io",
       "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
@@ -940,7 +940,7 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "Wyt2jq5gzqrONotJ4W7R07OA4yUnnj3l",
       "redirectUris": [
-        "https://confluent.127-0-0-1.nip.io/api/metadata/security/1.0/oidc/authorization-code/callback"
+        "https://confluent.ext.127-0-0-1.nip.io/api/metadata/security/1.0/oidc/authorization-code/callback"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -3134,7 +3134,7 @@
     "oauth2DeviceCodeLifespan": "600",
     "oauth2DevicePollingInterval": "5",
     "parRequestUriLifespan": "60",
-    "frontendUrl": "https://keycloak.127-0-0-1.nip.io/",
+    "frontendUrl": "https://keycloak.ext.127-0-0-1.nip.io/",
     "cibaInterval": "5",
     "realmReusableOtpCode": "false"
   },

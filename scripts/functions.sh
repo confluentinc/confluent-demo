@@ -113,7 +113,7 @@ check_for_readiness () {
     kubectl -n "${NAMESPACE}" get pod
     echo ""
     echo "Demo is ready!"
-    echo "Access Confluent Control Center at 'https://confluent.${BASE_DOMAIN}'"
+    echo "Access Confluent Control Center at 'https://confluent.${BASE_EXT_DOMAIN}'"
     echo 'Exec into utility pod with `./shell.sh`'
 }
 
@@ -173,6 +173,8 @@ delete_manifests () {
 }
 
 copy_ca_certs () {
+    mkdir -p ${CERT_DIR} ${CFSSL_DIR}
+
     cp ./assets/infrastructure/security/certificates/ca.crt ${CERT_DIR}/ca.crt
     cp ./assets/infrastructure/security/certificates/ca.key ${CERT_DIR}/ca.key
     cp ./assets/infrastructure/security/certificates/cfssl-ca.json ${CFSSL_DIR}/cfssl-ca.json

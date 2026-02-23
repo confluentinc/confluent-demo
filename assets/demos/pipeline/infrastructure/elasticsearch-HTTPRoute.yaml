@@ -1,0 +1,18 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: elasticsearch
+  namespace: ${NAMESPACE}
+spec:
+  parentRefs:
+  - name: envoy-gateway
+    namespace: ${ENVOY_GATEWAY_NAMESPACE}
+    sectionName: https-terminate
+  hostnames:
+  - "elasticsearch.${BASE_INT_DOMAIN}"
+  rules:
+  - backendRefs:
+    - name: elasticsearch
+      # HTTP (not HTTPS) because we terminate on Envoy Gateway
+      port: 9200

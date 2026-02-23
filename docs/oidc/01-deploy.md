@@ -22,7 +22,7 @@ kubectl -n confluent-demo get pods -w
 
 (You can also monitor Control Center logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
 
-Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/
+Open up the Control Center UI: https://confluent.ext.127-0-0-1.nip.io/
 
 Log in with `admin`/`admin`
 

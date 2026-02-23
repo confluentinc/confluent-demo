@@ -72,14 +72,22 @@ Flink SQL queries
 
 ```sql
 show catalogs;
+```
 
+```sql
 show databases;
+```
 
+```sql
 --- Use demo catalog and kafka database
 use `demo`.`kafka`;
+```
 
+```sql
 show tables;
+```
 
+```sql
 --- Do a select (note that when you run this, it has to pull a Docker image and start several containers, so this may take some time)
 SELECT * FROM `demo`.`kafka`.`shoe-customers`;
 ```
@@ -87,7 +95,7 @@ SELECT * FROM `demo`.`kafka`.`shoe-customers`;
 *While the select is starting, also look at running containers from another terminal*
 
 ```bash
-kubectl -n confluent-demo get pods
+kubectl -n confluent-demo-development get pods
 ```
 
 Try other Flink SQL queries, subject to the limitations of the Confluent Platform for Apache Flink SQL capabilities.
