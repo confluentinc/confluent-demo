@@ -14,7 +14,7 @@ set -x
 ### Other
 # CRDs <- not cleaned up
 
-# Install Ingress Nginx and Confluent Helm Repos
+# Enable Confluent Helm Repo
 helm repo add confluentinc https://packages.confluent.io/helm --force-update
 helm repo update
 

@@ -25,7 +25,6 @@ remove_if_deleted () {
 # e.g.
 # wait_for_pod app=schemaregistry
 # wait_for_pod app=kafka 3
-# wait_for_pod app.kubernetes.io/name=ingress-nginx 1 ingress-nginx
 wait_for_pod () {
     set +x
     export LABEL_SELECTOR=${1}

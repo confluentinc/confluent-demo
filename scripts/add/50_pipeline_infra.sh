@@ -11,8 +11,8 @@ create_certificate_secret ksqldb
 
 ###### ./assets/demos/pipeline/infrastructure includes these objects:
 # * ksqldb (CFK CR)
-# * kibana (Deployment, Service, Ingress)
-# * elasticsearch (Deployment, Service, Ingress)
+# * kibana (Deployment, Service, HTTPRoute)
+# * elasticsearch (Deployment, Service, HTTPRoute)
 # * KafkaTopic 'wikipedia.parsed'
 
 export MANIFEST_DIR=./assets/demos/pipeline/infrastructure

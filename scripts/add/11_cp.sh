@@ -12,17 +12,17 @@ set -x
 # KRaftController/kraft
 
 # Kafka/kafka
-# Ingress/kafka
+# HTTPRoute/kafka
 # Service/kafka-bootstrap
 # KafkaRestClass/default
 
 # SchemaRegistry/schemaregistry
-# Ingress/schemaregistry
+# HTTPRoute/schemaregistry
 
 # Connect/connect
 
 # ControlCenter/controlcenter
-# Ingress/controlcenter
+# HTTPRoute/controlcenter
 
 # KafkaTopic/shoe-customers
 # KafkaTopic/shoe-products

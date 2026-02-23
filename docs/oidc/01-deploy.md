@@ -2,7 +2,7 @@
 
 ## Check Prerequisites
 
-This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Ingress NGINX controller.
+This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Envoy Gateway API controller.
 
 ```bash
 ./precheck.sh

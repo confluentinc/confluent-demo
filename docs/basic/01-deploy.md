@@ -31,7 +31,7 @@ cd confluent-demo
 
 ## Run pre-check
 
-This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Ingress NGINX controller.
+This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Envoy Gateway API controller.
 
 It will also validate some of the prerequisites.
 

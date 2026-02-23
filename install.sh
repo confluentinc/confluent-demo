@@ -28,7 +28,6 @@ else
     exit 1
 fi
 
-# ./scripts/add/01_nginx.sh
 ./scripts/add/01_envoy.sh
 ./scripts/add/02_vault.sh
 ./scripts/add/03_cfk.sh

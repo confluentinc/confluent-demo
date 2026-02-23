@@ -12,7 +12,7 @@ There is currently one version of this demo: "basic" mode, which has TLS but no 
 
 The installation script will install the following:
 
-* Ingress NGINX Controller
+* Envoy Gateway API Controller
 * Keycloak pod
 * Confluent for Kubernetes (CFK)
 * CFK CRs:

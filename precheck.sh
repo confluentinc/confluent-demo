@@ -171,8 +171,8 @@ if ! curl -s https://github.com &> /dev/null; then
 fi
 
 echo "Setting up base domain"
-echo "The Ingress NGINX controller will be configured to exposed services running on Kubernetes"
-echo "If Kubernetes is running locally (e.g., Docker Desktop or OrbStack), ingress-exposed services can be accessed at the IP address of the host machine (127.0.0.1)"
+echo "The Envoy Gateway API controller will be configured to expose services running on Kubernetes"
+echo "If Kubernetes is running locally (e.g., Docker Desktop or OrbStack), Gateway-exposed services can be accessed at the IP address of the host machine (127.0.0.1)"
 echo "If Kubernetes is running on a remote machine, enter the IP address of the machine"
 echo "Press Enter to use the current IP (127.0.0.1)"
 read -p "Your selection: " BASE_IP
@@ -195,6 +195,7 @@ if [[ "$BASE_IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
     sed -i.bak "s|^export BASE_EXT_DOMAIN=.*$|export BASE_EXT_DOMAIN=${BASE_EXT_DOMAIN}|g" ./.env
 else
     echo "❌ ${BASE_IP} is not a valid IP"
+    exit 1
 fi
 
 echo ""

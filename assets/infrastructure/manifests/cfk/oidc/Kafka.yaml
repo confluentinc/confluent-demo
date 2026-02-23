@@ -15,7 +15,7 @@ spec:
   configOverrides:
     server:
       # Enable device authorization endpoint
-      - confluent.oidc.idp.device.authorization.endpoint.uri=http://keycloak.keycloak.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/auth/device
+      - confluent.oidc.idp.device.authorization.endpoint.uri=http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/auth/device
   authorization:
     superUsers:
       - User:kraft
