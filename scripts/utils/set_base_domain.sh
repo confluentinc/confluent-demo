@@ -14,4 +14,5 @@ if [[ "$BASE_IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
     sed -i.bak "s|^export BASE_EXT_DOMAIN=.*$|export BASE_EXT_DOMAIN=${BASE_EXT_DOMAIN}|g" ./.env
 else
     echo "${BASE_IP} is not a valid IP"
+    exit 1
 fi

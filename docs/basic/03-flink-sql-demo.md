@@ -95,6 +95,7 @@ SELECT * FROM `demo`.`kafka`.`shoe-customers`;
 *While the select is starting, also look at running containers from another terminal*
 
 ```bash
+# Note - we use the "development" FlinkEnvironment, which deploys in to the `confluent-demo-development` namespace
 kubectl -n confluent-demo-development get pods
 ```
 
