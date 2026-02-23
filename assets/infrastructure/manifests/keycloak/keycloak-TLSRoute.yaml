@@ -2,7 +2,7 @@
 apiVersion: gateway.networking.k8s.io/v1alpha3
 kind: TLSRoute
 metadata:
-  name: keycloak
+  name: keycloak-ext
   namespace: ${KEYCLOAK_NAMESPACE}
 spec:
   parentRefs:

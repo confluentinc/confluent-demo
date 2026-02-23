@@ -6,6 +6,7 @@ metadata:
   namespace: ${ENVOY_GATEWAY_NAMESPACE}
 spec:
   gatewayClassName: envoy-gateway
+  # Use two listeners to support both SSL passthrough and TLS termination
   listeners:
   - name: tls-passthrough
     protocol: TLS
