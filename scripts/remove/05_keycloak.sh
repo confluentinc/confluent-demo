@@ -15,7 +15,7 @@ fi
 kubectl -n "${KEYCLOAK_NAMESPACE}" delete \
     --ignore-not-found=true \
     TLSRoute/keycloak \
-    TLSRoute/keycloak-insecure \
+    HTTPRoute/keycloak \
     service/keycloak \
     service/keycloak-discovery \
     statefulset/keycloak \
