@@ -8,6 +8,7 @@ spec:
   parentRefs:
   - name: envoy-gateway
     namespace: ${ENVOY_GATEWAY_NAMESPACE}
+    sectionName: tls-passthrough
   hostnames:
   - "kafka-0.${BASE_EXT_DOMAIN}"  # The SNI hostname to look for
   rules:

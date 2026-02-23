@@ -4,11 +4,13 @@
 * Bump utility container
 
 * Look at Kubernetes Gateway API
-    * Add gateway paths for:
-        * vault
-        * insecure keycloak
-        * plaintext stuff?
-
+    * Revalidate keycloak (ext vs. int)
+    * Revalidate vault (int)
+    * Fix kafka (plaintext)
+    * Verify client config files work
+        * Plaintext
+        * Basic
+        * OIDC
 * Look at jq or kustomize templating for basic vs. oidc
 
 * Refactor: combine prereqs scripts
