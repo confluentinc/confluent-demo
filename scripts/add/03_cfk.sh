@@ -14,12 +14,15 @@ set -x
 ### Other
 # CRDs <- not cleaned up
 
-# Install Ingress Nginx and Confluent Helm Repos
+# Enable Confluent Helm Repo
 helm repo add confluentinc https://packages.confluent.io/helm --force-update
 helm repo update
 
 # Create namespaces if they don't exist
 kubectl create namespace "${NAMESPACE}" --dry-run=client -oyaml | kubectl apply -f -
+
+# Remove CRDs if necessary
+# kubectl get crds -oname | grep confluent | xargs kubectl delete
 
 # Upgrade CFK CRDs
 helm show crds confluentinc/confluent-for-kubernetes | kubectl apply --server-side=true -f -

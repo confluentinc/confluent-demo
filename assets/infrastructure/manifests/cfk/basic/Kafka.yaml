@@ -27,7 +27,7 @@ spec:
         type: staticForHostBasedRouting
         staticForHostBasedRouting:
           port: 443
-          domain: ${BASE_DOMAIN}
+          domain: ${BASE_EXT_DOMAIN}
           brokerPrefix: kafka-
       tls:
         enabled: true

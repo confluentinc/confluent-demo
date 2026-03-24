@@ -1,0 +1,34 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-gateway
+  namespace: ${ENVOY_GATEWAY_NAMESPACE}
+spec:
+  gatewayClassName: envoy-gateway
+  # Use two listeners to support both SSL passthrough and TLS termination
+  listeners:
+  - name: tls-passthrough
+    protocol: TLS
+    port: 443
+    hostname: "*.${BASE_EXT_DOMAIN}"
+    tls:
+      # Enable SNI-based passthrough
+      mode: Passthrough
+    allowedRoutes:
+      namespaces:
+        from: All
+  # TLS termination at Gateway for backends that speak HTTP
+  - name: https-terminate
+    protocol: HTTPS
+    port: 443
+    hostname: "*.${BASE_INT_DOMAIN}"
+    tls:
+      mode: Terminate
+      certificateRefs:
+        - kind: Secret
+          name: tls-envoy-gateway
+          namespace: ${ENVOY_GATEWAY_NAMESPACE}
+    allowedRoutes:
+      namespaces:
+        from: All

@@ -25,7 +25,6 @@ remove_if_deleted () {
 # e.g.
 # wait_for_pod app=schemaregistry
 # wait_for_pod app=kafka 3
-# wait_for_pod app.kubernetes.io/name=ingress-nginx 1 ingress-nginx
 wait_for_pod () {
     set +x
     export LABEL_SELECTOR=${1}
@@ -113,7 +112,7 @@ check_for_readiness () {
     kubectl -n "${NAMESPACE}" get pod
     echo ""
     echo "Demo is ready!"
-    echo "Access Confluent Control Center at 'https://confluent.${BASE_DOMAIN}'"
+    echo "Access Confluent Control Center at 'https://confluent.${BASE_EXT_DOMAIN}'"
     echo 'Exec into utility pod with `./shell.sh`'
 }
 
@@ -132,6 +131,11 @@ deploy_manifests () {
     mkdir -p ${LOCAL_DIR}
 
     export MANIFEST_DIR=${1}
+
+    if [[ $(ls -1 ${MANIFEST_DIR} | grep yaml | wc -l) -eq 0 ]]; then
+        echo "No manifests found in ${MANIFEST_DIR}"
+        return
+    fi
 
     ls -1 ${MANIFEST_DIR} | grep yaml
 
@@ -168,6 +172,8 @@ delete_manifests () {
 }
 
 copy_ca_certs () {
+    mkdir -p ${CERT_DIR} ${CFSSL_DIR}
+
     cp ./assets/infrastructure/security/certificates/ca.crt ${CERT_DIR}/ca.crt
     cp ./assets/infrastructure/security/certificates/ca.key ${CERT_DIR}/ca.key
     cp ./assets/infrastructure/security/certificates/cfssl-ca.json ${CFSSL_DIR}/cfssl-ca.json

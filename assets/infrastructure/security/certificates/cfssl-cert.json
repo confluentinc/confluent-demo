@@ -4,6 +4,8 @@
       "localhost",
       "${RESOURCE}",
       "*.${BASE_DOMAIN}",
+      "*.${BASE_INT_DOMAIN}",
+      "*.${BASE_EXT_DOMAIN}",
       "*.${NAMESPACE}.svc.cluster.local",
       "*.${RESOURCE}.${NAMESPACE}.svc.cluster.local"
     ],

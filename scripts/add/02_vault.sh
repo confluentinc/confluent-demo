@@ -28,7 +28,7 @@ helm upgrade --install vault \
 wait_for_pod app.kubernetes.io/name=vault 1 "${VAULT_NAMESPACE}"
 
 # Includes the following resources:
-# Ingress/vault
+# HTTPRoute/vault
 deploy_manifests ${MANIFEST_DIR}
 
 kubectl -n "${VAULT_NAMESPACE}" exec -it vault-0 -- sh -c "vault secrets enable transit" || true

@@ -1,0 +1,19 @@
+# This is not currently used
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kibana
+  namespace: ${NAMESPACE}
+spec:
+  parentRefs:
+  - name: envoy-gateway
+    namespace: ${ENVOY_GATEWAY_NAMESPACE}
+    sectionName: https-terminate
+  hostnames:
+  - "kibana.${BASE_INT_DOMAIN}"
+  rules:
+  - backendRefs:
+    - name: kibana
+      # HTTP (not HTTPS) because we terminate on Envoy Gateway
+      port: 5601

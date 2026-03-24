@@ -8,10 +8,6 @@ set -x
 
 export MANIFEST_DIR=./assets/infrastructure/manifests/keycloak
 
-export CERT_DIR=${LOCAL_DIR}/certs
-export CFSSL_DIR=${LOCAL_DIR}/cfssl
-mkdir -p $CERT_DIR $CFSSL_DIR
-
 kubectl create namespace ${KEYCLOAK_NAMESPACE} --dry-run=client -oyaml | kubectl apply -f -
 
 # Copy CA certificates

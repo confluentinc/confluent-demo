@@ -1,7 +1,19 @@
 ## TODO (Repo-level)
 
+
+* Bump utility container
+* Refactor set_base_domain into function
+
 * Look at Kubernetes Gateway API
+    * Revalidate keycloak (ext vs. int)
+    * Revalidate vault (int)
+    * Fix kafka (plaintext)
+    * Verify client config files work
+        * Plaintext
+        * Basic
+        * OIDC
 * Look at jq or kustomize templating for basic vs. oidc
+* Look at client config properties (.properties and .json files reflected into utility container), revalidate which ones support templating or not.
 
 * Refactor: combine prereqs scripts
 * Refactor: split out deploys from waits
@@ -10,6 +22,7 @@
 * Suppress error messages
 
 * Determine whether to update CRDs on all Helm installations:
+    * Gateway
     * CMF
     * FKO
 
@@ -32,7 +45,6 @@
     * ~~utility~~
 * ~~Refactor: combine install/uninstall scripts~~
 * ~~Refactor: split flinkapp/flinkenv into separate script~~
-* ~~Refactor: break out nginx installation~~
 * ~~Refactor certificate generation into function~~
 * ~~Move versions.sh > .env~~
 * ~~rearrange installation / uninstallation scripts to use functions~~

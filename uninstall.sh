@@ -23,4 +23,4 @@ set -euo pipefail
 ./scripts/remove/04_utility.sh
 ./scripts/remove/03_cfk.sh
 ./scripts/remove/02_vault.sh
-./scripts/remove/01_nginx.sh
+./scripts/remove/01_envoy.sh

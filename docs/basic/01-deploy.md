@@ -31,7 +31,7 @@ cd confluent-demo
 
 ## Run pre-check
 
-This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Ingress NGINX controller.
+This will prompt for the Kubernetes context to use, and optionally allow you to indicate the IP address used to access Kubernetes services exposed via the Envoy Gateway API controller.
 
 It will also validate some of the prerequisites.
 
@@ -51,7 +51,7 @@ The installation script will monitor the deployment process.
 
 (You can also monitor Control Center logs with `kubectl -n confluent-demo logs -f controlcenter-0 -c controlcenter`)
 
-Open up the Control Center UI: https://confluent.127-0-0-1.nip.io/ and explore both the Kafka and Flink components of Confluent Platform.
+Open up the Control Center UI: https://confluent.ext.127-0-0-1.nip.io/ and explore both the Kafka and Flink components of Confluent Platform.
 
 #### CLI Login
 
