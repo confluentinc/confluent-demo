@@ -7,22 +7,25 @@ set -x
 . ./scripts/functions.sh
 
 ###### manifests/basic includes these objects:
-# StatefulSet/confluent-utility
 
 # KRaftController/kraft
 
 # Kafka/kafka
-# HTTPRoute/kafka
+# TLSRoute/kafka-bootstrap
+# TLSRoute/kafka-0
+# TLSRoute/kafka-1
+# TLSRoute/kafka-2
 # Service/kafka-bootstrap
+
 # KafkaRestClass/default
 
 # SchemaRegistry/schemaregistry
-# HTTPRoute/schemaregistry
+# TLSRoute/schemaregistry
 
 # Connect/connect
 
 # ControlCenter/controlcenter
-# HTTPRoute/controlcenter
+# TLSRoute/controlcenter
 
 # KafkaTopic/shoe-customers
 # KafkaTopic/shoe-products
