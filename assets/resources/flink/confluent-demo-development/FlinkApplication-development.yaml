@@ -6,8 +6,8 @@ metadata:
   namespace: ${FLINK_DEV_NAMESPACE}
 spec:
   flinkEnvironment: ${FLINK_DEV_ENV_NAME}
-  image: confluentinc/cp-flink:1.19.3-cp1
-  flinkVersion: v1_19
+  image: confluentinc/cp-flink:${CP_FLINK_TAG}
+  flinkVersion: ${CP_FLINK_MAJOR_VERSION}
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "1"
     kubernetes.taskmanager.cpu.limit-factor: "10"

@@ -11,7 +11,7 @@
         },
         "connectionSecretId": "kafka"
       },
-      "alterEnvironments": [
+      "ddlEnvironments": [
         "development",
         "production"
       ]

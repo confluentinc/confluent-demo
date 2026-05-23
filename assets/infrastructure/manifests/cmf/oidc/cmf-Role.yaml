@@ -9,7 +9,7 @@ rules:
     resources: [ "deployments", "deployments/finalizers" ]
     verbs: [ "*" ]
   - apiGroups: ["flink.apache.org"]
-    resources: ["flinkdeployments", "flinkdeployments/status"]
+    resources: ["flinkdeployments", "flinkdeployments/status", "flinksessionjobs", "flinksessionjobs/status"]
     verbs: ["*"]
   - apiGroups: [""]
     resources: ["services", "namespaces"]
