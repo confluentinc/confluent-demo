@@ -34,7 +34,11 @@ fi
 
 ./scripts/add/04_utility.sh
 
-./scripts/add/05_keycloak.sh
+if [[ $INSTALL_MODE == 1 ]]; then
+    echo 'Installing Keycloak'
+    ./scripts/add/05_keycloak.sh
+fi
+
 ./scripts/add/06_fko.sh
 
 ./scripts/add/10_cp_certs.sh
@@ -56,6 +60,7 @@ if [[ $INSTALL_MODE -ne 1 ]]; then
 fi
 
 ./scripts/add/22_flink_resources.sh
+./scripts/add/23_flink_sql_infra.sh
 
 ./scripts/add/30_demo_infra.sh
 

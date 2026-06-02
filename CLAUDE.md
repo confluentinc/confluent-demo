@@ -185,13 +185,17 @@ Uses Kubernetes Gateway API (Envoy Gateway) for ingress:
 All versions and configuration are defined in `.env`:
 
 ### Component Versions
-- `CFK_CHART_VERSION` - Confluent for Kubernetes Helm chart
-- `CMF_VERSION` - Confluent Manager for Apache Flink version
-- `FKO_VERSION` - Flink Kubernetes Operator version
-- `CONFLUENT_PLATFORM_VERSION` - Confluent Platform (Kafka) version
-- `CONTROL_CENTER_VERSION` - Control Center Next Gen version
-- `CP_FLINK_TAG` - Confluent Platform Flink image tag
-- `ENVOY_GATEWAY_VERSION` - Envoy Gateway API controller version
+- `CFK_CHART_VERSION` - Confluent for Kubernetes Helm chart (0.1514.40, app version 3.2.2)
+- `CFK_INIT_CONTAINER_VERSION` - CFK init container version (3.2.2)
+- `CMF_VERSION` - Confluent Manager for Apache Flink version (2.3.1)
+- `FKO_VERSION` - Flink Kubernetes Operator version (1.140.1)
+- `CONFLUENT_PLATFORM_VERSION` - Confluent Platform (Kafka) version (8.2.1)
+- `CONFLUENT_PLATFORM_SR_VERSION` - Schema Registry version (7.9.6, intentionally older due to DEK Registry RBAC constraints)
+- `CONTROL_CENTER_VERSION` - Control Center Next Gen version (2.5.0)
+- `CP_FLINK_TAG` - Confluent Platform Flink image tag (2.1.2-cp1-java21)
+- `CP_FLINK_SQL_TAG` - Confluent Platform Flink SQL tag (1.19-cp8)
+- `ENVOY_GATEWAY_VERSION` - Envoy Gateway API controller version (v1.8.0)
+- `VAULT_CHART_VERSION` - HashiCorp Vault Helm chart version (0.32.0)
 
 ### Namespaces
 - `NAMESPACE=confluent-demo` - Main namespace for Confluent Platform

@@ -9,6 +9,7 @@ set -euo pipefail
 ./scripts/remove/40_governance_infra.sh
 
 ./scripts/remove/35_cmf_children.sh
+./scripts/remove/23_flink_sql_infra.sh
 ./scripts/remove/22_flink_resources.sh
 ./scripts/remove/21_connectors.sh
 ./scripts/remove/20_topics.sh
