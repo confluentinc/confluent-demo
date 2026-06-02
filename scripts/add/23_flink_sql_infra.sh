@@ -28,6 +28,18 @@ for i in {1..30}; do
 done
 set -x
 
+# Wait for FlinkEnvironment to have cfkInternalState=CREATED
+kubectl wait --for=jsonpath='{.status.cfkInternalState}'=CREATED \
+    -n ${FLINK_DEV_NAMESPACE} \
+    FlinkEnvironment/${FLINK_DEV_ENV_NAME} \
+    --timeout=300s
+
+# Wait for FlinkEnvironment to have cmfSync.status=Created
+kubectl wait --for=jsonpath='{.status.cmfSync.status}'=Created \
+    -n ${FLINK_DEV_NAMESPACE} \
+    FlinkEnvironment/${FLINK_DEV_ENV_NAME} \
+    --timeout=300s
+
 # Execute deployment script in utility pod
 echo "Deploying Flink SQL infrastructure via CMF API..."
 kubectl -n "${NAMESPACE}" exec confluent-utility-0 -- bash -c 'deploy_flink_sql_infra'
