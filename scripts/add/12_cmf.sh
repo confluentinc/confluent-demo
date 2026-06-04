@@ -43,6 +43,5 @@ helm upgrade --install cmf \
     confluentinc/confluent-manager-for-apache-flink \
     --namespace "${NAMESPACE}" \
     --version ${CMF_VERSION} \
-    --values ${LOCAL_DIR}/cmf-values.yaml \
-    --set cmf.sql.examples-catalog.enabled=true
+    --values ${LOCAL_DIR}/cmf-values.yaml
     # --set encryption.enabled=false

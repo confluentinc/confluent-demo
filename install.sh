@@ -60,7 +60,11 @@ if [[ $INSTALL_MODE -ne 1 ]]; then
 fi
 
 ./scripts/add/22_flink_resources.sh
-./scripts/add/23_flink_sql_infra.sh
+
+# Only deploy Flink SQL infrastructure in basic mode (requires deploy_flink_sql_infra in utility pod)
+if [[ $INSTALL_MODE -eq 0 ]]; then
+    ./scripts/add/23_flink_sql_infra.sh
+fi
 
 ./scripts/add/30_demo_infra.sh
 
