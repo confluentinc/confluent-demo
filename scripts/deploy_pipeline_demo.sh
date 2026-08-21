@@ -15,6 +15,6 @@ clear
 kubectl -n "${NAMESPACE}" get pod
 echo ""
 echo "Demo is ready!"
-echo "Access Confluent Control Center at 'https://confluent.${BASE_EXT_DOMAIN}'"
-echo "Access the Kibana dashboard at https://kibana.${BASE_EXT_DOMAIN}"
+echo "Access Confluent Control Center at 'https://confluent.${BASE_EXTERNAL_TLS_DOMAIN}'"
+echo "Access the Kibana dashboard at https://kibana.${BASE_EXTERNAL_TLS_DOMAIN}"
 echo 'Exec into utility pod with `./shell.sh`'

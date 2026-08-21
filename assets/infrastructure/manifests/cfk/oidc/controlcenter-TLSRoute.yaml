@@ -10,7 +10,7 @@ spec:
     namespace: ${ENVOY_GATEWAY_NAMESPACE}
     sectionName: tls-passthrough
   hostnames:
-  - "confluent.${BASE_EXT_DOMAIN}"  # The SNI hostname to look for
+  - "confluent.${BASE_EXTERNAL_TLS_DOMAIN}"  # The SNI hostname to look for
   rules:
   - backendRefs:
     - name: controlcenter-0-internal

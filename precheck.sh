@@ -170,31 +170,58 @@ if ! curl -s https://github.com &> /dev/null; then
     exit 1
 fi
 
-echo "Setting up base domain"
+echo "Setting up base domains"
 echo "The Envoy Gateway API controller will be configured to expose services running on Kubernetes"
+
+echo "You can configure separate local (internal) and remote (external) endpoints; most services will be accessible by either one"
 echo "If Kubernetes is running locally (e.g., Docker Desktop or OrbStack), Gateway-exposed services can be accessed at the IP address of the host machine (127.0.0.1)"
 echo "If Kubernetes is running on a remote machine, enter the IP address of the machine"
-echo "Press Enter to use the current IP (127.0.0.1)"
-read -p "Your selection: " BASE_IP
 
-if [[ -z "$BASE_IP" ]]; then
-    BASE_IP="127.0.0.1"
+echo "Enter the external IP (press Enter to use 127.0.0.1)"
+read -p "External IP: " BASE_EXTERNAL_IP
+
+if [[ -z "$BASE_EXTERNAL_IP" ]]; then
+    BASE_EXTERNAL_IP="127.0.0.1"
 fi
 
-export BASE_IP
+export BASE_EXTERNAL_IP
 
 # Super simple validation
-if [[ "$BASE_IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-    echo "Using IP ${BASE_IP}"
-    export BASE_DOMAIN="$(echo ${BASE_IP} | tr '.' '-').nip.io"
-    export BASE_INT_DOMAIN="int.${BASE_DOMAIN}"
-    export BASE_EXT_DOMAIN="ext.${BASE_DOMAIN}"
-    echo "Setting BASE_DOMAIN in ./.env to ${BASE_DOMAIN}"
-    sed -i.bak "s|^export BASE_DOMAIN=.*$|export BASE_DOMAIN=${BASE_DOMAIN}|g" ./.env
-    sed -i.bak "s|^export BASE_INT_DOMAIN=.*$|export BASE_INT_DOMAIN=${BASE_INT_DOMAIN}|g" ./.env
-    sed -i.bak "s|^export BASE_EXT_DOMAIN=.*$|export BASE_EXT_DOMAIN=${BASE_EXT_DOMAIN}|g" ./.env
+if [[ "$BASE_EXTERNAL_IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    echo "Using IP ${BASE_EXTERNAL_IP}"
+    export BASE_EXTERNAL_DOMAIN="$(echo ${BASE_EXTERNAL_IP} | tr '.' '-').nip.io"
+    export BASE_EXTERNAL_HTTPS_DOMAIN="i.${BASE_EXTERNAL_DOMAIN}"
+    export BASE_EXTERNAL_TLS_DOMAIN="x.${BASE_EXTERNAL_DOMAIN}"
+    echo "Setting BASE_EXTERNAL_DOMAIN in ./.env to ${BASE_EXTERNAL_DOMAIN}"
+    sed -i.bak "s|^export BASE_EXTERNAL_DOMAIN=.*$|export BASE_EXTERNAL_DOMAIN=${BASE_EXTERNAL_DOMAIN}|g" ./.env
+    sed -i.bak "s|^export BASE_EXTERNAL_HTTPS_DOMAIN=.*$|export BASE_EXTERNAL_HTTPS_DOMAIN=${BASE_EXTERNAL_HTTPS_DOMAIN}|g" ./.env
+    sed -i.bak "s|^export BASE_EXTERNAL_TLS_DOMAIN=.*$|export BASE_EXTERNAL_TLS_DOMAIN=${BASE_EXTERNAL_TLS_DOMAIN}|g" ./.env
 else
-    echo "❌ ${BASE_IP} is not a valid IP"
+    echo "❌ ${BASE_EXTERNAL_IP} is not a valid IP"
+    exit 1
+fi
+
+echo "Enter the internal IP (press Enter to use 127.0.0.1)"
+read -p "Internal IP: " BASE_INTERNAL_IP
+
+if [[ -z "$BASE_INTERNAL_IP" ]]; then
+    BASE_INTERNAL_IP="127.0.0.1"
+fi
+
+export BASE_INTERNAL_IP
+
+# Super simple validation
+if [[ "$BASE_INTERNAL_IP" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    echo "Using IP ${BASE_INTERNAL_IP}"
+    export BASE_INTERNAL_DOMAIN="$(echo ${BASE_INTERNAL_IP} | tr '.' '-').nip.io"
+    export BASE_INTERNAL_HTTPS_DOMAIN="i.${BASE_INTERNAL_DOMAIN}"
+    export BASE_INTERNAL_TLS_DOMAIN="x.${BASE_INTERNAL_DOMAIN}"
+    echo "Setting BASE_INTERNAL_DOMAIN in ./.env to ${BASE_INTERNAL_DOMAIN}"
+    sed -i.bak "s|^export BASE_INTERNAL_DOMAIN=.*$|export BASE_INTERNAL_DOMAIN=${BASE_INTERNAL_DOMAIN}|g" ./.env
+    sed -i.bak "s|^export BASE_INTERNAL_HTTPS_DOMAIN=.*$|export BASE_INTERNAL_HTTPS_DOMAIN=${BASE_INTERNAL_HTTPS_DOMAIN}|g" ./.env
+    sed -i.bak "s|^export BASE_INTERNAL_TLS_DOMAIN=.*$|export BASE_INTERNAL_TLS_DOMAIN=${BASE_INTERNAL_TLS_DOMAIN}|g" ./.env
+else
+    echo "❌ ${BASE_INTERNAL_IP} is not a valid IP"
     exit 1
 fi
 
@@ -214,8 +241,8 @@ echo "✅ openssl is installed"
 echo "✅ cfssl is installed"
 echo "✅ jq is installed"
 echo "✅ GitHub is accessible"
-echo "✅ BASE_DOMAIN is set to ${BASE_DOMAIN}"
-echo "✅ BASE_INT_DOMAIN is set to ${BASE_INT_DOMAIN}"
-echo "✅ BASE_EXT_DOMAIN is set to ${BASE_EXT_DOMAIN}"
+echo "✅ BASE_EXTERNAL_DOMAIN is set to ${BASE_EXTERNAL_DOMAIN}"
+echo "✅ BASE_EXTERNAL_HTTPS_DOMAIN is set to ${BASE_EXTERNAL_HTTPS_DOMAIN}"
+echo "✅ BASE_EXTERNAL_TLS_DOMAIN is set to ${BASE_EXTERNAL_TLS_DOMAIN}"
 echo ""
-echo "Confluent Control Center will be accessible at https://confluent.${BASE_EXT_DOMAIN}"
+echo "Confluent Control Center will be accessible at https://confluent.${BASE_EXTERNAL_TLS_DOMAIN}"

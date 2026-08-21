@@ -10,7 +10,7 @@ spec:
     namespace: ${ENVOY_GATEWAY_NAMESPACE}
     sectionName: tls-passthrough
   hostnames:
-  - "keycloak.${BASE_EXT_DOMAIN}"  # The SNI hostname to look for
+  - "keycloak.${BASE_EXTERNAL_TLS_DOMAIN}"  # The SNI hostname to look for
   rules:
   - backendRefs:
     - name: keycloak

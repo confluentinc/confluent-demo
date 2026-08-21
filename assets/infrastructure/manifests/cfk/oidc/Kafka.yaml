@@ -45,7 +45,7 @@ spec:
         type: staticForHostBasedRouting
         staticForHostBasedRouting:
           port: 443
-          domain: ${BASE_EXT_DOMAIN}
+          domain: ${BASE_EXTERNAL_TLS_DOMAIN}
           brokerPrefix: kafka-
       authentication:
         type: oauth
@@ -54,7 +54,7 @@ spec:
         # https://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8443//realms/confluent/.well-known/openid-configuration
         oauthSettings:
           subClaimName: client_id
-          expectedIssuer: https://keycloak.${BASE_EXT_DOMAIN}/realms/confluent
+          expectedIssuer: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent
           # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
           jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
           tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
@@ -77,7 +77,7 @@ spec:
             secretRef: kafka-oauth-jaas
           oauthSettings:
             subClaimName: client_id
-            expectedIssuer: https://keycloak.${BASE_EXT_DOMAIN}/realms/confluent
+            expectedIssuer: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent
             jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
             tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
         port: 9096
@@ -92,7 +92,7 @@ spec:
         oauth:
           configurations:
             subClaimName: client_id
-            expectedIssuer: https://keycloak.${BASE_EXT_DOMAIN}/realms/confluent
+            expectedIssuer: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent
             # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
             jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
 
@@ -105,10 +105,10 @@ spec:
             groupsClaimName: groups
             # Pull username from the `email` claim
             subClaimName: email
-            issuer: https://keycloak.${BASE_EXT_DOMAIN}/realms/confluent
+            issuer: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent
             jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
             tokenBaseEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
-            authorizeBaseEndpointUri: https://keycloak.${BASE_EXT_DOMAIN}/realms/confluent/protocol/openid-connect/auth
+            authorizeBaseEndpointUri: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent/protocol/openid-connect/auth
             refreshToken: false
       tls:
         enabled: true
@@ -130,7 +130,7 @@ spec:
           secretRef: kafka-oauth-jaas
         oauthSettings:
           subClaimName: client_id
-          expectedIssuer: https://keycloak.${BASE_EXT_DOMAIN}/realms/confluent
+          expectedIssuer: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent
           # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
           jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
           tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
@@ -149,7 +149,7 @@ spec:
           secretRef: kafka-oauth-jaas
           configuration:
             tokenEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/token
-            expectedIssuer: https://keycloak.${BASE_EXT_DOMAIN}/realms/confluent
+            expectedIssuer: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent
             # expectedIssuer: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent
             jwksEndpointUri: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
             subClaimName: client_id

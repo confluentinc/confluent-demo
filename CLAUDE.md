@@ -57,7 +57,7 @@ Kubernetes cluster requirements:
 # Open shell in utility pod (preconfigured with Confluent CLI)
 ./shell.sh
 
-# Control Center UI (adjust domain based on BASE_DOMAIN in .env)
+# Control Center UI (adjust domain based on BASE_EXTERNAL_DOMAIN in .env)
 # https://confluent.ext.127-0-0-1.nip.io/
 ```
 
@@ -82,7 +82,7 @@ kubectl -n confluent-demo get pods
 ./scripts/utils/list_flink.sh
 
 # Set custom base domain
-./scripts/utils/set_base_domain.sh <IP>
+./scripts/utils/set_BASE_EXTERNAL_DOMAIN.sh <IP>
 
 # Remove finalizers from stuck resources
 ./scripts/utils/remove_finalizer.sh
@@ -136,9 +136,9 @@ Deployed via CFK Custom Resources (CRs):
 Uses Kubernetes Gateway API (Envoy Gateway) for ingress:
 - TLSRoute resources expose services
 - Three domain tiers defined in `.env`:
-  - `BASE_DOMAIN`: Base domain (e.g., 127-0-0-1.nip.io)
-  - `BASE_INT_DOMAIN`: Internal domain (int.127-0-0-1.nip.io)
-  - `BASE_EXT_DOMAIN`: External domain (ext.127-0-0-1.nip.io)
+  - `BASE_EXTERNAL_DOMAIN`: Base domain (e.g., 127-0-0-1.nip.io)
+  - `BASE_EXTERNAL_HTTPS_DOMAIN`: Internal domain (int.127-0-0-1.nip.io)
+  - `BASE_EXTERNAL_TLS_DOMAIN`: External domain (ext.127-0-0-1.nip.io)
 
 ## Directory Structure
 
@@ -205,10 +205,10 @@ All versions and configuration are defined in `.env`:
 - `VAULT_NAMESPACE=vault` - Vault namespace
 
 ### Domain Configuration
-Updated by `./precheck.sh` or `./scripts/utils/set_base_domain.sh`:
-- `BASE_DOMAIN` - Base nip.io domain
-- `BASE_INT_DOMAIN` - Internal subdomain
-- `BASE_EXT_DOMAIN` - External subdomain
+Updated by `./precheck.sh` or `./scripts/utils/set_BASE_EXTERNAL_DOMAIN.sh`:
+- `BASE_EXTERNAL_DOMAIN` - Base nip.io domain
+- `BASE_EXTERNAL_HTTPS_DOMAIN` - Internal subdomain
+- `BASE_EXTERNAL_TLS_DOMAIN` - External subdomain
 
 ## Helper Functions
 

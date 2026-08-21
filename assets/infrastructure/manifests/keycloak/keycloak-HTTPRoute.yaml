@@ -11,7 +11,7 @@ spec:
     namespace: ${ENVOY_GATEWAY_NAMESPACE}
     sectionName: https-terminate
   hostnames:
-  - "keycloak.${BASE_INT_DOMAIN}"
+  - "keycloak.${BASE_EXTERNAL_HTTPS_DOMAIN}"
   rules:
   - backendRefs:
     - name: keycloak

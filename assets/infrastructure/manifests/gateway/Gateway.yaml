@@ -11,7 +11,7 @@ spec:
   - name: tls-passthrough
     protocol: TLS
     port: 443
-    hostname: "*.${BASE_EXT_DOMAIN}"
+    hostname: "*.${BASE_EXTERNAL_TLS_DOMAIN}"
     tls:
       # Enable SNI-based passthrough
       mode: Passthrough
@@ -22,7 +22,7 @@ spec:
   - name: https-terminate
     protocol: HTTPS
     port: 443
-    hostname: "*.${BASE_INT_DOMAIN}"
+    hostname: "*.${BASE_EXTERNAL_HTTPS_DOMAIN}"
     tls:
       mode: Terminate
       certificateRefs:
