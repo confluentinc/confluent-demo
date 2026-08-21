@@ -17,6 +17,17 @@ spec:
     init: confluentinc/confluent-init-container:${CFK_INIT_CONTAINER_VERSION}
   dataVolumeCapacity: 5Gi
   listeners:
+    custom:
+    - name: local
+      port: 9096
+      tls:
+        enabled: true
+      externalAccess:
+        type: staticForPortBasedRouting
+        staticForHostBasedRouting:
+          port: 443
+          domain: ${BASE_LOCAL_TLS_DOMAIN}
+          brokerPrefix: kafka-
     # INTERNAL: 9071 (TLS)
     internal:
       tls:
@@ -27,7 +38,7 @@ spec:
         type: staticForHostBasedRouting
         staticForHostBasedRouting:
           port: 443
-          domain: ${BASE_EXTERNAL_TLS_DOMAIN}
+          domain: ${BASE_PUBLIC_TLS_DOMAIN}
           brokerPrefix: kafka-
       tls:
         enabled: true

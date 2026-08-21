@@ -21,7 +21,7 @@ cmf:
     config:
       oauthbearer.jwks.endpoint.url: http://keycloak.${KEYCLOAK_NAMESPACE}.svc.cluster.local:8080/realms/confluent/protocol/openid-connect/certs
       token.issuer: Confluent
-      oauthbearer.expected.issuer: https://keycloak.${BASE_EXTERNAL_TLS_DOMAIN}/realms/confluent
+      oauthbearer.expected.issuer: https://keycloak.${BASE_PUBLIC_TLS_DOMAIN}/realms/confluent
       # uses claim `client_id` as principal identifier
       oauthbearer.sub.claim.name: client_id
       public.key.path: /mount/mds/mdsPublicKey.pem

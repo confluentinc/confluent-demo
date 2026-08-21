@@ -3,12 +3,12 @@
     "hosts": [
       "localhost",
       "${RESOURCE}",
-      "*.${BASE_EXTERNAL_DOMAIN}",
-      "*.${BASE_EXTERNAL_HTTPS_DOMAIN}",
-      "*.${BASE_EXTERNAL_TLS_DOMAIN}",
-      "*.${BASE_INTERNAL_DOMAIN}",
-      "*.${BASE_INTERNAL_HTTPS_DOMAIN}",
-      "*.${BASE_INTERNAL_TLS_DOMAIN}",
+      "*.${BASE_PUBLIC_DOMAIN}",
+      "*.${BASE_PUBLIC_HTTPS_DOMAIN}",
+      "*.${BASE_PUBLIC_TLS_DOMAIN}",
+      "*.${BASE_LOCAL_DOMAIN}",
+      "*.${BASE_LOCAL_HTTPS_DOMAIN}",
+      "*.${BASE_LOCAL_TLS_DOMAIN}",
       "*.${NAMESPACE}.svc.cluster.local",
       "*.${RESOURCE}.${NAMESPACE}.svc.cluster.local"
     ],

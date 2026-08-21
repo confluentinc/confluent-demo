@@ -2,7 +2,7 @@
 
 
 * Bump utility container
-* Refactor set_BASE_EXTERNAL_DOMAIN into function
+* Refactor set_BASE_PUBLIC_DOMAIN into function
 
 * Look at Kubernetes Gateway API
     * Revalidate keycloak (ext vs. int)

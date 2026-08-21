@@ -11,7 +11,7 @@ spec:
     namespace: ${ENVOY_GATEWAY_NAMESPACE}
     sectionName: https-terminate
   hostnames:
-  - "confluent.${BASE_EXTERNAL_HTTPS_DOMAIN}"
+  - "confluent.${BASE_PUBLIC_HTTPS_DOMAIN}"
   rules:
   - backendRefs:
     - name: controlcenter-0-internal

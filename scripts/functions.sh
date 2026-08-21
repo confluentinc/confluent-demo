@@ -112,7 +112,7 @@ check_for_readiness () {
     kubectl -n "${NAMESPACE}" get pod
     echo ""
     echo "Demo is ready!"
-    echo "Access Confluent Control Center at 'https://confluent.${BASE_EXTERNAL_TLS_DOMAIN}'"
+    echo "Access Confluent Control Center at 'https://confluent.${BASE_PUBLIC_TLS_DOMAIN}'"
     echo 'Exec into utility pod with `./shell.sh`'
 }
 
