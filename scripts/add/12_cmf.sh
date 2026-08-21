@@ -41,6 +41,7 @@ envsubst < ./assets/infrastructure/helm-values/cmf/${MODE}/cmf-values.yaml > ${L
 # CMF
 helm upgrade --install cmf \
     confluentinc/confluent-manager-for-apache-flink \
-    --values ${LOCAL_DIR}/cmf-values.yaml \
     --namespace "${NAMESPACE}" \
-    --version ${CMF_VERSION}
+    --version ${CMF_VERSION} \
+    --values ${LOCAL_DIR}/cmf-values.yaml
+    # --set encryption.enabled=false

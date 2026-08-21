@@ -7,9 +7,9 @@ metadata:
 spec:
   kubernetesNamespace: ${FLINK_DEV_NAMESPACE}
   flinkApplicationDefaults:
-    metadata:
-      labels:
-        "${NAMESPACE}/owned-by": "${NAMESPACE}"
+    # metadata:
+    #   labels:
+    #     "${NAMESPACE}/owned-by": "${NAMESPACE}"
     spec:
       flinkConfiguration:
         "metrics.reporter.prom.factory.class": "org.apache.flink.metrics.prometheus.PrometheusReporterFactory"

@@ -34,7 +34,11 @@ fi
 
 ./scripts/add/04_utility.sh
 
-./scripts/add/05_keycloak.sh
+if [[ $INSTALL_MODE == 1 ]]; then
+    echo 'Installing Keycloak'
+    ./scripts/add/05_keycloak.sh
+fi
+
 ./scripts/add/06_fko.sh
 
 ./scripts/add/10_cp_certs.sh
@@ -56,6 +60,11 @@ if [[ $INSTALL_MODE -ne 1 ]]; then
 fi
 
 ./scripts/add/22_flink_resources.sh
+
+# Only deploy Flink SQL infrastructure in basic mode (requires deploy_flink_sql_infra in utility pod)
+if [[ $INSTALL_MODE -eq 0 ]]; then
+    ./scripts/add/23_flink_sql_infra.sh
+fi
 
 ./scripts/add/30_demo_infra.sh
 
